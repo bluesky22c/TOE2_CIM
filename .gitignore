@@ -1,0 +1,39 @@
+## [ Build Results ]
+[Bb]in/
+[Oo]bj/
+[Aa]rm/
+[Aa]rm64/
+[Xx]64/
+[Xx]86/
+exe/
+dll/
+pdb/
+Build
+
+## [ Visual Studio Metadata ]
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## [ NuGet Packages ]
+*.nupkg
+# NuGet 패키지 복원 시 생성되는 폴더
+packages/
+!**/packages/build/
+
+## [ User-specific files ]
+*.rsuser
+*.suo
+*.user
+*.userprefs
+
+## [ Common Generated Files ]
+Generated\ Files/
+_ReSharper*/
+*.[Rr][Ee][Ss][Xx].log
+
+## [ OS specific files ]
+.DS_Store
+Thumbs.db

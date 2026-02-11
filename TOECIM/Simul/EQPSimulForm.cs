@@ -1,0 +1,292 @@
+﻿using LGHSMSBase;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using TOECIM.Forms;
+using TOECIMLib;
+
+namespace TOECIM
+{
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    public partial class EQPSimulForm : Form
+    {
+
+        EQPSimulator simul = new EQPSimulator();
+        //public event EventHandler<EQtoCIMData> OnEQEvent = delegate { };    //EQ to CIM 이벤트
+
+        //eq에서 관리하는 glass data들
+        public EQtoCIMData eqData => simul.eqData;
+        public TOECIMLib.ECSData LoadGlass => simul.LoadGlass;
+        public TOECIMLib.ECSData UnloadGlass => simul.UnloadGlass;
+
+        //AlarmInfo alarm;
+        //EQPStatus curEQPStatus => simul.preEQPStatus;
+        List<RadioButton> radioCmd = new List<RadioButton>();
+
+        public EQPSimulForm()
+        {
+            simul = EQPSimulator.LoadFromFile(simul.LastValuePath);
+            InitializeComponent();
+        }
+
+        private void EQPSimulator_Load(object sender, EventArgs e)
+        {
+            simul.StartServer();
+
+            radioCmd.Clear();
+
+            // SxFx 매핑 정의
+            Dictionary<string, string> cmdToSxFx = new Dictionary<string, string>()
+            {
+                { "LoadReady", "(S6F11)" },
+                { "LoadDone", "(S1F67)" },
+                { "UnloadReady", "(S6F11)" },
+                { "UnloadDone", "(S1F67)" },
+                { "ExchangeDone", "(S1F67)" },
+                { "Alarm", "(S5F1)" },
+                { "AlarmClear", "(S5F1)" },
+                { "Pause", "(S6F11)" },
+            };
+
+            simul.OnLog += Message =>
+            {
+                if (simulLogListBox.InvokeRequired)
+                {
+                    simulLogListBox.BeginInvoke(new Action(() => AddLog(Message)));
+                }
+                else
+                {
+                    AddLog(Message);
+                }
+            };
+
+            foreach (var v in Enum.GetNames(typeof(EQtoCIM_CMD)))
+            {
+                // Alarm, AlarmClear 명령은 별도 버튼으로 처리하므로 라디오 버튼 목록에서 제외
+                // 기능이 없거나 미사용 커맨드 제거
+                if (v == EQtoCIM_CMD.Alarm.ToString() || v == EQtoCIM_CMD.AlarmClear.ToString() ||
+                    v == EQtoCIM_CMD.None.ToString() || v == EQtoCIM_CMD.LoadReadyStart.ToString() ||
+                    v == EQtoCIM_CMD.Loading.ToString() || v == EQtoCIM_CMD.UnloadReadyStart.ToString() ||
+                    v == EQtoCIM_CMD.Unload.ToString() || v == EQtoCIM_CMD.ScanStart.ToString() ||
+                    v == EQtoCIM_CMD.GlassInOut.ToString() || v == EQtoCIM_CMD.SendData.ToString() ||
+                    v == EQtoCIM_CMD.Pause.ToString() || v == EQtoCIM_CMD.Error.ToString())
+                    continue;
+
+                string text = $"{v}";
+                if (cmdToSxFx.ContainsKey(v))
+                {
+                    text += $" {cmdToSxFx[v]}";
+                }
+
+                var radio = new RadioButton
+                {
+                    Name = $"{v}radio",
+                    Text = text,
+                    Tag = $"{v}",
+                    AutoSize = true,
+                };
+
+                radio.CheckedChanged += Radio_CheckedChanged;
+                eqpControlPanel.Controls.Add(radio);
+
+                radioCmd.Add(radio);
+            }
+
+            alarmComboBox.DataSource = Enum.GetValues(typeof(AlarmType));
+            alarmComboBox.SelectedIndex = 0;
+
+            //radioCmd[(int)LastCMD].Checked = true;
+            //Radio_CheckedChanged(radioCmd[(int)LastCMD], e);
+
+            // Manual Status Control UI
+            statusComboBox.DataSource = Enum.GetValues(typeof(EQPStatus));
+            readyStatusComboBox.DataSource = Enum.GetValues(typeof(EQPReadyStatus));
+
+            UpdateInfo();
+        }
+
+        private void statusChangeButton_Click(object sender, EventArgs e)
+        {
+            if (statusComboBox.SelectedItem is EQPStatus status)
+            {
+                simul.ChangeStatus(status);
+                UpdateInfo();
+            }
+        }
+
+        private void readyStatusChangeButton_Click(object sender, EventArgs e)
+        {
+            if (readyStatusComboBox.SelectedItem is EQPReadyStatus rStatus)
+            {
+                eqData.GlassTransferStatus = MapFromReadyStatus(rStatus);
+                simul.ChangeStatus(eqData.eqpStatus); // Send current status + updated ready status
+                UpdateInfo();
+            }
+        }
+
+
+        private void Radio_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton button = sender as RadioButton;
+            if (button.Checked == false)
+                return;
+
+            var cmd = (EQtoCIM_CMD)Enum.Parse(typeof(EQtoCIM_CMD), button.Tag.ToString());
+            eqData.CMD = cmd;
+            eqData.AutoRun = autoRunCheckBox.Checked;
+            eqData.GlassIn = glassInCheckBox.Checked;
+
+            switch (cmd)
+            {
+                case EQtoCIM_CMD.LoadReady:
+                    simul.LoadReady();
+                    break;
+                
+                case EQtoCIM_CMD.LoadDone:
+                    simul.LoadDone();
+                    break;
+
+                //Unload Wait 커맨드 받으면 UnloadReady 눌러주기
+                //worker 끝내는 이벤트
+                case EQtoCIM_CMD.UnloadReady:
+                    simul.UnloadReady();
+                    break;
+                
+                //Normal Glass Sequence
+                case EQtoCIM_CMD.Exchange:
+                    simul.Exchange();
+                    break;
+
+                //Normal Glass Sequence
+                case EQtoCIM_CMD.ExchangeDone:
+                    simul.ExchangeDone();
+                    break;
+                
+                case EQtoCIM_CMD.UnloadDone:
+                    simul.UnloadDone();
+                    break;
+
+                case EQtoCIM_CMD.Alarm:
+                case EQtoCIM_CMD.AlarmClear:
+                    // 전용 버튼에서 직접 처리함
+                    break;
+            }
+            simul.Save(simul.LastValuePath);
+
+            //OnEQEvent(this, eqData);
+            UpdateInfo();
+        }
+
+
+        private EQtoCIM_CMD MapFromReadyStatus(EQPReadyStatus status)
+        {
+            switch (status)
+            {
+                case EQPReadyStatus.LoadyReady: return EQtoCIM_CMD.LoadReady;
+                case EQPReadyStatus.UnloadReady: return EQtoCIM_CMD.UnloadReady;
+                case EQPReadyStatus.ExchangeReady: return EQtoCIM_CMD.Exchange;
+                default: return EQtoCIM_CMD.None;
+            }
+        }
+
+        private void UpdateUWLabel(CIMtoEQ_CMD cmd)
+        {
+            if (InvokeRequired)
+                BeginInvoke((Action)delegate { UpdateUWLabel(cmd); });
+            else
+            {
+                if (cmd == CIMtoEQ_CMD.UnloadWait)
+                {
+                    uwLabel.Text = "Unload Waiting..";
+                    uwLabel.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    uwLabel.Text = "";
+                }
+            }
+        }
+
+        private void UpdateInfo()
+        {
+            if (InvokeRequired)
+                BeginInvoke((Action)delegate { UpdateInfo(); });
+            else
+            {
+                glassInCheckBox.Checked = eqData.GlassIn;
+                eqpStatusLabel.Text = $"EQPStatus : {eqData.eqpStatus}  /  Ready : {eqData.GlassTransferStatus}";
+
+                if (LoadGlass != null)
+                {
+                    loadGlassIDtextBox.Text = $"AGlass : {LoadGlass.AGlass.GLSID}, BGlass: {LoadGlass.BGlass.GLSID}";
+                    loadGlassCodetextBox.Text = $"AGlass : {LoadGlass.AGlass.GLSCODE}, BGlass: {LoadGlass.BGlass.GLSCODE}";
+                    loadGlassOrdertextBox.Text = $"AGlass : {LoadGlass.AGlass.GLSODR}, BGlass: {LoadGlass.BGlass.GLSODR}";
+                }
+                if (UnloadGlass != null)
+                {
+                    unloadGlassIDtextBox.Text = $"AGlass : {UnloadGlass.AGlass.GLSID}, BGlass: {UnloadGlass.BGlass.GLSID}";
+                    unloadGlassCodetextBox.Text = $"AGlass : {UnloadGlass.AGlass.GLSCODE}, BGlass: {UnloadGlass.BGlass.GLSCODE}";
+                    unloadGlassOrdertextBox.Text = $"AGlass : {UnloadGlass.AGlass.GLSODR}, BGlass: {UnloadGlass.BGlass.GLSODR}";
+                }
+
+            }
+        }
+
+        private void alarmSetButton_Click(object sender, EventArgs e)
+        {
+            simul.SetAlarm((AlarmType)alarmComboBox.SelectedIndex, 100);
+            UpdateInfo();
+        }
+
+        private void alarmClearButton_Click(object sender, EventArgs e)
+        {
+            simul.ClearAlarm();
+            UpdateInfo();
+        }
+
+        private void EQPSimulator_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // 탭에 임베딩된 경우 서버 정지하지 않음 (SimulatorForm이 관리)
+            if (TopLevel)
+            {
+                simul.StopServer();
+            }
+            Hide();
+        }
+
+        /// <summary>
+        /// 외부에서 서버 정지 호출용
+        /// </summary>
+        public void StopSimulServer()
+        {
+            simul.StopServer();
+        }
+
+        private void glassInCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            eqData.GlassIn = glassInCheckBox.Checked;
+        }
+
+        private void autoRunCheckBox_CheckedChanged(object sender, EventArgs e) 
+        {
+            eqData.AutoRun = autoRunCheckBox.Checked;
+        }
+        private void AddLog(string msg)
+        {
+            string log = $"{DateTime.Now:HH:mm:ss.fff} > {msg}";
+            simulLogListBox.Items.Insert(0, log);
+
+            if (simulLogListBox.Items.Count > 500)
+            {
+                simulLogListBox.Items.RemoveAt(simulLogListBox.Items.Count - 1);
+            }
+        }
+    }
+}
