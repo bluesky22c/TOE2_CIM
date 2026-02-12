@@ -82,8 +82,8 @@ namespace TOECIM
             {
                 case ACKC1.ACKC1Enum.Accept:
                     //RCS 모드 변경할때로 이동
-                    //if ((cimStatus.CimCommData.ToCIM.Command == ConsoletoCIM.LoadReadyDone ||
-                    //    cimStatus.CimCommData.ToCIM.Command == ConsoletoCIM.UnloadReadyDone) &&
+                    //if ((cimStatus.CimCommData.ToCIM.Command == EQPtoCIM.LoadReadyDone ||
+                    //    cimStatus.CimCommData.ToCIM.Command == EQPtoCIM.UnloadReadyDone) &&
                     //    cimStatus.RCS == RCS.RCSEnum.ONLineRemote)
                     //{
                     //    SendS6F61();

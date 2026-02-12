@@ -22,7 +22,7 @@ namespace TOECIM
         //public event EventHandler<EQtoCIMData> OnEQEvent = delegate { };    //EQ to CIM 이벤트
 
         //eq에서 관리하는 glass data들
-        public EQtoCIMData eqData => simul.eqData;
+        public EQPtoCIMData eqData => simul.eqData;
         public TOECIMLib.ECSData LoadGlass => simul.LoadGlass;
         public TOECIMLib.ECSData UnloadGlass => simul.UnloadGlass;
 
@@ -43,16 +43,16 @@ namespace TOECIM
             radioCmd.Clear();
 
             // SxFx 매핑 정의
+            // SxFx 매핑 정의
             Dictionary<string, string> cmdToSxFx = new Dictionary<string, string>()
             {
-                { "LoadReady", "(S6F11)" },
-                { "LoadDone", "(S1F67)" },
-                { "UnloadReady", "(S6F11)" },
-                { "UnloadDone", "(S1F67)" },
-                { "ExchangeDone", "(S1F67)" },
-                { "Alarm", "(S5F1)" },
-                { "AlarmClear", "(S5F1)" },
-                { "Pause", "(S6F11)" },
+                { EQPtoCIM.LoadReadyDone.ToString(), "(S6F11)" },
+                { EQPtoCIM.LoadDone.ToString(), "(S1F67)" },
+                { EQPtoCIM.UnloadReadyDone.ToString(), "(S6F11)" },
+                { EQPtoCIM.UnloadDone.ToString(), "(S1F67)" },
+                { EQPtoCIM.ExchangeDone.ToString(), "(S1F67)" },
+                { EQPtoCIM.Alarm.ToString(), "(S5F1)" },
+                { EQPtoCIM.AlarmClear.ToString(), "(S5F1)" },
             };
 
             simul.OnLog += Message =>
@@ -67,16 +67,18 @@ namespace TOECIM
                 }
             };
 
-            foreach (var v in Enum.GetNames(typeof(EQtoCIM_CMD)))
+            foreach (var v in Enum.GetNames(typeof(EQPtoCIM)))
             {
                 // Alarm, AlarmClear 명령은 별도 버튼으로 처리하므로 라디오 버튼 목록에서 제외
                 // 기능이 없거나 미사용 커맨드 제거
-                if (v == EQtoCIM_CMD.Alarm.ToString() || v == EQtoCIM_CMD.AlarmClear.ToString() ||
-                    v == EQtoCIM_CMD.None.ToString() || v == EQtoCIM_CMD.LoadReadyStart.ToString() ||
-                    v == EQtoCIM_CMD.Loading.ToString() || v == EQtoCIM_CMD.UnloadReadyStart.ToString() ||
-                    v == EQtoCIM_CMD.Unload.ToString() || v == EQtoCIM_CMD.ScanStart.ToString() ||
-                    v == EQtoCIM_CMD.GlassInOut.ToString() || v == EQtoCIM_CMD.SendData.ToString() ||
-                    v == EQtoCIM_CMD.Pause.ToString() || v == EQtoCIM_CMD.Error.ToString())
+                if (v == EQPtoCIM.Alarm.ToString() || v == EQPtoCIM.AlarmClear.ToString() ||
+                    v == EQPtoCIM.None.ToString() || v == EQPtoCIM.SendData.ToString() ||
+                    v == EQPtoCIM.Pause.ToString() || v == EQPtoCIM.Error.ToString() ||
+                    v == EQPtoCIM.RecipeCreate.ToString() || v == EQPtoCIM.RecipeChange.ToString() ||
+                    v == EQPtoCIM.RecipeDelete.ToString() || v == EQPtoCIM.RecipeRename.ToString() ||
+                    v == EQPtoCIM.ProgramStarted.ToString() || v == EQPtoCIM.ShutDown.ToString() ||
+                    v == EQPtoCIM.UpdateStatus.ToString() || v == EQPtoCIM.CancelReq.ToString() ||
+                    v == EQPtoCIM.InspectDone.ToString())
                     continue;
 
                 string text = $"{v}";
@@ -125,7 +127,7 @@ namespace TOECIM
         {
             if (readyStatusComboBox.SelectedItem is EQPReadyStatus rStatus)
             {
-                eqData.GlassTransferStatus = MapFromReadyStatus(rStatus);
+                eqData.EqpReadyStatus = rStatus;
                 simul.ChangeStatus(eqData.eqpStatus); // Send current status + updated ready status
                 UpdateInfo();
             }
@@ -138,43 +140,43 @@ namespace TOECIM
             if (button.Checked == false)
                 return;
 
-            var cmd = (EQtoCIM_CMD)Enum.Parse(typeof(EQtoCIM_CMD), button.Tag.ToString());
-            eqData.CMD = cmd;
+            var cmd = (EQPtoCIM)Enum.Parse(typeof(EQPtoCIM), button.Tag.ToString());
+            eqData.Command = cmd;
             eqData.AutoRun = autoRunCheckBox.Checked;
             eqData.GlassIn = glassInCheckBox.Checked;
 
             switch (cmd)
             {
-                case EQtoCIM_CMD.LoadReady:
+                case EQPtoCIM.LoadReadyDone:
                     simul.LoadReady();
                     break;
                 
-                case EQtoCIM_CMD.LoadDone:
+                case EQPtoCIM.LoadDone:
                     simul.LoadDone();
                     break;
 
                 //Unload Wait 커맨드 받으면 UnloadReady 눌러주기
                 //worker 끝내는 이벤트
-                case EQtoCIM_CMD.UnloadReady:
+                case EQPtoCIM.UnloadReadyDone:
                     simul.UnloadReady();
                     break;
                 
                 //Normal Glass Sequence
-                case EQtoCIM_CMD.Exchange:
+                case EQPtoCIM.ExchangeReadyDone:
                     simul.Exchange();
                     break;
 
                 //Normal Glass Sequence
-                case EQtoCIM_CMD.ExchangeDone:
+                case EQPtoCIM.ExchangeDone:
                     simul.ExchangeDone();
                     break;
                 
-                case EQtoCIM_CMD.UnloadDone:
+                case EQPtoCIM.UnloadDone:
                     simul.UnloadDone();
                     break;
 
-                case EQtoCIM_CMD.Alarm:
-                case EQtoCIM_CMD.AlarmClear:
+                case EQPtoCIM.Alarm:
+                case EQPtoCIM.AlarmClear:
                     // 전용 버튼에서 직접 처리함
                     break;
             }
@@ -185,34 +187,8 @@ namespace TOECIM
         }
 
 
-        private EQtoCIM_CMD MapFromReadyStatus(EQPReadyStatus status)
-        {
-            switch (status)
-            {
-                case EQPReadyStatus.LoadyReady: return EQtoCIM_CMD.LoadReady;
-                case EQPReadyStatus.UnloadReady: return EQtoCIM_CMD.UnloadReady;
-                case EQPReadyStatus.ExchangeReady: return EQtoCIM_CMD.Exchange;
-                default: return EQtoCIM_CMD.None;
-            }
-        }
 
-        private void UpdateUWLabel(CIMtoEQ_CMD cmd)
-        {
-            if (InvokeRequired)
-                BeginInvoke((Action)delegate { UpdateUWLabel(cmd); });
-            else
-            {
-                if (cmd == CIMtoEQ_CMD.UnloadWait)
-                {
-                    uwLabel.Text = "Unload Waiting..";
-                    uwLabel.ForeColor = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    uwLabel.Text = "";
-                }
-            }
-        }
+
 
         private void UpdateInfo()
         {
@@ -221,7 +197,7 @@ namespace TOECIM
             else
             {
                 glassInCheckBox.Checked = eqData.GlassIn;
-                eqpStatusLabel.Text = $"EQPStatus : {eqData.eqpStatus}  /  Ready : {eqData.GlassTransferStatus}";
+                eqpStatusLabel.Text = $"EQPStatus : {eqData.eqpStatus}  /  Ready : {eqData.EqpReadyStatus}";
 
                 if (LoadGlass != null)
                 {

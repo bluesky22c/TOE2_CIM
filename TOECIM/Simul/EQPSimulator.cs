@@ -23,7 +23,7 @@ namespace TOECIM
         public int EQServerPort { get; set; } = 3501;
         public TOECIMLib.ECSData LoadGlass { get; set; }
         public TOECIMLib.ECSData UnloadGlass { get; set; }
-        public EQtoCIMData eqData { get; set; } = new EQtoCIMData();
+        public EQPtoCIMData eqData { get; set; } = new EQPtoCIMData();
         public TOECIMLib.EQPStatus preEQPStatus { get; set; } = TOECIMLib.EQPStatus.IDLE;
     }
 
@@ -40,7 +40,7 @@ namespace TOECIM
         public TOECIMLib.ECSData LoadGlass { get => Data.LoadGlass; set => Data.LoadGlass = value; }
         public TOECIMLib.ECSData UnloadGlass { get => Data.UnloadGlass; set => Data.UnloadGlass = value; }
 
-        public EQtoCIMData eqData => Data.eqData;
+        public EQPtoCIMData eqData => Data.eqData;
 
         JsonServer<CimCommData> server;
 
@@ -107,6 +107,8 @@ namespace TOECIM
                 {
                     simulator.Save(fileName);
                 }
+                
+                simulator.CheckIonizerData();
             }
             catch (Exception ee)
             {
@@ -114,6 +116,22 @@ namespace TOECIM
                 // In worst case, return default simulator rather than crashing
             }
             return simulator;
+        }
+
+        private void CheckIonizerData()
+        {
+            if (Data.eqData.Ionizer == null)
+            {
+                Data.eqData.Ionizer = new IonizerInfo[3];
+            }
+            
+            for (int i = 0; i < Data.eqData.Ionizer.Length; i++)
+            {
+                if (Data.eqData.Ionizer[i] == null)
+                {
+                    Data.eqData.Ionizer[i] = new IonizerInfo();
+                }
+            }
         }
         #endregion
 
@@ -148,14 +166,24 @@ namespace TOECIM
             // File.AppendAllText("simul_debug.txt", $"{DateTime.Now}: OnReceiveData received request.\n");
             // System.Diagnostics.Debug.WriteLine("[EQPSimulator] Data Received from Main");
             // TOECIM(Main)에서 보낸 요청을 처리하고 시뮬레이터 상태를 응답에 매핑
+            // TOECIM(Main)에서 보낸 요청을 처리하고 시뮬레이터 상태를 응답에 매핑
             spec.ToCIM.eqpStatus = eqData.eqpStatus;
+            spec.ToCIM.GlassIn = eqData.GlassIn;
+            spec.ToCIM.EqpReadyStatus = eqData.EqpReadyStatus;
             
-            if (spec.ToCIM.ControlData == null)
-                spec.ToCIM.ControlData = new ControltoConsoleData();
+            // Fix: Populate AutoRun, Ionizer, AlarmList
+            spec.ToCIM.AutoRun = eqData.AutoRun && eqData.eqpStatus == EQPStatus.RUN;
             
-            spec.ToCIM.ControlData.EqpStatus = eqData.eqpStatus;
-            spec.ToCIM.ControlData.GlassIn = eqData.GlassIn;
-            spec.ToCIM.ControlData.EqpReadyStatus = MapReadyStatus(eqData.GlassTransferStatus);
+            if (eqData.Ionizer != null)
+            {
+                spec.ToCIM.Ionizer = eqData.Ionizer;
+            }
+
+            if (eqData.AlarmList.Count > 0)
+            {
+                spec.ToCIM.AlarmList.AddRange(eqData.AlarmList);
+            }
+
             spec.ToCIM.Error = false; // 연결 성공 응답
 
             // Command 처리 (필요한 경우)
@@ -168,32 +196,31 @@ namespace TOECIM
             return spec;
         }
 
-        internal void SendToCIM(EQtoCIMData eqData)
+        internal void SendToCIM(EQPtoCIMData eqData)
         {
             try
             {
                 var client = new JsonClient<CimCommData>(this, "127.0.0.1", CIMServerPort, null);
 
-                ConsoletoCIMData toCim = new ConsoletoCIMData();
-                toCim.Command = MapCommand(eqData.CMD);
+                EQPtoCIMData toCim = new EQPtoCIMData();
+                toCim.Command = eqData.Command;
                 toCim.eqpStatus = eqData.eqpStatus;
                 
-                toCim.ControlData = new ControltoConsoleData();
-                toCim.ControlData.GlassIn = eqData.GlassIn;
-                // AutoRun logic: ConsoletoCIMData.AutoRun is true if eqpStatus == RUN && ControlData?.EqpStatus == RUN
-                if (eqData.AutoRun)
-                {
-                    toCim.ControlData.EqpStatus = EQPStatus.RUN; // Ensure ControlData matches for AutoRun=true
-                }
-                else
-                {
-                    toCim.ControlData.EqpStatus = eqData.eqpStatus; // Or match current status
-                }
-                toCim.ControlData.EqpReadyStatus = MapReadyStatus(eqData.GlassTransferStatus);
+                toCim.GlassIn = eqData.GlassIn;
+                
+                // AutoRun logic: Both must be RUN to be true
+                toCim.AutoRun = eqData.AutoRun && eqData.eqpStatus == EQPStatus.RUN;
+                
+                toCim.EqpReadyStatus = eqData.EqpReadyStatus;
 
-                if (eqData.CMD == EQtoCIM_CMD.Alarm && eqData.Alarm_Item != null)
+                if (eqData.Ionizer != null)
                 {
-                    toCim.AlarmList.Add(eqData.Alarm_Item);
+                    toCim.Ionizer = eqData.Ionizer;
+                }
+
+                if (eqData.Command == EQPtoCIM.Alarm && eqData.AlarmList.Count > 0)
+                {
+                    toCim.AlarmList.AddRange(eqData.AlarmList);
                 }
 
                 CimCommData commData = new CimCommData();
@@ -201,7 +228,7 @@ namespace TOECIM
                 commData.WaitResponse = false;
 
                 client.Send(commData);
-                OnLog?.Invoke($"[SEND] CMD:{toCim.Command}, STATUS:{toCim.eqpStatus}, READY:{toCim.ControlData?.EqpReadyStatus}");
+                OnLog?.Invoke($"[SEND] CMD:{toCim.Command}, STATUS:{toCim.eqpStatus}, READY:{toCim.EqpReadyStatus}");
             }
             catch (Exception exp)
             {
@@ -210,36 +237,7 @@ namespace TOECIM
             }
         }
 
-        private ConsoletoCIM MapCommand(EQtoCIM_CMD cmd)
-        {
-            switch (cmd)
-            {
-                case EQtoCIM_CMD.LoadReady: return ConsoletoCIM.LoadReadyDone;
-                case EQtoCIM_CMD.LoadDone: return ConsoletoCIM.LoadDone;
-                case EQtoCIM_CMD.UnloadReady: return ConsoletoCIM.UnloadReadyDone;
-                case EQtoCIM_CMD.UnloadDone: return ConsoletoCIM.UnloadDone;
-                case EQtoCIM_CMD.Exchange: return ConsoletoCIM.ExchangeReadyDone;
-                case EQtoCIM_CMD.ExchangeDone: return ConsoletoCIM.ExchangeDone;
-                case EQtoCIM_CMD.Alarm: return ConsoletoCIM.Alarm;
-                case EQtoCIM_CMD.AlarmClear: return ConsoletoCIM.AlarmClear;
-                case EQtoCIM_CMD.SendData: return ConsoletoCIM.SendData;
-                case EQtoCIM_CMD.Pause: return ConsoletoCIM.Pause;
-                case EQtoCIM_CMD.Error: return ConsoletoCIM.Error;
-                // Add other mappings as needed
-                default: return ConsoletoCIM.None;
-            }
-        }
 
-        private EQPReadyStatus MapReadyStatus(EQtoCIM_CMD cmd)
-        {
-            switch (cmd)
-            {
-                case EQtoCIM_CMD.LoadReady: return EQPReadyStatus.LoadyReady;
-                case EQtoCIM_CMD.UnloadReady: return EQPReadyStatus.UnloadReady;
-                case EQtoCIM_CMD.Exchange: return EQPReadyStatus.ExchangeReady;
-                default: return EQPReadyStatus.None;
-            }
-        }
 
         public void SendData()
         {
@@ -247,7 +245,7 @@ namespace TOECIM
             //eqData.AutoRun = autoRunCheckBox.Checked;
             //eqData.GlassIn = glassInCheckBox.Checked;
             //eqData.eqpStatus = curEQPStatus;
-            eqData.CMD = EQtoCIM_CMD.SendData;
+            eqData.Command = EQPtoCIM.SendData;
 
             //ionizer
             Random rnd = new Random();
@@ -256,8 +254,8 @@ namespace TOECIM
                 var item = new IonizerInfo();
                 //item.ID = (byte)rnd.Next(0, 255);
                 item.ID = (byte)(i + 1);
-                item.Status = eqData.IonizerInfos[i].Status;
-                eqData.IonizerInfos[i] = item;
+                item.Status = eqData.Ionizer[i].Status;
+                eqData.Ionizer[i] = item;
             }
 
             SendToCIM(eqData);
@@ -265,7 +263,7 @@ namespace TOECIM
 
         public void SetAlarm(AlarmType type, int id)
         {
-            var alarm = eqData.Alarm_Item;
+            var alarm = eqData.AlarmList.FirstOrDefault();
 
             alarm = new AlarmInfo();
             alarm.ALID = id.ToString();
@@ -275,8 +273,9 @@ namespace TOECIM
             alarm.DateTime = DateTime.Now;
 
             //EQtoCIMData eqData = new EQtoCIMData();
-            eqData.CMD = EQtoCIM_CMD.Alarm;
-            eqData.Alarm_Item = alarm;
+            eqData.Command = EQPtoCIM.Alarm;
+            eqData.AlarmList.Clear();
+            eqData.AlarmList.Add(alarm);
             if (alarm.AlarmType == AlarmType.HeavyAlarm)
             {
                 preEQPStatus = eqData.eqpStatus;
@@ -288,13 +287,26 @@ namespace TOECIM
 
         public void ClearAlarm()
         {
-            var alarm = eqData.Alarm_Item;
+            var alarm = eqData.AlarmList.FirstOrDefault();
             if (alarm == null)
                 return;
 
-            eqData.CMD = EQtoCIM_CMD.AlarmClear;
+            eqData.Command = EQPtoCIM.AlarmClear;
             alarm.ALCD = ALCD.ReleaseCode((byte)ALCD.ALCDEnum.EQPStatusWarning);
-            eqData.Alarm_Item = alarm;
+            // eqData.Alarm_Item = alarm; // AlarmList already has it, just updating logic if needed
+            // But since we are clearing or updating status, we should ensure the list reflects the cleared state or just send the command.
+            // The original code modified alarm and set it back. Since it's a ref, it might be fine, or we need to clear logic.
+            // Original: eqData.Alarm_Item = alarm;
+            // Let's assume we keep the alarm in the list but change its code, or clear the list?
+            // "AlarmClear" usually sends the alarm that is being cleared.
+            
+            // Logic: Just update the alarm object in the list.
+            
+            // But if we want to add to list for sending:
+            // It's already in the list.
+            
+            // Wait, previous SetAlarm logic CLEARED the list and added one.
+            // So AlarmList[0] is our alarm.
 
             if (alarm.AlarmType == AlarmType.HeavyAlarm)
             {
@@ -309,64 +321,30 @@ namespace TOECIM
             return eqData.GlassIn;
         }
 
-        public void SetIsGlass(bool on)
-        {
-            eqData.CMD = EQtoCIM_CMD.GlassInOut;
-            eqData.GlassIn = on;
-            SendToCIM(eqData);
-        }
-
         internal void LoadReady()
         {
             eqData.GlassIn = false;
-            eqData.GlassTransferStatus = EQtoCIM_CMD.LoadReady;
-            eqData.CMD = EQtoCIM_CMD.LoadReady;
+            eqData.EqpReadyStatus = EQPReadyStatus.LoadyReady;
+            eqData.Command = EQPtoCIM.LoadReadyDone;
             SendToCIM(eqData);
         }
 
         internal void LoadDone()
         {
-            eqData.GlassTransferStatus = EQtoCIM_CMD.LoadDone;
-            eqData.CMD = EQtoCIM_CMD.LoadDone;
+            eqData.EqpReadyStatus = EQPReadyStatus.None;
+            eqData.Command = EQPtoCIM.LoadDone;
             eqData.eqpStatus = EQPStatus.RUN;
             eqData.GlassIn = true;
             SendToCIM(eqData);
         }
 
-        internal void Loading()
-        {
-            eqData.GlassTransferStatus = EQtoCIM_CMD.Loading;
-            eqData.CMD = EQtoCIM_CMD.Loading;
-            foreach (var i in eqData.IonizerInfos)
-            {
-                i.Status = "R";
-            }
-            SendToCIM(eqData);
-        }
-
-        internal void UnloadReadyStart()
-        {
-            eqData.GlassTransferStatus = EQtoCIM_CMD.UnloadReadyStart;
-            eqData.CMD = EQtoCIM_CMD.UnloadReadyStart;
-            eqData.GlassIn = true;
-
-            UnloadGlass = new ECSData();
-            if (LoadGlass != null)
-            {
-                UnloadGlass.AGlass = Common.Clone(LoadGlass.AGlass);
-                UnloadGlass.BGlass = Common.Clone(LoadGlass.BGlass);
-            }
-
-            SendToCIM(eqData);
-        }
-
         internal void UnloadReady()
         {
-            eqData.GlassTransferStatus = EQtoCIM_CMD.UnloadReady;
-            eqData.CMD = EQtoCIM_CMD.UnloadReady;
+            eqData.EqpReadyStatus = EQPReadyStatus.UnloadReady;
+            eqData.Command = EQPtoCIM.UnloadReadyDone;
             eqData.GlassIn = true;
 
-            foreach (var i in eqData.IonizerInfos)
+            foreach (var i in eqData.Ionizer)
             {
                 i.Status = "I";
             }
@@ -376,8 +354,8 @@ namespace TOECIM
 
         internal void Exchange()
         {
-            eqData.GlassTransferStatus = EQtoCIM_CMD.Exchange;
-            eqData.CMD = EQtoCIM_CMD.Exchange;
+            eqData.EqpReadyStatus = EQPReadyStatus.ExchangeReady;
+            eqData.Command = EQPtoCIM.ExchangeReadyDone;
             eqData.GlassIn = false;
 
             SendToCIM(eqData);
@@ -385,17 +363,8 @@ namespace TOECIM
 
         internal void ExchangeDone()
         {
-            eqData.GlassTransferStatus = EQtoCIM_CMD.ExchangeDone;
-            eqData.CMD = EQtoCIM_CMD.ExchangeDone;
-            eqData.GlassIn = true;
-
-            SendToCIM(eqData);
-        }
-
-        internal void Unload()
-        {
-            eqData.GlassTransferStatus = EQtoCIM_CMD.Unload;
-            eqData.CMD = EQtoCIM_CMD.Unload;
+            eqData.EqpReadyStatus = EQPReadyStatus.None;
+            eqData.Command = EQPtoCIM.ExchangeDone;
             eqData.GlassIn = true;
 
             SendToCIM(eqData);
@@ -403,18 +372,10 @@ namespace TOECIM
 
         internal void UnloadDone()
         {
-            eqData.GlassTransferStatus = EQtoCIM_CMD.UnloadDone;
-            eqData.CMD = EQtoCIM_CMD.UnloadDone;
+            eqData.EqpReadyStatus = EQPReadyStatus.None;
+            eqData.Command = EQPtoCIM.UnloadDone;
             eqData.GlassIn = false;
             eqData.eqpStatus = EQPStatus.IDLE;
-
-            SendToCIM(eqData);
-        }
-
-        internal void ProcessDown()
-        {
-            eqData.CMD = EQtoCIM_CMD.Pause;
-            eqData.eqpStatus = EQPStatus.ProcessDown;
 
             SendToCIM(eqData);
         }
@@ -422,7 +383,7 @@ namespace TOECIM
         public void ChangeStatus(EQPStatus status)
         {
             eqData.eqpStatus = status;
-            eqData.CMD = EQtoCIM_CMD.SendData;
+            eqData.Command = EQPtoCIM.SendData;
             
             // 상태 변경 시 CIM에 보고
             SendToCIM(eqData);

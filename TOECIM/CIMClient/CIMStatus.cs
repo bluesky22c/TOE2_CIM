@@ -63,33 +63,36 @@ namespace TOECIM
 
         public CimCommData CimCommData { get; set; } = new CimCommData();
 
-        public ConsoletoCIMData ConsoleData 
+        public EQPtoCIMData ConsoleData 
         { 
             get => CimCommData.ToCIM;
             set => CimCommData.ToCIM = value;
         }
-        public ControltoConsoleData ControlData => ConsoleData.ControlData;
+        //public ControltoConsoleData ControlData => ConsoleData.ControlData;
         /// <summary>
         /// Load, Exchange, Unload Ready 상태
         /// </summary>
-        public bool IsTransferReady => IsAutoRun && ControlData.EqpReadyStatus != EQPReadyStatus.None;
+        public bool IsTransferReady => IsAutoRun && ConsoleData.EqpReadyStatus != EQPReadyStatus.None;
         public IonizerInfo[] IonizerInfos { get; set; } = new IonizerInfo[3];
 
-        public ConsoletoCIMData GetStatusFromConsole(bool writeLog = true)
+        public EQPtoCIMData GetStatusFromConsole(bool writeLog = true)
         {
-            var toCim =  Common.ToConsole(new CIMtoConsoleData { Command = CIMtoConsole.EQStatusDataReq }, true, 1000, 1);
+            var toCim =  Common.ToConsole(new CIMtoEQPData { Command = CIMtoEQP.EQStatusDataReq }, true, 1000, 1);
             CimCommData.ToCIM = toCim;
 
-            if (toCim.ControlData != null)
+            if (toCim.Ionizer != null)
             {
-                var ion = toCim.ControlData.Ionizer;
+                var ion = toCim.Ionizer;
                 for (int i = 0; i < ion.Length; i++)
                 {
-                    IonizerInfos[i].ID = ion[i].ID;
-                    IonizerInfos[i].Status = ion[i].Status;
+                    if (ion[i] != null)
+                    {
+                        IonizerInfos[i].ID = ion[i].ID;
+                        IonizerInfos[i].Status = ion[i].Status;
 
-                    if(writeLog)
-                        log.Information($"Ionizer_{i + 1} : {ion[i].ID}, {ion[i].Status}");
+                        if (writeLog)
+                            log.Information($"Ionizer_{i + 1} : {ion[i].ID}, {ion[i].Status}");
+                    }
                 }
             }
 
@@ -118,7 +121,7 @@ namespace TOECIM
         /// true일 경우 UW 후 ER 보고,
         /// false일 경우 바로 LR 또는 종료 (GLSSTATUS에 따름)
         /// </summary>
-        public bool? EQGlassIn => ControlData?.GlassIn;
+        public bool? EQGlassIn => ConsoleData.GlassIn;
 
         /// <summary>
         /// 레시피 MisMatch Error (CIM)

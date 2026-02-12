@@ -156,9 +156,9 @@ namespace TOECIM
 
             // 빈번한 로그를 줄이기 위해 명령이 None이 아닌 경우에만 출력 (또는 주석 처리)
             // 빈번한 로그를 줄이기 위해 명령이 None이 아닌 경우에만 출력 (또는 주석 처리)
-            if (data.Command != ConsoletoCIM.None)
+            if (data.Command != EQPtoCIM.None)
             {
-                string logMsg = $"[OnReceiveEQData] CMD : {data.Command}, EQPStatus : {data.eqpStatus}, AutoRun : {data.AutoRun}, GlassIn : {data.GlassIn}, ReadyStatus : {data.ControlData?.EqpReadyStatus}";
+                string logMsg = $"[OnReceiveEQData] CMD : {data.Command}, EQPStatus : {data.eqpStatus}, AutoRun : {data.AutoRun}, GlassIn : {data.GlassIn}, ReadyStatus : {data.EqpReadyStatus}";
                 log.AddLogMessage(LogType.Information, 0, logMsg);
             }
             
@@ -168,7 +168,7 @@ namespace TOECIM
             
             // SendData 커맨드일 때 강제 상태 업데이트 (디버깅용)
             /*
-            if (data.Command == ConsoletoCIM.SendData)
+            if (data.Command == EQPtoCIM.SendData)
             {
                  // ChangeEQPStatusEvent(status); // 로직상 아래에서 처리됨
             }
@@ -183,24 +183,24 @@ namespace TOECIM
 
             switch (data.Command)
             {
-            case ConsoletoCIM.None:
+            case EQPtoCIM.None:
                 break;
 
             //Console이 필요할 경우 CIM의 요청 없이 eq data를 보냄
             //ex) AutoRun이 false가 될 경우
-            case ConsoletoCIM.SendData:
+            case EQPtoCIM.SendData:
                 break;
 
-            case ConsoletoCIM.LoadReadyDone:
+            case EQPtoCIM.LoadReadyDone:
                 {
                     ChangeEQPStatusEvent(status);
                     cim.SendS6F61();
-                    //spec.ToConsole.Command = CIMtoConsole.LoadReadyDoneACK;
+                    //spec.ToConsole.Command = CIMtoEQP.LoadReadyDoneACK;
                     //spec.ToConsole.Online = cimStatus.RCS == RCS.RCSEnum.OffLine ? false : true;
                 }
                 break;
 
-            case ConsoletoCIM.LoadDone:
+            case EQPtoCIM.LoadDone:
                 {
                     ChangeEQPStatusEvent(status);
                     log.AddLogMessage(LogType.Information, 0, $"[OnReceiveEQData] Glass Load Done. EQPStatus : {data.eqpStatus}");
@@ -209,14 +209,14 @@ namespace TOECIM
                 }
                 break;
 
-            case ConsoletoCIM.InspectDone:
+            case EQPtoCIM.InspectDone:
                 {
                     ChangeEQPStatusEvent(status);
                     //cim.SendS6F63();
                 }
                 break;
 
-            case ConsoletoCIM.ExchangeReadyDone:
+            case EQPtoCIM.ExchangeReadyDone:
                 {
                     ChangeEQPStatusEvent(status);
                     cimStatus.UnloadGlass.AGlass.PNLIF = data.GlassPanelJudgeA;
@@ -226,7 +226,7 @@ namespace TOECIM
                 }
                 break;
 
-            case ConsoletoCIM.ExchangeDone:
+            case EQPtoCIM.ExchangeDone:
                 {
                     ChangeEQPStatusEvent(status);
                     log.AddLogMessage(LogType.Information, 0, $"[OnReceiveEQData] Glass Exchange Done. EQPStatus : {data.eqpStatus}");
@@ -237,7 +237,7 @@ namespace TOECIM
                 }
                 break;
 
-            case ConsoletoCIM.UnloadReadyDone:
+            case EQPtoCIM.UnloadReadyDone:
                 {
                     ChangeEQPStatusEvent(status);
                     cimStatus.UnloadGlass.AGlass.PNLIF = data.GlassPanelJudgeA;
@@ -247,7 +247,7 @@ namespace TOECIM
                 }
                 break;
 
-            case ConsoletoCIM.UnloadDone:
+            case EQPtoCIM.UnloadDone:
                 {
                     ChangeEQPStatusEvent(status);
                     cim.MoveLoadtoUnload();
@@ -257,7 +257,7 @@ namespace TOECIM
                 }
                 break;
 
-            case ConsoletoCIM.Alarm:
+            case EQPtoCIM.Alarm:
                 {
                     //알람 set 보고
                     var alarmList = data.AlarmList;
@@ -268,7 +268,7 @@ namespace TOECIM
                 }
                 break;
 
-            case ConsoletoCIM.AlarmClear:
+            case EQPtoCIM.AlarmClear:
                 {
                     var reportedAlarms = cimStatus.AlarmList;
                     foreach (var a in reportedAlarms)
@@ -290,7 +290,7 @@ namespace TOECIM
                 }
                 break;
 
-            case ConsoletoCIM.Pause:
+            case EQPtoCIM.Pause:
                 {
                     cimStatus.Pause = true;
                     status = Vars.CIMEQPStatsu((TOECIMLib.EQPStatus)data.eqpStatus);
@@ -303,33 +303,33 @@ namespace TOECIM
                 }
                 break;
 
-            case ConsoletoCIM.Error:
+            case EQPtoCIM.Error:
                 break;
 
-            case ConsoletoCIM.RecipeCreate:
+            case EQPtoCIM.RecipeCreate:
                 //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Built);
                 break;
 
-            case ConsoletoCIM.RecipeChange:
+            case EQPtoCIM.RecipeChange:
                 //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Change);
                 break;
 
-            case ConsoletoCIM.RecipeDelete:
+            case EQPtoCIM.RecipeDelete:
                 //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Delete);
                 break;
 
-            case ConsoletoCIM.RecipeRename:
+            case EQPtoCIM.RecipeRename:
                 //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Rename);
                 break;
 
-            case ConsoletoCIM.ShutDown:
+            case EQPtoCIM.ShutDown:
                 data.eqpStatus = TOECIMLib.EQPStatus.DOWN;
                 break;
 
-            case ConsoletoCIM.UpdateStatus:
+            case EQPtoCIM.UpdateStatus:
                 break;
 
-            case ConsoletoCIM.CancelReq:
+            case EQPtoCIM.CancelReq:
                 // 알람 보고하거나 장비 DOWN 보고할 때 필요에 따라 자동으로 CR 보고함.
                 //cim.SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
                 break;
@@ -389,7 +389,7 @@ namespace TOECIM
             {
                 log.AddLogMessage(LogType.Information, 0, $"GLSMV Changed.");
                 // glsmvLabel.Text = cimStatus.GLSMVSTATUS.ToString();
-                glsmvLabel.Text = cimStatus.CimCommData?.ToCIM?.ControlData?.EqpReadyStatus.ToString();
+                glsmvLabel.Text = cimStatus.CimCommData?.ToCIM?.EqpReadyStatus.ToString();
             }
         }
 
@@ -424,7 +424,7 @@ namespace TOECIM
             {
                 autoRunLabel.BackColor = cimStatus.IsAutoRun ? Color.Lime : Color.Red;
                 glassInlabel.BackColor = cimStatus.EQGlassIn == true ? Color.Lime : Color.Red;
-                glsmvLabel.Text = cimStatus.CimCommData.ToCIM.ControlData?.EqpReadyStatus.ToString();
+                glsmvLabel.Text = cimStatus.CimCommData.ToCIM.EqpReadyStatus.ToString();
 
                 switch (cimStatus.EQPStatus)
                 {
@@ -704,17 +704,12 @@ namespace TOECIM
             cim.SendS1F67();
         }
 
-        //EQtoCIMData GetEQData()
-        //{
-        //    var client = new EClient<EQCIMData>(this, "localhost", Program.EQServerPPort, null);
-        //    return client.Send(new EQCIMData { CIMtoEQ = new CIMtoEQData { CMD = CIMtoEQ_CMD.DataReq } }).EQtoCIM;
-        //}
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            var res = Common.ToConsole(new CIMtoConsoleData
+            var res = Common.ToConsole(new CIMtoEQPData
             {
-                Command = CIMtoConsole.EQStatusDataReq,
+                Command = CIMtoEQP.EQStatusDataReq,
             });
             cimStatus.ConsoleData = res;
             UpdateStatusUI();
@@ -1297,25 +1292,5 @@ namespace TOECIM
             }
         }
 
-        //시뮬레이션 용
-        //private void OpenEQSimul()
-        //{
-        //    eqSimul.Show();
-
-        //    //None 커맨드로 cim에 저장되어 있는 eq 데이터를 eq simuator로 보냄
-        //    //프로그램 시작 시 eq에 마지막 상태를 불러오기 위한 것
-        //    //시뮬레이터 없앨때 꼭 지우기
-        //    var client = new EClient<EQCIMData>(this, "localhost", Program.EQServerPPort, null);
-
-        //    cimStatus.CIMtoEQData.CMD = CIMtoEQ_CMD.None;
-        //    var eqCimData = new EQCIMData
-        //    {
-        //        CIMtoEQ = Common.Clone(cimStatus.CIMtoEQData),
-        //        EQtoCIM = Common.Clone(cimStatus.EQtoCIMData),
-        //    };
-
-        //    eqCimData.WaitResponse = false;
-        //    client.Send(eqCimData);
-        //}
     }//
 }

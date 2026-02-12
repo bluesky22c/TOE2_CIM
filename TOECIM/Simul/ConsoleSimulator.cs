@@ -32,7 +32,7 @@ namespace TOECIM.Forms
 
         internal void RecipeCreate(RecipeSet recipe)
         {
-            consoleData.ToCIM.Command = ConsoletoCIM.RecipeCreate;
+            consoleData.ToCIM.Command = EQPtoCIM.RecipeCreate;
             consoleData.ToCIM.RecipeItem = recipe;
 
             SendToCIM(consoleData);
@@ -40,7 +40,7 @@ namespace TOECIM.Forms
 
         internal void RecipeChange(RecipeSet recipe)
         {
-            consoleData.ToCIM.Command = ConsoletoCIM.RecipeChange;
+            consoleData.ToCIM.Command = EQPtoCIM.RecipeChange;
             consoleData.ToCIM.RecipeItem = recipe;
 
             SendToCIM(consoleData);
@@ -48,7 +48,7 @@ namespace TOECIM.Forms
 
         internal void RecipeDelete(RecipeSet recipe)
         {
-            consoleData.ToCIM.Command = ConsoletoCIM.RecipeDelete;
+            consoleData.ToCIM.Command = EQPtoCIM.RecipeDelete;
             consoleData.ToCIM.RecipeItem = recipe;
 
             SendToCIM(consoleData);
@@ -56,7 +56,7 @@ namespace TOECIM.Forms
 
         internal void RecipeRename(RecipeSet recipe)
         {
-            consoleData.ToCIM.Command = ConsoletoCIM.RecipeRename;
+            consoleData.ToCIM.Command = EQPtoCIM.RecipeRename;
             consoleData.ToCIM.RecipeItem = recipe;
 
             SendToCIM(consoleData);

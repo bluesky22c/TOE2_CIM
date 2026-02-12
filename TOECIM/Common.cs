@@ -130,12 +130,12 @@ namespace TOECIM
             return cimGlass;
         }
 
-        public static async Task<ConsoletoCIMData> ToConsoleAsync(CIMtoConsoleData toConsole, bool wait = true, int timeout = 5000, int retries = 3)
+        public static async Task<EQPtoCIMData> ToConsoleAsync(CIMtoEQPData toConsole, bool wait = true, int timeout = 5000, int retries = 3)
         {
             return await Task.Run(() => ToConsole(toConsole, wait, timeout, retries));
         }
 
-        public static ConsoletoCIMData ToConsole(CIMtoConsoleData toConsole, bool wait = true, int timeout = 5000, int retries = 3)
+        public static EQPtoCIMData ToConsole(CIMtoEQPData toConsole, bool wait = true, int timeout = 5000, int retries = 3)
         {
             int maxRetries = retries;
             for (int i = 0; i < maxRetries; i++)
@@ -170,12 +170,12 @@ namespace TOECIM
                     if (i == maxRetries - 1)
                     {
                         Console.WriteLine($"ToConsole Failed after {maxRetries} retries: {ex.Message}");
-                        return new ConsoletoCIMData { Error = true, eqpStatus = TOECIMLib.EQPStatus.DOWN };
+                        return new EQPtoCIMData { Error = true, eqpStatus = TOECIMLib.EQPStatus.DOWN };
                     }
                     Thread.Sleep(100);
                 }
             }
-            return new ConsoletoCIMData { Error = true, eqpStatus = TOECIMLib.EQPStatus.DOWN };
+            return new EQPtoCIMData { Error = true, eqpStatus = TOECIMLib.EQPStatus.DOWN };
         }
 
 

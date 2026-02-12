@@ -36,7 +36,7 @@ namespace TOECIM.Forms
 
         private void clearButton_Click(object sender, EventArgs e)
         {
-            var consoleData = Common.ToConsole(new CIMtoConsoleData { Command = CIMtoConsole.AlarmClear });
+            var consoleData = Common.ToConsole(new CIMtoEQPData { Command = CIMtoEQP.AlarmClear });
             if (consoleData.Error == true)
             {
                 MessageBox.Show("전송 실패로 알람을 해지하지 못했습니다.");

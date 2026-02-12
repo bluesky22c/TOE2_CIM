@@ -191,7 +191,7 @@ namespace TOECIM
                     }
 
                     // Load Glass Data Requset
-                    //if (cimStatus.CimCommData.ToCIM.Command == ConsoletoCIM.InspectDone)
+                    //if (cimStatus.CimCommData.ToCIM.Command == EQPtoCIM.InspectDone)
                     //{
                     //    SendS6F61();
                     //}
@@ -349,7 +349,7 @@ namespace TOECIM
                 //}
 
                 // 보내기전에 Console 한테 받아오기
-                var res = Common.ToConsole(new CIMtoConsoleData { Command = CIMtoConsole.APDReq });
+                var res = Common.ToConsole(new CIMtoEQPData { Command = CIMtoEQP.APDReq });
                 var Aapd = res.AcutAPD;
                 var bapd = res.BcutAPD;
 

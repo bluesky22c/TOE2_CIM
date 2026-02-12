@@ -18,7 +18,7 @@ namespace TOECIM.Forms
         
         string recipePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Simul", "Recipe");
         RecipeSet selected;
-        //public event EventHandler<CONSOLEtoCIMData> OnConsoleEvent = delegate { };    //EQ to Console 이벤트
+        //public event EventHandler<EQPtoCIMData> OnConsoleEvent = delegate { };    //EQ to Console 이벤트
 
         public ConsoleSimulForm()
         {
@@ -36,18 +36,18 @@ namespace TOECIM.Forms
 
             switch (e.Command)
             {
-                case ConsoletoCIM.None:
+                case EQPtoCIM.None:
                     break;
 
-                case ConsoletoCIM.RecipeCreate:
+                case EQPtoCIM.RecipeCreate:
                     simul.RecipeCreate(e.RecipeItem);
                     break;
 
-                case ConsoletoCIM.RecipeChange:
+                case EQPtoCIM.RecipeChange:
                     simul.RecipeChange(e.RecipeItem);
                     break;
 
-                case ConsoletoCIM.RecipeDelete:
+                case EQPtoCIM.RecipeDelete:
                     simul.RecipeDelete(e.RecipeItem);
                     break;
             }
@@ -64,8 +64,8 @@ namespace TOECIM.Forms
 
             ConsoleSimulator_OnConsoleEvent(new CimCommData 
             {
-                ToCIM = new ConsoletoCIMData {
-                    Command = ConsoletoCIM.RecipeCreate,
+                ToCIM = new EQPtoCIMData {
+                    Command = EQPtoCIM.RecipeCreate,
                     RecipeItem = recipeSet,
                 }
             });
@@ -81,8 +81,8 @@ namespace TOECIM.Forms
 
             ConsoleSimulator_OnConsoleEvent(new CimCommData
             {
-                ToCIM = new ConsoletoCIMData {
-                    Command = ConsoletoCIM.RecipeCreate,
+                ToCIM = new EQPtoCIMData {
+                    Command = EQPtoCIM.RecipeCreate,
                     RecipeItem = selected,
                 }
             });
@@ -145,8 +145,8 @@ namespace TOECIM.Forms
 
             ConsoleSimulator_OnConsoleEvent(new CimCommData
             {
-                ToCIM = new ConsoletoCIMData {
-                    Command = ConsoletoCIM.RecipeChange,
+                ToCIM = new EQPtoCIMData {
+                    Command = EQPtoCIM.RecipeChange,
                     RecipeItem = selected,
                 }
             });

@@ -103,12 +103,12 @@ namespace TOECIM
             if(eqpStatus == EQPSTATUS.EQPSTATUSEnum.RUN || eqpStatus == EQPSTATUS.EQPSTATUSEnum.IDLE)
             {
                 //Nomal On
-                Common.ToConsole(new CIMtoConsoleData() { Command = CIMtoConsole.NomalStatusChange, NomalStatus = true });
+                Common.ToConsole(new CIMtoEQPData() { Command = CIMtoEQP.NomalStatusChange, NomalStatus = true });
             }
             else
             {
                 //Nomal Off
-                Common.ToConsole(new CIMtoConsoleData() { Command = CIMtoConsole.NomalStatusChange, NomalStatus = false });
+                Common.ToConsole(new CIMtoEQPData() { Command = CIMtoEQP.NomalStatusChange, NomalStatus = false });
             }
 
             SendS6F91(eqpStatus);
@@ -150,7 +150,7 @@ namespace TOECIM
                     SendS1F61();    //equipment status report
                     SendS1F67();    //all glass position report
                     //if(cimStatus.TryRCS == RCS.RCSEnum.ONLineRemote &&
-                    //    cimStatus.CimCommData.ToCIM.Command == ConsoletoCIM.LoadReadyDone)
+                    //    cimStatus.CimCommData.ToCIM.Command == EQPtoCIM.LoadReadyDone)
                     //{
                     //    SendS6F61();
                     //}

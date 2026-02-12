@@ -123,9 +123,8 @@ namespace TOECIM
                             if (toCim != null && 
                                 toCim.Error == false &&
                                 cimStatus.TryRCS == RCS.RCSEnum.ONLineRemote &&
-                                toCim.ControlData != null &&
-                                toCim.ControlData.EqpReadyStatus != null &&
-                                toCim.ControlData.EqpReadyStatus.IsReady() &&
+                                toCim.EqpReadyStatus != EQPReadyStatus.None &&
+                                toCim.EqpReadyStatus.IsReady() &&
                                 toCim.AutoRun == true)
                             {
                                 SendS6F61();
@@ -157,9 +156,8 @@ namespace TOECIM
                             cimStatus.ChangeRCS = false;
                             if (cimStatus.TryRCS == RCS.RCSEnum.ONLineRemote &&
                                 toCim != null &&
-                                toCim.ControlData != null &&
-                                toCim.ControlData.EqpReadyStatus != null &&
-                                toCim.ControlData.EqpReadyStatus.IsReady() &&
+                                toCim.EqpReadyStatus != EQPReadyStatus.None &&
+                                toCim.EqpReadyStatus.IsReady() &&
                                 toCim.AutoRun == true)
                             {
                                 SendS6F61();
@@ -180,9 +178,8 @@ namespace TOECIM
 
                         if (cimStatus.TryRCS == RCS.RCSEnum.ONLineRemote &&
                             toCim != null &&
-                            toCim.ControlData != null &&
-                            toCim.ControlData.EqpReadyStatus != null &&
-                            toCim.ControlData.EqpReadyStatus.IsReady() &&
+                            toCim.EqpReadyStatus != EQPReadyStatus.None &&
+                            toCim.EqpReadyStatus.IsReady() &&
                             toCim.AutoRun == true)
                         {
                             SendS6F61();
@@ -369,9 +366,9 @@ namespace TOECIM
 
                 var commData = new CimCommData
                 {
-                    ToConsole = new CIMtoConsoleData
+                    ToConsole = new CIMtoEQPData
                     {
-                        Command = CIMtoConsole.GlassDataReq,
+                        Command = CIMtoEQP.GlassDataReq,
                     }
                 };
 
@@ -420,7 +417,7 @@ namespace TOECIM
             {
                 ack = ACKC2.ACK2Enum.NotAccept;
 
-                log.AddLogMessage(LogType.Warning, 0, $"IsAutoRun = {cimStatus.IsAutoRun}, RunState = {cimStatus.ControlData?.EqpReadyStatus}");
+                log.AddLogMessage(LogType.Warning, 0, $"IsAutoRun = {cimStatus.IsAutoRun}, RunState = {cimStatus.ConsoleData.EqpReadyStatus}");
             }
 
             if (cimStatus.CstGlassExist == false)
@@ -513,9 +510,9 @@ namespace TOECIM
             //EQ에 Glass Data 전달
             var commData = new CimCommData
             {
-                ToConsole = new CIMtoConsoleData
+                ToConsole = new CIMtoEQPData
                 {
-                    Command = CIMtoConsole.GlassDataSend,
+                    Command = CIMtoEQP.GlassDataSend,
                 }
             };
 
@@ -559,7 +556,7 @@ namespace TOECIM
                 //cimStatus.LoadGlass = null;
                 AlarmOccur(new List<AlarmInfo> { CIMAlarm.SystemNotReadyAlarm() });
 
-                //commData.ToConsole.Command = CIMtoConsole.Error;
+                //commData.ToConsole.Command = CIMtoEQP.Error;
                 //Common.ToConsole(commData.ToConsole);
 
                 log.Warning($"[S2F88] 장비가 Down이거나 글래스를 받을 수 있는 상태가 아님. ACK : {ack}");
@@ -657,7 +654,7 @@ namespace TOECIM
             switch (rcmd)
             {
                 case RCMD.RCMDEnum.PAUSE:
-                    var commData = new CimCommData { ToConsole = new CIMtoConsoleData { Command = CIMtoConsole.Pause } };
+                    var commData = new CimCommData { ToConsole = new CIMtoEQPData { Command = CIMtoEQP.Pause } };
                     Common.ToConsole(commData.ToConsole);
                     break;
 
@@ -677,8 +674,8 @@ namespace TOECIM
                         ReportEQPStatus(EQPSTATUS.EQPSTATUSEnum.IDLE
                             );
 
-                    if (cimStatus.CimCommData.ToCIM.Command == ConsoletoCIM.LoadReadyDone)
-                        //|| cimStatus.CimCommData.ToCIM.Command == ConsoletoCIM.UnloadReadyDone)
+                    if (cimStatus.CimCommData.ToCIM.Command == EQPtoCIM.LoadReadyDone)
+                        //|| cimStatus.CimCommData.ToCIM.Command == EQPtoCIM.UnloadReadyDone)
                     {
                         SendS6F61();
                     }

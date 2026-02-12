@@ -9,6 +9,7 @@ exe/
 dll/
 pdb/
 Build
+build*.txt
 
 ## [ Visual Studio Metadata ]
 .vs/

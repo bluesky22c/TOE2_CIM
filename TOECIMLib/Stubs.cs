@@ -80,17 +80,4 @@ namespace TOECIMLib
         public string Name { get; set; }
         public double Duration { get; set; }
     }
-
-    public enum ScanDir
-    {
-        Normal,
-        Forward,
-        Reverse,
-        LeftToRight,
-        RightToLeft,
-        TopToBottom,
-        BottomToTop
-    }
-
-
 }
