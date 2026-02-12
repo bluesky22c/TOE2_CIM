@@ -53,24 +53,34 @@ namespace TOECIM
                 { EQPtoCIM.ExchangeDone.ToString(), "(S1F67)" },
                 { EQPtoCIM.Alarm.ToString(), "(S5F1)" },
                 { EQPtoCIM.AlarmClear.ToString(), "(S5F1)" },
+
+                // S6F67 관련 매핑 추가
+                { EQPtoCIM.GLSMV_LR.ToString(), "(S6F67)" },
+                { EQPtoCIM.GLSMV_UR.ToString(), "(S6F67)" },
+                { EQPtoCIM.GLSMV_ER.ToString(), "(S6F67)" },
+                { EQPtoCIM.GLSMV_UW.ToString(), "(S6F67)" },
+                { EQPtoCIM.GLSMV_LW.ToString(), "(S6F67)" },
+                { EQPtoCIM.GLSMV_CR.ToString(), "(S6F67)" },
             };
 
-            simul.OnLog += Message =>
-            {
-                if (simulLogListBox.InvokeRequired)
-                {
-                    simulLogListBox.BeginInvoke(new Action(() => AddLog(Message)));
-                }
-                else
-                {
-                    AddLog(Message);
-                }
-            };
+            // 그룹별 컨테이너 생성
+            GroupBox flowGroup = new GroupBox { Text = "S6F67 Request Flow", Dock = DockStyle.Top, AutoSize = true, Padding = new Padding(5) };
+            FlowLayoutPanel flowPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.TopDown, WrapContents = false };
+            flowGroup.Controls.Add(flowPanel);
+
+            GroupBox eventGroup = new GroupBox { Text = "Done/Event Report", Dock = DockStyle.Top, AutoSize = true, Padding = new Padding(5) };
+            FlowLayoutPanel eventPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.TopDown, WrapContents = false };
+            eventGroup.Controls.Add(eventPanel);
+
+            eqpControlPanel.Controls.Clear();
+            eqpControlPanel.Controls.Add(flowGroup);
+            eqpControlPanel.Controls.Add(eventGroup);
+
+            string[] s6f67Flows = { "GLSMV_LR", "GLSMV_UR", "GLSMV_ER", "GLSMV_UW", "GLSMV_LW", "GLSMV_CR" };
 
             foreach (var v in Enum.GetNames(typeof(EQPtoCIM)))
             {
                 // Alarm, AlarmClear 명령은 별도 버튼으로 처리하므로 라디오 버튼 목록에서 제외
-                // 기능이 없거나 미사용 커맨드 제거
                 if (v == EQPtoCIM.Alarm.ToString() || v == EQPtoCIM.AlarmClear.ToString() ||
                     v == EQPtoCIM.None.ToString() || v == EQPtoCIM.SendData.ToString() ||
                     v == EQPtoCIM.Pause.ToString() || v == EQPtoCIM.Error.ToString() ||
@@ -96,16 +106,22 @@ namespace TOECIM
                 };
 
                 radio.CheckedChanged += Radio_CheckedChanged;
-                eqpControlPanel.Controls.Add(radio);
+
+                // 그룹 분류하여 패널에 추가
+                if (s6f67Flows.Contains(v))
+                {
+                    flowPanel.Controls.Add(radio);
+                }
+                else
+                {
+                    eventPanel.Controls.Add(radio);
+                }
 
                 radioCmd.Add(radio);
             }
 
             alarmComboBox.DataSource = Enum.GetValues(typeof(AlarmType));
             alarmComboBox.SelectedIndex = 0;
-
-            //radioCmd[(int)LastCMD].Checked = true;
-            //Radio_CheckedChanged(radioCmd[(int)LastCMD], e);
 
             // Manual Status Control UI
             statusComboBox.DataSource = Enum.GetValues(typeof(EQPStatus));

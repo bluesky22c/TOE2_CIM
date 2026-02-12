@@ -8,7 +8,7 @@ using TOECIMLib;
 
 namespace TOECIM.Forms
 {
-    public partial class ConsoleSimulator : System.Windows.Forms.Form
+    public partial class RecipeSimulator : System.Windows.Forms.Form
     {
         static public int CONSOLEServerPort = 3501;
         CimCommData consoleData { get; set; } = new CimCommData();

@@ -12,15 +12,15 @@ using TOECIMLib;
 
 namespace TOECIM.Forms
 {
-    public partial class ConsoleSimulForm : Form
+    public partial class RecipeSimulForm : Form
     {
-        ConsoleSimulator simul = new ConsoleSimulator();
+        RecipeSimulator simul = new RecipeSimulator();
         
         string recipePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Simul", "Recipe");
         RecipeSet selected;
         //public event EventHandler<EQPtoCIMData> OnConsoleEvent = delegate { };    //EQ to Console 이벤트
 
-        public ConsoleSimulForm()
+        public RecipeSimulForm()
         {
             InitializeComponent();
         }

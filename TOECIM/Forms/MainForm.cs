@@ -333,6 +333,25 @@ namespace TOECIM
                 // 알람 보고하거나 장비 DOWN 보고할 때 필요에 따라 자동으로 CR 보고함.
                 //cim.SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
                 break;
+
+            case EQPtoCIM.GLSMV_LR:
+                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.LR);
+                break;
+            case EQPtoCIM.GLSMV_UR:
+                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.UR);
+                break;
+            case EQPtoCIM.GLSMV_ER:
+                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.ER);
+                break;
+            case EQPtoCIM.GLSMV_UW:
+                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.UW);
+                break;
+            case EQPtoCIM.GLSMV_LW:
+                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.LW);
+                break;
+            case EQPtoCIM.GLSMV_CR:
+                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
+                break;
             }
 
             // 상태가 실제로 바뀐 경우에만 이벤트 발생 (무한 루프 방지)

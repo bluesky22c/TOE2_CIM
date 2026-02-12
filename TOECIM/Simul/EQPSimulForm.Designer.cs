@@ -67,7 +67,7 @@ namespace TOECIM
             eqpControlPanel.Location = new Point(12, 36);
             eqpControlPanel.Margin = new Padding(3, 4, 3, 4);
             eqpControlPanel.Name = "eqpControlPanel";
-            eqpControlPanel.Size = new Size(180, 540);
+            eqpControlPanel.Size = new Size(180, 680);
             eqpControlPanel.TabIndex = 0;
             eqpControlPanel.WrapContents = false;
             // 
@@ -281,7 +281,7 @@ namespace TOECIM
             eqpStatusLabel.AutoSize = true;
             eqpStatusLabel.Font = new Font("맑은 고딕", 9F, FontStyle.Bold, GraphicsUnit.Point, 129);
             eqpStatusLabel.ForeColor = Color.Blue;
-            eqpStatusLabel.Location = new Point(284, 273);
+            eqpStatusLabel.Location = new Point(12, 11);
             eqpStatusLabel.Name = "eqpStatusLabel";
             eqpStatusLabel.Size = new Size(102, 15);
             eqpStatusLabel.TabIndex = 7;
@@ -330,7 +330,7 @@ namespace TOECIM
             simulLogListBox.ItemHeight = 15;
             simulLogListBox.Location = new Point(637, 36);
             simulLogListBox.Name = "simulLogListBox";
-            simulLogListBox.Size = new Size(500, 544);
+            simulLogListBox.Size = new Size(500, 680);
             simulLogListBox.TabIndex = 16;
             // 
             // label7
@@ -345,7 +345,7 @@ namespace TOECIM
             // 
             // EQPSimulForm
             // 
-            ClientSize = new Size(1150, 600);
+            ClientSize = new Size(1150, 750);
             Controls.Add(label7);
             Controls.Add(simulLogListBox);
             Controls.Add(readyStatusChangeButton);

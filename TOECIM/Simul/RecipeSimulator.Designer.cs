@@ -1,7 +1,7 @@
 ﻿
 namespace TOECIM.Forms
 {
-    partial class ConsoleSimulator
+    partial class RecipeSimulator
     {
         /// <summary>
         /// Required designer variable.

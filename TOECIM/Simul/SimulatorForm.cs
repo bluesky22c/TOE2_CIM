@@ -7,7 +7,7 @@ namespace TOECIM
     public partial class SimulatorForm : Form
     {
         private EQPSimulForm eqpSimulForm;
-        private ConsoleSimulForm consoleSimulForm;
+        private RecipeSimulForm consoleSimulForm;
         private TabControl tabControl;
         private TabPage eqpTabPage;
         private TabPage consoleTabPage;
@@ -22,7 +22,7 @@ namespace TOECIM
             SuspendLayout();
 
             Text = "Simulator";
-            Size = new System.Drawing.Size(760, 700);
+            Size = new System.Drawing.Size(1200, 850);
             StartPosition = FormStartPosition.CenterParent;
             FormBorderStyle = FormBorderStyle.Sizable;
 
@@ -46,7 +46,7 @@ namespace TOECIM
 
             // Tab 2: Console Simulator
             consoleTabPage = new TabPage("Console Simulator");
-            consoleSimulForm = new ConsoleSimulForm
+            consoleSimulForm = new RecipeSimulForm
             {
                 TopLevel = false,
                 FormBorderStyle = FormBorderStyle.None,
@@ -80,7 +80,7 @@ namespace TOECIM
             // 
             // SimulatorForm
             // 
-            ClientSize = new Size(678, 836);
+            ClientSize = new Size(1155, 800);
             Name = "SimulatorForm";
             ResumeLayout(false);
 

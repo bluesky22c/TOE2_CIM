@@ -388,5 +388,13 @@ namespace TOECIM
             // 상태 변경 시 CIM에 보고
             SendToCIM(eqData);
         }
+
+        // S6F67 물류 Flow 관련 송신 메서드
+        public void SendLR() { eqData.Command = EQPtoCIM.GLSMV_LR; SendToCIM(eqData); }
+        public void SendUR() { eqData.Command = EQPtoCIM.GLSMV_UR; SendToCIM(eqData); }
+        public void SendER() { eqData.Command = EQPtoCIM.GLSMV_ER; SendToCIM(eqData); }
+        public void SendUW() { eqData.Command = EQPtoCIM.GLSMV_UW; SendToCIM(eqData); }
+        public void SendLW() { eqData.Command = EQPtoCIM.GLSMV_LW; SendToCIM(eqData); }
+        public void SendCR() { eqData.Command = EQPtoCIM.GLSMV_CR; SendToCIM(eqData); }
     }
 }

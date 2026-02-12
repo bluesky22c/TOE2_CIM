@@ -1,5 +1,0 @@
-{
-  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "TOECIM 시뮬레이션 검증 계획. LGCIMServer와 TOECIM 내부 EQPSimulForm을 사용하여 시뮬레이션을 진행하고, 생성된 로그를 Docs/CIM_LOG의 기준 로그와 비교하는 계획. 6개 테스트 시나리오(HSMS 연결, 시간동기, 레시피 확인, Glass 체인지, 알람, 상태천이)를 정의.",
-  "updatedAt": "2026-02-11T01:53:12.092494700Z"
-}

@@ -80,8 +80,15 @@ namespace TOECIMLib
         ProgramStarted,
         ShutDown,
         UpdateStatus,
-
         CancelReq,
+
+        // S6F67 Glass Moving Status 관련
+        GLSMV_LR,   // Load Request
+        GLSMV_UR,   // Unload Request
+        GLSMV_ER,   // Exchange Request
+        GLSMV_UW,   // Unload Wait
+        GLSMV_LW,   // Load Wait
+        GLSMV_CR,   // Cancel Request
     }
 
     [Serializable]
