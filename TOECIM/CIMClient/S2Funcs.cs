@@ -19,7 +19,6 @@ namespace TOECIM
     public partial class ClientCIM
     {
         public SYSTEMTIME SYSTEMTIME = new SYSTEMTIME();
-        int waitTime = 000;
 
         void InitS2()
         {

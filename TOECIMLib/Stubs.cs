@@ -10,27 +10,27 @@ namespace TOECIMLib
 
     public class CommonGlassInfo
     {
-        public string GlassID { get; set; }
-        public string LotID { get; set; }
-        public string CassetteID { get; set; }
-        public string SlotNo { get; set; }
-        public string PPID { get; set; }
-        public string ProcessID { get; set; }
-        public string GlassODR { get; set; }
-        public string JudgeCode { get; set; }
-        public string PanelInfo { get; set; }
-        public string SubMDLInfo { get; set; }
+        public string GlassID { get; set; } = "";
+        public string LotID { get; set; } = "";
+        public string CassetteID { get; set; } = "";
+        public string SlotNo { get; set; } = "";
+        public string PPID { get; set; } = "";
+        public string ProcessID { get; set; } = "";
+        public string GlassODR { get; set; } = "";
+        public string JudgeCode { get; set; } = "";
+        public string PanelInfo { get; set; } = "";
+        public string SubMDLInfo { get; set; } = "";
         public byte PortID { get; set; }
         public byte GlassCode { get; set; }
         public byte ReInput { get; set; }
-        public string GlassThick { get; set; }
-        public string PartNum { get; set; }
-        public string ProdType { get; set; }
-        public string Attribute { get; set; }
-        public string GlassType { get; set; }
-        public string KeyID { get; set; }
+        public string GlassThick { get; set; } = "";
+        public string PartNum { get; set; } = "";
+        public string ProdType { get; set; } = "";
+        public string Attribute { get; set; } = "";
+        public string GlassType { get; set; } = "";
+        public string KeyID { get; set; } = "";
         public byte Dicode { get; set; }
-        public string GlassProcess { get; set; }
+        public string GlassProcess { get; set; } = "";
         public ushort Dest { get; set; }
         public bool LastGlass { get; set; }
         public DateTime StartTime { get; set; }
@@ -39,13 +39,15 @@ namespace TOECIMLib
 
     public class MCC
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
     }
 
     public class ETimeout
     {
         public bool IsTimeout { get; set; }
-        public event EventHandler<TimeoutParam> TimeoutEvent;
+#pragma warning disable CS0067
+        public event EventHandler<TimeoutParam>? TimeoutEvent;
+#pragma warning restore CS0067
 
         public static string toGlassDataLoad = "toGlassDataLoad";
         public static string toCarrierDataLoad = "toCarrierDataLoad";
@@ -72,12 +74,12 @@ namespace TOECIMLib
 
     public class TimeoutParam : EventArgs
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
     }
 
     public class TimeoutInfo
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public double Duration { get; set; }
     }
 }

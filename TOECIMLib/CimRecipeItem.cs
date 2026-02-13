@@ -35,7 +35,7 @@ namespace TOECIMLib
         //    }
         //}
 
-        public static RecipeSet Load(string orgPath, string recipeName)
+        public static RecipeSet? Load(string orgPath, string recipeName)
         {
             try
             {
@@ -49,9 +49,9 @@ namespace TOECIMLib
                     return new RecipeSet();
                 }
             }
-            catch (Exception exp)
+            catch (Exception)
             {
-                throw exp;
+                throw;
             }
         }
 
@@ -61,13 +61,14 @@ namespace TOECIMLib
             {
                 var fileName = Path.Combine(orgPth, recipeName, $"{recipeName}.json");
                 var dir = Path.GetDirectoryName(fileName);
+                if (dir == null) return;
                 if (Directory.Exists(dir) == false)
                     Directory.CreateDirectory(dir);
                 File.WriteAllText(fileName, JsonConvert.SerializeObject(this, Formatting.Indented));
             }
-            catch (Exception exp)
+            catch (Exception)
             {
-                throw exp;
+                throw;
             }
         }
 

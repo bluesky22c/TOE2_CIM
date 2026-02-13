@@ -1,0 +1,104 @@
+﻿using LGCIMServer.EQPSimul;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Runtime.Versioning;
+
+namespace LGCIMServer
+{
+    [SupportedOSPlatform("windows")]
+    public partial class LGCIMSimulForm : Form
+    {
+        ECSSimulForm ecsSimulForm;
+        EQPSimulForm eqpSimulForm;
+        RecipeSimulForm recipeSimulForm;
+
+        public LGCIMSimulForm()
+        {
+            InitializeComponent();
+            InitializeComponents();
+            this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void InitializeComponents()
+        {
+            mainLayoutPanel.BackColor = Color.White;
+
+            // Title Styling
+            var titleFont = new Font("맑은 고딕", 10F, FontStyle.Bold);
+            var titleBackColor = Color.FromArgb(45, 45, 45);
+            var titleForeColor = Color.White;
+
+            Label CreateTitle(string text) => new Label
+            {
+                Text = text,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = titleFont,
+                BackColor = titleBackColor,
+                ForeColor = titleForeColor,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(0)
+            };
+
+            var ecsTitle = CreateTitle("ECS     ---->");
+            mainLayoutPanel.Controls.Add(ecsTitle, 0, 0);
+
+            var toeCimTitle = CreateTitle("<----    TOECIM    ---->");
+            mainLayoutPanel.Controls.Add(toeCimTitle, 1, 0);
+            mainLayoutPanel.SetColumnSpan(toeCimTitle, 2);
+
+            var eqpTitle = CreateTitle("<----     EQP");
+            mainLayoutPanel.Controls.Add(eqpTitle, 3, 0);
+
+            // ECS Form
+            ecsSimulForm = new ECSSimulForm();
+            ecsSimulForm.TopLevel = false;
+            ecsSimulForm.FormBorderStyle = FormBorderStyle.None;
+            ecsSimulForm.Dock = DockStyle.Fill;
+            ecsSimulForm.Visible = true;
+            mainLayoutPanel.Controls.Add(ecsSimulForm, 0, 1);
+            mainLayoutPanel.SetColumnSpan(ecsSimulForm, 2);
+
+            // EQP 영역을 탭 구조로 변경
+            TabControl eqpTabControl = new TabControl { Dock = DockStyle.Fill };
+            mainLayoutPanel.Controls.Add(eqpTabControl, 2, 1);
+            mainLayoutPanel.SetColumnSpan(eqpTabControl, 2);
+
+            // 1. EQP 탭
+            TabPage eqpTabPage = new TabPage("EQP");
+            eqpSimulForm = new EQPSimulForm();
+            eqpSimulForm.TopLevel = false;
+            eqpSimulForm.FormBorderStyle = FormBorderStyle.None;
+            eqpSimulForm.Dock = DockStyle.Fill;
+            eqpSimulForm.Visible = true;
+            eqpTabPage.Controls.Add(eqpSimulForm);
+            eqpTabControl.TabPages.Add(eqpTabPage);
+
+            // 2. Recipe 탭
+            TabPage recipeTabPage = new TabPage("Recipe");
+            recipeSimulForm = new RecipeSimulForm();
+            recipeSimulForm.TopLevel = false;
+            recipeSimulForm.FormBorderStyle = FormBorderStyle.None;
+            recipeSimulForm.Dock = DockStyle.Fill;
+            recipeSimulForm.Visible = true;
+            recipeTabPage.Controls.Add(recipeSimulForm);
+            eqpTabControl.TabPages.Add(recipeTabPage);
+
+            FormClosing += SimulatorForm_FormClosing;
+        }
+
+
+        private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (eqpSimulForm != null) eqpSimulForm.StopSimulServer();
+        }
+
+    }
+}

@@ -31,10 +31,6 @@ namespace TOECIM
         CIMStatus cimStatus => cim.cimStatus;
         LogEx log => ClientCIM.log;
 
-        //simulation
-        SimulatorForm simulatorForm;
-
-
         JsonServer<CimCommData> server;
 
         //Alarm
@@ -43,7 +39,6 @@ namespace TOECIM
 
 
         Task StatusTimer = null;
-        bool startTimer = false;
         //eq event
         //public event EventHandler<CIMtoEQData> OnCIMEvent = delegate { };  //CIM to EQ
         //public event EventHandler<EQtoCIMData> OnEQEvent = delegate { };  //EQ to CIM
@@ -211,8 +206,8 @@ namespace TOECIM
 
             case EQPtoCIM.InspectDone:
                 {
-                    ChangeEQPStatusEvent(status);
-                    //cim.SendS6F63();
+                    // 상태를 RUN으로 강제하여 S6F91 보고 유도
+                    ChangeEQPStatusEvent(EQPSTATUS.EQPSTATUSEnum.RUN);
                 }
                 break;
 
@@ -733,14 +728,6 @@ namespace TOECIM
             cimStatus.ConsoleData = res;
             UpdateStatusUI();
 
-            //SendEQData(this, new CIMtoEQData { CMD = CIMtoEQ_CMD.DataReq });
-
-            //var eqData = cimStatus.EQtoCIMData;
-            //if (eqData.GlassTransferStatus != EQtoCIM_CMD.LoadReady)
-            //{
-            //    MessageBox.Show("장비가 Load Ready 상태가 아님");
-            //    return;
-            //}
             cim.SendS6F61();
         }
 
@@ -749,71 +736,10 @@ namespace TOECIM
             cim.SendS2F65();
         }
 
-        #region Control Unload Simualtion
-        //private void unloadBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        //{
-        //    e.Result = e.Argument;
-        //    GlassMoveEvent(this, new GLSMVArgs { CurStatus = cimStatus.GLSMVSTATUS, ChangeStatus = GLSMVSTATUS.GLSMVSTATUSEnum.UW });
-
-        //    //unload start...
-        //    log.AddLogMessage(LogType.Information, 0, $"[{cimStatus.UnloadGlass.AGlass.GLSCODE}, {cimStatus.UnloadGlass.BGlass.GLSCODE}] {e.Result} Unload Start.");
-        //    Thread.Sleep(1000);
-        //    log.AddLogMessage(LogType.Information, 0, $"[{cimStatus.UnloadGlass.AGlass.GLSCODE}, {cimStatus.UnloadGlass.BGlass.GLSCODE}] {e.Result} Unload End.");
-
-        //    cimStatus.GlassIn = false;
-        //}
-
-        //private void unloadBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        //{
-        //    GlassOrder GLSODR = (GlassOrder)e.Result;
-
-        //    switch (GLSODR)
-        //    {
-        //        //Next GlassOrder
-        //        case GlassOrder.FirstGlass:
-        //            GlassMoveEvent(this, new GLSMVArgs { CurStatus = cimStatus.GLSMVSTATUS, ChangeStatus = GLSMVSTATUS.GLSMVSTATUSEnum.ER });
-        //            break;
-        //        case GlassOrder.NormalGlass:
-        //            GlassMoveEvent(this, new GLSMVArgs { CurStatus = cimStatus.GLSMVSTATUS, ChangeStatus = GLSMVSTATUS.GLSMVSTATUSEnum.ER });
-        //            break;
-        //        case GlassOrder.LastGlass:
-        //            GlassMoveEvent(this, new GLSMVArgs { CurStatus = cimStatus.GLSMVSTATUS, ChangeStatus = GLSMVSTATUS.GLSMVSTATUSEnum.ER });
-        //            break;
-        //        case GlassOrder.OnlyGlass:
-        //            GlassMoveEvent(this, new GLSMVArgs { CurStatus = cimStatus.GLSMVSTATUS, ChangeStatus = GLSMVSTATUS.GLSMVSTATUSEnum.UR });
-        //            break;
-        //        case GlassOrder.None:
-        //            GlassMoveEvent(this, new GLSMVArgs { CurStatus = cimStatus.GLSMVSTATUS, ChangeStatus = GLSMVSTATUS.GLSMVSTATUSEnum.UR });
-        //            break;
-        //    }
-        //}
-
-        //private void Cim_UnloadWait(object sender, EventArgs e)
-        //{
-        //    GlassMoveEvent(this, new GLSMVArgs { CurStatus = cimStatus.GLSMVSTATUS, ChangeStatus = GLSMVSTATUS.GLSMVSTATUSEnum.UW });
-
-        //    //unload start...
-        //    if(cimStatus.UnloadGlass != null)
-        //        log.AddLogMessage(LogType.Information, 0, $"[{cimStatus.UnloadGlass.AGlass.GLSCODE}, {cimStatus.UnloadGlass.BGlass.GLSCODE}] Unload Start.");
-
-        //    SendEQData(this, new CIMtoEQData { CMD = CIMtoEQ_CMD.UnloadWait });
-        //    cimStatus.CIMtoEQData.CMD = CIMtoEQ_CMD.UnloadWait;
-        //    cimStatus.CIMtoEQData.GLSSTATUS = cimStatus.GlassExist ? "1" : "0";
-        //    eqSimul.OnCIMEvent(cimStatus.CIMtoEQData);  //CIM to EQ
-        //}
-        #endregion
-
         private void eQPSimulatorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (simulatorForm == null || simulatorForm.IsDisposed)
-            {
-                simulatorForm = new SimulatorForm();
-            }
 
-            simulatorForm.Owner = this;
-            simulatorForm.ShowTab(0);
         }
-
 
 
         private void Cim_CimAlarmSet(object sender, AlarmArgs e)
@@ -872,6 +798,8 @@ namespace TOECIM
         {
             MessageBox.Show("Control Program에서 Alarm 해제 버튼을 누르세요");
             return;
+
+            /*
             string sql = "SELECT * FROM AlarmInfo " +
                          "WHERE (date(DateTime) = date(now())) AND (IsRelease = false)";
             var alarmItems = cim.AlarmDBManager.SearchAlarm(sql);
@@ -886,8 +814,10 @@ namespace TOECIM
             }
             alarmItems.Clear();
             cimStatus.Save();
+            
 
             UpdateAlarmView();
+            */
         }
 
         private void alarmHistoryButton_Click(object sender, EventArgs e)

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CIM 통신 흐름 분석 보고서 - SECS-II 프로토콜 시퀀스 및 로그 분석 결과">
+    <title>CIM 통신 흐름 분석 보고서</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #38bdf8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --highlight-bg: rgba(56, 189, 248, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .meta {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 1.5rem;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .mermaid {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .issue-list {
+            list-style: none;
+        }
+
+        .issue-item {
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid #ef4444;
+        }
+
+        .issue-title {
+            font-weight: 600;
+            color: #ef4444;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .recommendation {
+            background: var(--highlight-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 6rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="main-title">CIM 통신 흐름 분석 보고서</h1>
+            <p class="meta">작성일: 2026.02.13 | 분석 데이터: Log_2025-11-06_Log.txt</p>
+        </header>
+
+        <section id="overview">
+            <h2>1. 개요</h2>
+            <div class="card">
+                <p>본 보고서는 <strong>CIM(Communication & Interface Module)</strong>의 핵심 통신 시퀀스와 메시지 흐름을 분석한 결과입니다.</p>
+                <p>CIM 시스템은 상위 Host 시스템과 장비 시뮬레이터(Simulator) 사이의 가교 역할을 수행하며, SECS-II 표준 프로토콜을 사용하여 실시간 인터페이스를 제어합니다.</p>
+            </div>
+        </section>
+
+        <section id="scenarios">
+            <h2>2. 주요 통신 시나리오</h2>
+            
+            <!-- Scenario A -->
+            <div class="card">
+                <h3>A. Glass 로딩 및 공정 시작 (Single Cycle)</h3>
+                <p>Host로부터 레시피 확인 및 Glass 데이터를 수신하고, 장비로 이동 명령을 내린 후 공정을 시작하는 단계입니다.</p>
+                <div class="mermaid">
+                    sequenceDiagram
+                        participant Host as Host (CIM Server)
+                        participant CIM as TOECIM (Main)
+                        participant Sim as EQP Simulator
+
+                        Note over Host, Sim: 1. Recipe & Data Receive
+                        Host->>CIM: S7F61 (Recipe ID Confirm Req)
+                        CIM-->>Host: S7F62 (Ack)
+                        Host->>CIM: S2F87 (Load Glass Data)
+                        CIM-->>Host: S2F88 (Ack)
+
+                        Note over Host, Sim: 2. Glass Movement (LR)
+                        CIM->>Sim: Glass Move Req (LR)
+                        CIM->>Host: S6F67 (Move Request: LR)
+                        Host-->>CIM: S6F68 (Ack)
+
+                        Note over Host, Sim: 3. Load Done & Status Report
+                        Sim->>CIM: CMD: LoadDone
+                        CIM->>Host: S6F91 (Status Change: RUN)
+                        Host-->>CIM: S6F92 (Ack)
+                        CIM->>Host: S1F67 (All Glass Position Report)
+                        Host-->>CIM: S1F68 (Ack)
+                </div>
+            </div>
+
+            <!-- Scenario B -->
+            <div class="card">
+                <h3>B. Glass 교체 및 언로딩 (Exchange Flow)</h3>
+                <p>검사가 완료된 Glass를 배출하고 새로운 Glass를 투입하는 시퀀스입니다.</p>
+                <div class="mermaid">
+                    sequenceDiagram
+                        participant Host as Host (CIM Server)
+                        participant CIM as TOECIM (Main)
+                        participant Sim as EQP Simulator
+
+                        Note over Host, Sim: 1. Inspection Done
+                        Sim->>CIM: CMD: InspectDone
+                        CIM->>Host: S6F11/S6F91 (Status Change Report)
+
+                        Note over Host, Sim: 2. Exchange Ready
+                        Sim->>CIM: CMD: ExchangeReadyDone
+                        CIM->>Host: S6F63 (Unload Glass Data Report)
+                        Host-->>CIM: S6F64 (Ack)
+                        CIM->>Host: S6F61 (Load Glass Data Req)
+                        Host-->>CIM: S6F62 (Ack)
+
+                        Note over Host, Sim: 3. Move Req (UW/ER)
+                        Host->>CIM: S2F87 (New Glass Data)
+                        CIM->>Sim: Move Req (UW/ER)
+                        CIM->>Host: S6F67 (Move Request)
+                        Host-->>CIM: S6F68 (Ack)
+
+                        Note over Host, Sim: 4. Exchange Done
+                        Sim->>CIM: CMD: ExchangeDone
+                        CIM->>Host: S1F67 (Glass Position Report)
+                        Host-->>CIM: S1F68 (Ack)
+                </div>
+            </div>
+
+            <!-- Scenario C -->
+            <div class="card">
+                <h3>C. LOT 종료 (LOT End)</h3>
+                <p>해당 LOT의 모든 공정이 완료되어 데이터를 최종 보고하는 단계입니다.</p>
+                <div class="mermaid">
+                    sequenceDiagram
+                        participant Host as Host (CIM Server)
+                        participant CIM as TOECIM (Main)
+
+                        Host->>CIM: S6F65 (LOT End Data Send)
+                        CIM-->>Host: S6F66 (Ack)
+                        CIM->>Host: S6F83 (LOT Actual Processing Data Report)
+                        CIM-->>Host: S6F84 (Ack)
+                </div>
+            </div>
+        </section>
+
+        <section id="issues">
+            <h2>3. 로그 분석 특이 사항</h2>
+            <div class="card">
+                <ul class="issue-list">
+                    <li class="issue-item">
+                        <span class="issue-title">1. lastValue.json 파일 접근 충돌 (Race Condition)</span>
+                        <p>TOECIM.CIMStatus.Save() 호출 시 파일이 다른 프로세스에 의해 사용 중이라는 에러가 빈번하게 발생하고 있습니다.</p>
+                        <div class="recommendation">
+                            <strong>조치 권고:</strong> 파일 쓰기 시 Lock 메커니즘을 도입하거나 비동기 큐를 통한 순차 저장이 필요합니다.
+                        </div>
+                    </li>
+                    <li class="issue-item">
+                        <span class="issue-title">2. SendS6F73 NullReferenceException</span>
+                        <p>ClientCIM.SendS6F73() 메서드 호출 시 개체 참조 오류가 발생하고 있습니다.</p>
+                        <div class="recommendation">
+                            <strong>조치 권고:</strong> 해당 메서드 내에서 사용하는 객체(예: HSMSGem 등)의 초기화 여부를 확인하고 Null 가이드 로직을 보강해야 합니다.
+                        </div>
+                    </li>
+                    <li class="issue-item">
+                        <span class="issue-title">3. Console 연결 끊김 및 타임아웃</span>
+                        <p>ReqEqData 호출 시 'Console 연결되지 않음' 에러가 발생하며 서버 연결이 수시로 끊기는 현상이 관찰되었습니다.</p>
+                        <div class="recommendation">
+                            <strong>조치 권고:</strong> 네트워크 안정성 점검 및 재접속 로직의 지수 백오프(Exponential Backoff) 방식 적용을 고려해야 합니다.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p>Copyright © 2026 ELP CORPORATION. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            sequence: {
+                showSequenceNumbers: true,
+                useMaxWidth: true,
+                height: 40
+            }
+        });
+    </script>
+</body>
+</html>

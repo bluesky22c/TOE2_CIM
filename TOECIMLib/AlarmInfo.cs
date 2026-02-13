@@ -36,7 +36,7 @@ namespace TOECIMLib
         {
         }
 
-        static public AlarmInfo GetError(string code, List<AlarmInfo> list)
+        static public AlarmInfo? GetError(string code, List<AlarmInfo> list)
         {
             Check();
             return list.Find(l => l.ALID == code || l.Name == code);
@@ -50,7 +50,7 @@ namespace TOECIMLib
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        static public AlarmInfo GetReportAlarm(List<AlarmInfo> list)
+        static public AlarmInfo? GetReportAlarm(List<AlarmInfo> list)
         {
             if (list.Count == 0)
                 return null;

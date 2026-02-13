@@ -8,25 +8,6 @@ using System.Threading.Tasks;
 
 namespace LGHSMSBase
 {
-    /// <summary>
-    /// U1[] 과 같은 경우 아래와 같입 입력
-    /// </summary>
-    //[Serializable]
-    //public class ABS : UArrayType
-    //{
-    //    public ABS()
-    //        : base(ItemFormat.UInt8, 10)
-    //    {
-    //        Value = new int[10];
-    //    }
-
-    //    public ABS(int[] value)
-    //        : base(ItemFormat.UInt8, 10)
-    //    {
-    //        Value = value;
-    //    }
-    //}
-
     public partial class TIME : StringType
     {
         public void SetTime(DateTime dateTime)

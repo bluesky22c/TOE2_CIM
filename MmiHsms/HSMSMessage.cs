@@ -131,7 +131,7 @@ namespace MMISoft.HSMS
                     }
                 }
             }
-            catch (Exception exp)
+            catch (Exception)
             {
                 throw;
                 

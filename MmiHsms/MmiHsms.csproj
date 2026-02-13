@@ -1,22 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>MMISoft.HSMS</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <RootNamespace>MMISoft.HSMS</RootNamespace>
-    <AssemblyName>MmiHsms</AssemblyName>
+    <SupportedOSPlatform>windows</SupportedOSPlatform>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>Normal.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <Content Include="Normal.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Normal.ico" />
     <EmbeddedResource Include="Select.ico" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

@@ -99,6 +99,8 @@ namespace TOECIM
 
         public void ReportEQPStatus(EQPSTATUS.EQPSTATUSEnum eqpStatus)
         {
+            if (cimStatus.EQPStatus == eqpStatus) return; // 동일 상태 중복 보고 방지
+
             //EQP Status가 Down이 되는 경우에 Console -> Control로 ESC NomalDown되도록 통신 보냄
             if(eqpStatus == EQPSTATUS.EQPSTATUSEnum.RUN || eqpStatus == EQPSTATUS.EQPSTATUSEnum.IDLE)
             {

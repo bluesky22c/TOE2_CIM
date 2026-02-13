@@ -69,7 +69,7 @@ namespace MMISoft.HSMS
                         }
                         pi[i].SetValue(this, tmp, null);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         throw new Exception(string.Format("변수 자동 생성에 실패했습니다. 변수없는 생성자가 있는 지 확인하세요. Class: {0}, 속성: {1}", GetType().ToString(), pi[i].Name));
                     }

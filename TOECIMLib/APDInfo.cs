@@ -15,7 +15,7 @@ namespace TOECIMLib
             APDValue = "APDValue";
         }
 
-        public string APDName { get; set; }
-        public string APDValue { get; set; }
+        public string APDName { get; set; } = null!;
+        public string APDValue { get; set; } = null!;
     }
 }

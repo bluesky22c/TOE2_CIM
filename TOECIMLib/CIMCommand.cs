@@ -148,18 +148,18 @@ namespace TOECIMLib
         public IonizerInfo[] Ionizer { get; set; } = new IonizerInfo[3];
         //public ScanDir scanDir { get; set; }
         //public ScanTurn scanTurn { get; set; }
-        public string GlassPanelJudgeA { get; set; }
-        public string GlassPanelJudgeB { get; set; }
-        public string GlassJudgeCode { get; set; }
-        public RecipeSet RecipeItem { get; set; }
+        public string GlassPanelJudgeA { get; set; } = null!;
+        public string GlassPanelJudgeB { get; set; } = null!;
+        public string GlassJudgeCode { get; set; } = null!;
+        public RecipeSet RecipeItem { get; set; } = null!;
         /// <summary>
         /// A cut apd data
         /// </summary>
-        public ActualProcessData AcutAPD { get; set; }
+        public ActualProcessData AcutAPD { get; set; } = null!;
         /// <summary>
         /// B cut apd data
         /// </summary>
-        public ActualProcessData BcutAPD { get; set; }
+        public ActualProcessData BcutAPD { get; set; } = null!;
         public bool Error { get; set; }
         public string ToJson()
         {
@@ -186,7 +186,7 @@ namespace TOECIMLib
         /// </summary>
         public bool ContainGlass { get; set; }
         public CommonGlassInfo[] GlassInfo { get; set; }  //Glass Data
-        public CIMRecipe RecipeItem { get; set; }
+        public CIMRecipe RecipeItem { get; set; } = null!;
         public bool Error { get; set; } //Nomal Status 항목으로 사용.
         public bool NomalStatus { get; set; }
     }

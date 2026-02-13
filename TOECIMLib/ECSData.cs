@@ -243,10 +243,10 @@ namespace TOECIMLib
             Glasses = new List<ECSData>();
         }
 
-        public LOTID LOTID { get; set; }
-        public CSTID CSTID { get; set; }
-        public PORTID PORTID { get; set; }
-        public LOTJUDGE LOTJUDGE { get; set; }
+        public LOTID LOTID { get; set; } = null!;
+        public CSTID CSTID { get; set; } = null!;
+        public PORTID PORTID { get; set; } = null!;
+        public LOTJUDGE LOTJUDGE { get; set; } = null!;
         public List<ECSData> Glasses { get; set; }
     }
 }
