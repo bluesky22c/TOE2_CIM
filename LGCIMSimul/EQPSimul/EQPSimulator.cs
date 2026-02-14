@@ -32,6 +32,7 @@ namespace LGCIMServer.EQPSimul
     public partial class EQPSimulator : Form
     {
         public event Action<string> OnLog;
+        public event Action OnDataUpdate;
         public string LastValuePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "eqSimul.xml");
         
         public EQPSimulatorData Data { get; set; } = new EQPSimulatorData();
@@ -160,6 +161,59 @@ namespace LGCIMServer.EQPSimul
 
         private CimCommData OnReceiveData(object owner, CimCommData spec)
         {
+            if (spec.ToConsole.Command == CIMtoEQP.GlassDataSend || spec.ToConsole.Command == CIMtoEQP.GlassDataReq)
+            {
+                bool isUnload = spec.ToConsole.Command == CIMtoEQP.GlassDataReq;
+                if (isUnload)
+                {
+                    if (Data.UnloadGlass == null) Data.UnloadGlass = new ECSData();
+                }
+                else
+                {
+                    if (Data.LoadGlass == null) Data.LoadGlass = new ECSData();
+                }
+
+                ECSData target = isUnload ? Data.UnloadGlass : Data.LoadGlass;
+
+                // AGlass Mapping
+                if (spec.ToConsole.GlassInfo[0] != null)
+                {
+                    var g = target.AGlass;
+                    var src = spec.ToConsole.GlassInfo[0];
+                    g.LOTID = src.LotID;
+                    g.CSTID = src.CassetteID;
+                    g.SLOTID = src.SlotNo;
+                    g.RECIPEID = src.PPID;
+                    g.PRCID = src.ProcessID;
+                    g.GLSODR = src.GlassODR;
+                    g.GLSID = src.GlassID;
+                    g.GLSJUDGE = src.JudgeCode;
+                    g.PNLIF = src.PanelInfo;
+                    g.PORTID = src.PortID;
+                    g.GLSCODE = src.GlassCode;
+                    g.PRODTYPE = src.ProdType;
+                }
+                // BGlass Mapping
+                if (spec.ToConsole.GlassInfo[1] != null)
+                {
+                    var g = target.BGlass;
+                    var src = spec.ToConsole.GlassInfo[1];
+                    g.LOTID = src.LotID;
+                    g.CSTID = src.CassetteID;
+                    g.SLOTID = src.SlotNo;
+                    g.RECIPEID = src.PPID;
+                    g.PRCID = src.ProcessID;
+                    g.GLSODR = src.GlassODR;
+                    g.GLSID = src.GlassID;
+                    g.GLSJUDGE = src.JudgeCode;
+                    g.PNLIF = src.PanelInfo;
+                    g.PORTID = src.PortID;
+                    g.GLSCODE = src.GlassCode;
+                    g.PRODTYPE = src.ProdType;
+                }
+                OnDataUpdate?.Invoke();
+            }
+
             spec.ToCIM.eqpStatus = eqData.eqpStatus;
             spec.ToCIM.GlassIn = eqData.GlassIn;
             spec.ToCIM.EqpReadyStatus = eqData.EqpReadyStatus;

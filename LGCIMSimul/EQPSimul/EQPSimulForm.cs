@@ -33,10 +33,11 @@ namespace LGCIMServer.EQPSimul
         private void EQPSimulator_Load(object sender, EventArgs e)
         {
             simul.OnLog += AddLog;
+            simul.OnDataUpdate += UpdateInfo;
 
-            // 실행 시 Listen은 무조건 false 상태로 시작
-            simul.Data.IsListen = false;
-            listenCheckBox.Checked = false;
+            // 실행 시 Listen은 기본적으로 true 상태로 시작 (사용자 요청)
+            simul.Data.IsListen = true;
+            listenCheckBox.Checked = true;
             
             AddLog("Server Standby (Listen Check Required)");
 

@@ -76,12 +76,11 @@ namespace LGCIMServer
             server.gem.OnGemEvent += Gem_OnGemEvent;
             server.gem.OnSentEvent += Gem_OnSentEvent;
 
-            // Connection Status Events
-            server.gem.OnConnectEvent += Gem_OnConnectEvent;
-            server.gem.OnDisconnectEvent += Gem_OnDisconnectEvent;
-            server.gem.OnSelectEvent += Gem_OnSelectEvent;
+            // Scenario Tab Change Event
+            tabControlScenarios.SelectedIndexChanged += tabControlScenarios_SelectedIndexChanged;
 
-            // Setup4ZoneLayout(); // 레이아웃 관리를 LGCIMSimulForm으로 이관
+            // Initial Scenario Flow
+            InitScenarioFlow("A");
 
             LogSecsMessage("INFO", "Log Started...");
         }
@@ -1114,6 +1113,19 @@ namespace LGCIMServer
             {
                 btnRunScenarioC.Enabled = true;
             }
+        }
+
+        private void tabControlScenarios_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string scenario = "A";
+            switch (tabControlScenarios.SelectedIndex)
+            {
+                case 0: scenario = "A"; break;
+                case 1: scenario = "B"; break;
+                case 2: scenario = "C"; break;
+            }
+            InitScenarioFlow(scenario);
+            AddScenarioLog($"Switched to Scenario {scenario} View");
         }
 
         #endregion
