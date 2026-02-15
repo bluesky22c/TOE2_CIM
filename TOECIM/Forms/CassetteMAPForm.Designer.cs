@@ -31,9 +31,11 @@ namespace TOECIM.Forms
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.materialCardCassette = new MaterialSkin.Controls.MaterialCard();
+            this.materialLabelCassette = new MaterialSkin.Controls.MaterialLabel();
             this.cstDataGridView = new System.Windows.Forms.DataGridView();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.materialCardPort = new MaterialSkin.Controls.MaterialCard();
+            this.materialLabelPort = new MaterialSkin.Controls.MaterialLabel();
             this.portDataGridView = new System.Windows.Forms.DataGridView();
             this.closeButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
@@ -54,9 +56,9 @@ namespace TOECIM.Forms
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.materialCardCassette.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cstDataGridView)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.materialCardPort.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slotItemBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.portItemBindingSource)).BeginInit();
@@ -71,8 +73,8 @@ namespace TOECIM.Forms
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
-            this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.materialCardCassette);
+            this.splitContainer1.Panel1.Controls.Add(this.materialCardPort);
             // 
             // splitContainer1.Panel2
             // 
@@ -83,15 +85,31 @@ namespace TOECIM.Forms
             this.splitContainer1.SplitterDistance = 589;
             this.splitContainer1.TabIndex = 5;
             // 
-            // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.cstDataGridView);
-            this.groupBox2.Location = new System.Drawing.Point(359, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(502, 583);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "CASSETTE";
+            // materialCardCassette
+            // 
+            this.materialCardCassette.Controls.Add(this.materialLabelCassette);
+            this.materialCardCassette.Controls.Add(this.cstDataGridView);
+            this.materialCardCassette.Depth = 0;
+            this.materialCardCassette.Location = new System.Drawing.Point(359, 3);
+            this.materialCardCassette.Margin = new System.Windows.Forms.Padding(14);
+            this.materialCardCassette.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCardCassette.Name = "materialCardCassette";
+            this.materialCardCassette.Padding = new System.Windows.Forms.Padding(14);
+            this.materialCardCassette.Size = new System.Drawing.Size(502, 583);
+            this.materialCardCassette.TabIndex = 1;
+            // 
+            // materialLabelCassette
+            // 
+            this.materialLabelCassette.AutoSize = true;
+            this.materialLabelCassette.Depth = 0;
+            this.materialLabelCassette.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabelCassette.Location = new System.Drawing.Point(10, 5);
+            this.materialLabelCassette.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabelCassette.Name = "materialLabelCassette";
+            this.materialLabelCassette.Size = new System.Drawing.Size(78, 19);
+            this.materialLabelCassette.TabIndex = 1;
+            this.materialLabelCassette.Text = "CASSETTE";
             // 
             // cstDataGridView
             // 
@@ -113,15 +131,31 @@ namespace TOECIM.Forms
             this.cstDataGridView.Size = new System.Drawing.Size(496, 563);
             this.cstDataGridView.TabIndex = 0;
             // 
-            // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.portDataGridView);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(350, 583);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "PORT";
+            // materialCardPort
+            // 
+            this.materialCardPort.Controls.Add(this.materialLabelPort);
+            this.materialCardPort.Controls.Add(this.portDataGridView);
+            this.materialCardPort.Depth = 0;
+            this.materialCardPort.Location = new System.Drawing.Point(3, 3);
+            this.materialCardPort.Margin = new System.Windows.Forms.Padding(14);
+            this.materialCardPort.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCardPort.Name = "materialCardPort";
+            this.materialCardPort.Padding = new System.Windows.Forms.Padding(14);
+            this.materialCardPort.Size = new System.Drawing.Size(350, 583);
+            this.materialCardPort.TabIndex = 0;
+            // 
+            // materialLabelPort
+            // 
+            this.materialLabelPort.AutoSize = true;
+            this.materialLabelPort.Depth = 0;
+            this.materialLabelPort.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabelPort.Location = new System.Drawing.Point(10, 5);
+            this.materialLabelPort.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabelPort.Name = "materialLabelPort";
+            this.materialLabelPort.Size = new System.Drawing.Size(42, 19);
+            this.materialLabelPort.TabIndex = 1;
+            this.materialLabelPort.Text = "PORT";
             // 
             // portDataGridView
             // 
@@ -267,9 +301,11 @@ namespace TOECIM.Forms
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
+            this.materialCardCassette.ResumeLayout(false);
+            this.materialCardCassette.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cstDataGridView)).EndInit();
-            this.groupBox1.ResumeLayout(false);
+            this.materialCardPort.ResumeLayout(false);
+            this.materialCardPort.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.slotItemBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.portItemBindingSource)).EndInit();
@@ -283,8 +319,10 @@ namespace TOECIM.Forms
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.Button reqButton;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private MaterialSkin.Controls.MaterialCard materialCardCassette;
+        private MaterialSkin.Controls.MaterialLabel materialLabelCassette;
+        private MaterialSkin.Controls.MaterialCard materialCardPort;
+        private MaterialSkin.Controls.MaterialLabel materialLabelPort;
         private System.Windows.Forms.DataGridView cstDataGridView;
         private System.Windows.Forms.DataGridView portDataGridView;
         private System.Windows.Forms.BindingSource slotItemBindingSource;

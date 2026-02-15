@@ -4,6 +4,8 @@ using Engion;
 using Engion.Net;
 using LGHSMSBase;
 using LGHSMSBase.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
@@ -23,10 +25,10 @@ using TOECIMLib;
 namespace TOECIM
 {
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    public partial class MainForm : Form
+    public partial class MainForm : MaterialForm
     {
 
-        
+
         ClientCIM cim => Vars.cim;
         CIMStatus cimStatus => cim.cimStatus;
         LogEx log => ClientCIM.log;
@@ -48,12 +50,72 @@ namespace TOECIM
         public MainForm()
         {
             InitializeComponent();
+
+            // 런타임에만 커스텀 드로잉 적용 (디자이너 가시성 확보)
+            // DrawMode는 DarkTabControl 내부에서 자동 설정됨
+
+            // MaterialSkinManager 초기화
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+
+            // Dark Blue 톤의 헤더 배경색
+            Color darkBlueHeader = Color.FromArgb(30, 44, 58);
+            menuStrip1.BackColor = darkBlueHeader;
+            menuStrip1.ForeColor = Color.Gainsboro;
+            foreach (ToolStripItem item in menuStrip1.Items)
+            {
+                item.ForeColor = Color.Gainsboro;
+                if (item is ToolStripMenuItem menuItem)
+                {
+                    foreach (ToolStripItem subItem in menuItem.DropDownItems)
+                    {
+                        subItem.ForeColor = Color.Gainsboro;
+                        subItem.BackColor = darkBlueHeader;
+                    }
+                }
+            }
+
+            // 상태 라벨들에 커스텀 테두리 Paint 이벤트 연결
+            autoRunLabel.Paint += StatusLabel_Paint;
+            glassInlabel.Paint += StatusLabel_Paint;
+            glsmvLabel.Paint += StatusLabel_Paint;
+            EQStatusLabel.Paint += StatusLabel_Paint;
+            consoleStatusLabel.Paint += StatusLabel_Paint;
+
+            // 버튼에만 마우스 호버 효과 추가 (라벨은 색상/커서 변경 제외)
+            var buttonHoverTargets = new Control[] { rcsButton, LoadButton, glassDataReqButton, unloadButton, scrapReportButton, opModeButton, alarmStatusButton };
+            foreach (var ctrl in buttonHoverTargets)
+            {
+                ctrl.MouseEnter += StatusControl_MouseEnter;
+                ctrl.MouseLeave += StatusControl_MouseLeave;
+            }
+
+            // 탭 컨트롤 DrawItem 이벤트는 Designer.cs에서 등록됨 (중복 방지)
+
+            // SplitContainer 구분선 색상을 어둡게 하기 위해 BackColor 조정
+            // (내부 패널들은 MaterialCard가 덮고 있어 구분선만 어둡게 보임)
+            Color dividerColor = Color.FromArgb(25, 38, 52);
+            splitContainer1.BackColor = dividerColor;
+            splitContainer2.BackColor = dividerColor;
+            splitContainer3.BackColor = dividerColor;
+            splitContainer4.BackColor = dividerColor;
+            splitContainer5.BackColor = dividerColor;
+
+            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
+        }
+
+        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // tabPage1(Status) 일 경우에만 세부 탭 선택기(Load/Unload)를 보여줌
+            //materialTabSelector2.Visible = (tabControl1.SelectedTab == tabPage1);
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
             Console.WriteLine("MainForm: FormMain_Load Starting...");
-            
+
             Program.SystemSetup = SystemSetup.Load(Program.systemSetupDir, log);
 
             // 3501 포트 연동 확인을 위해 시뮬레이터를 먼저 가동
@@ -71,7 +133,24 @@ namespace TOECIM
 
             InitialUpdate();
 
-            cim.InitGem();
+            // PropertyGrid 다크 스타일 적용
+            ApplyPropertyGridDarkStyle(aLoadPropertyGrid);
+            ApplyPropertyGridDarkStyle(bLoadPropertyGrid);
+            ApplyPropertyGridDarkStyle(aUnLoadPropertyGrid);
+            ApplyPropertyGridDarkStyle(bUnLoadPropertyGrid);
+
+            // TabPage 및 TabControl 배경색 강제 적용 (흰색 여백 제거)
+            Color themeBackColor = Color.FromArgb(25, 38, 52);
+            tabPage1.BackColor = themeBackColor;
+            tabPage2.BackColor = themeBackColor;
+            tabPage3.BackColor = themeBackColor;
+            tabPage4.BackColor = themeBackColor;
+            tabPage5.BackColor = themeBackColor;
+            tabControl1.BackColor = themeBackColor;
+            tabControl2.BackColor = themeBackColor;
+
+            // 폼 전체의 모든 TextBox를 다크 모드로 일괄 적용
+            ApplyDarkModeToAllTextBoxes(this, themeBackColor);
 
             cim.gem.OnGemEvent += (_, args) =>
             {
@@ -156,11 +235,11 @@ namespace TOECIM
                 string logMsg = $"[OnReceiveEQData] CMD : {data.Command}, EQPStatus : {data.eqpStatus}, AutoRun : {data.AutoRun}, GlassIn : {data.GlassIn}, ReadyStatus : {data.EqpReadyStatus}";
                 log.AddLogMessage(LogType.Information, 0, logMsg);
             }
-            
+
             var oldStatus = cimStatus.EQPStatus;
             cimStatus.CimCommData.ToCIM = data;
             var status = Vars.CIMEQPStatsu(data.eqpStatus);
-            
+
             // SendData 커맨드일 때 강제 상태 업데이트 (디버깅용)
             /*
             if (data.Command == EQPtoCIM.SendData)
@@ -178,175 +257,175 @@ namespace TOECIM
 
             switch (data.Command)
             {
-            case EQPtoCIM.None:
-                break;
+                case EQPtoCIM.None:
+                    break;
 
-            //Console이 필요할 경우 CIM의 요청 없이 eq data를 보냄
-            //ex) AutoRun이 false가 될 경우
-            case EQPtoCIM.SendData:
-                break;
+                //Console이 필요할 경우 CIM의 요청 없이 eq data를 보냄
+                //ex) AutoRun이 false가 될 경우
+                case EQPtoCIM.SendData:
+                    break;
 
-            case EQPtoCIM.LoadReadyDone:
-                {
-                    ChangeEQPStatusEvent(status);
-                    cim.SendS6F61();
-                    //spec.ToConsole.Command = CIMtoEQP.LoadReadyDoneACK;
-                    //spec.ToConsole.Online = cimStatus.RCS == RCS.RCSEnum.OffLine ? false : true;
-                }
-                break;
-
-            case EQPtoCIM.LoadDone:
-                {
-                    ChangeEQPStatusEvent(status);
-                    log.AddLogMessage(LogType.Information, 0, $"[OnReceiveEQData] Glass Load Done. EQPStatus : {data.eqpStatus}");
-                    cim.MoveLoadtoUnload();
-                    cim.SendS1F67();
-                }
-                break;
-
-            case EQPtoCIM.InspectDone:
-                {
-                    // 상태를 RUN으로 강제하여 S6F91 보고 유도
-                    ChangeEQPStatusEvent(EQPSTATUS.EQPSTATUSEnum.RUN);
-                }
-                break;
-
-            case EQPtoCIM.ExchangeReadyDone:
-                {
-                    ChangeEQPStatusEvent(status);
-                    cimStatus.UnloadGlass.AGlass.PNLIF = data.GlassPanelJudgeA;
-                    cimStatus.UnloadGlass.BGlass.PNLIF = data.GlassPanelJudgeB;
-                    cim.SendS6F63();
-                    cim.SendS6F61();
-                }
-                break;
-
-            case EQPtoCIM.ExchangeDone:
-                {
-                    ChangeEQPStatusEvent(status);
-                    log.AddLogMessage(LogType.Information, 0, $"[OnReceiveEQData] Glass Exchange Done. EQPStatus : {data.eqpStatus}");
-
-                    cim.MoveLoadtoUnload();
-                    //Run 보고
-                    cim.SendS1F67();
-                }
-                break;
-
-            case EQPtoCIM.UnloadReadyDone:
-                {
-                    ChangeEQPStatusEvent(status);
-                    cimStatus.UnloadGlass.AGlass.PNLIF = data.GlassPanelJudgeA;
-                    cimStatus.UnloadGlass.BGlass.PNLIF = data.GlassPanelJudgeB;
-                    cim.SendS6F63();
-                    cim.SendS6F61();
-                }
-                break;
-
-            case EQPtoCIM.UnloadDone:
-                {
-                    ChangeEQPStatusEvent(status);
-                    cim.MoveLoadtoUnload();
-                    //idle 보고
-                    cim.SendS1F67();
-                    log.AddLogMessage(LogType.Information, 0, $"Last Glass Unload Complete.");
-                }
-                break;
-
-            case EQPtoCIM.Alarm:
-                {
-                    //알람 set 보고
-                    var alarmList = data.AlarmList;
-
-                    cim.AlarmOccur(alarmList);
-                    ShowAlarm();
-                    UpdateAlarmView();
-                }
-                break;
-
-            case EQPtoCIM.AlarmClear:
-                {
-                    var reportedAlarms = cimStatus.AlarmList;
-                    foreach (var a in reportedAlarms)
-                    {
-                        a.ALCD = ALCD.ReleaseCode(a.ALCD);
-                        cim.SendS5F1(a, false);
-                        cim.AlarmDBManager.ReleaseAlarm(a);
-                    }
-                    reportedAlarms.Clear();
-                    cimStatus.Save();
-
-                    status = Vars.CIMEQPStatsu((TOECIMLib.EQPStatus)data.eqpStatus);
-
-                    //cim.SendS1F61();
-                    //cim.SendS1F67();
-                    ShowAlarm();
-                    UpdateAlarmView();
-
-                }
-                break;
-
-            case EQPtoCIM.Pause:
-                {
-                    cimStatus.Pause = true;
-                    status = Vars.CIMEQPStatsu((TOECIMLib.EQPStatus)data.eqpStatus);
-
-                    //Glass 없으면 바로 Process Down 상태 변경
-                    if (cimStatus.EQGlassIn == false)
+                case EQPtoCIM.LoadReadyDone:
                     {
                         ChangeEQPStatusEvent(status);
+                        cim.SendS6F61();
+                        //spec.ToConsole.Command = CIMtoEQP.LoadReadyDoneACK;
+                        //spec.ToConsole.Online = cimStatus.RCS == RCS.RCSEnum.OffLine ? false : true;
                     }
-                }
-                break;
+                    break;
 
-            case EQPtoCIM.Error:
-                break;
+                case EQPtoCIM.LoadDone:
+                    {
+                        ChangeEQPStatusEvent(status);
+                        log.AddLogMessage(LogType.Information, 0, $"[OnReceiveEQData] Glass Load Done. EQPStatus : {data.eqpStatus}");
+                        cim.MoveLoadtoUnload();
+                        cim.SendS1F67();
+                    }
+                    break;
 
-            case EQPtoCIM.RecipeCreate:
-                //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Built);
-                break;
+                case EQPtoCIM.InspectDone:
+                    {
+                        // 상태를 RUN으로 강제하여 S6F91 보고 유도
+                        ChangeEQPStatusEvent(EQPSTATUS.EQPSTATUSEnum.RUN);
+                    }
+                    break;
 
-            case EQPtoCIM.RecipeChange:
-                //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Change);
-                break;
+                case EQPtoCIM.ExchangeReadyDone:
+                    {
+                        ChangeEQPStatusEvent(status);
+                        cimStatus.UnloadGlass.AGlass.PNLIF = data.GlassPanelJudgeA;
+                        cimStatus.UnloadGlass.BGlass.PNLIF = data.GlassPanelJudgeB;
+                        cim.SendS6F63();
+                        cim.SendS6F61();
+                    }
+                    break;
 
-            case EQPtoCIM.RecipeDelete:
-                //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Delete);
-                break;
+                case EQPtoCIM.ExchangeDone:
+                    {
+                        ChangeEQPStatusEvent(status);
+                        log.AddLogMessage(LogType.Information, 0, $"[OnReceiveEQData] Glass Exchange Done. EQPStatus : {data.eqpStatus}");
 
-            case EQPtoCIM.RecipeRename:
-                //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Rename);
-                break;
+                        cim.MoveLoadtoUnload();
+                        //Run 보고
+                        cim.SendS1F67();
+                    }
+                    break;
 
-            case EQPtoCIM.ShutDown:
-                data.eqpStatus = TOECIMLib.EQPStatus.DOWN;
-                break;
+                case EQPtoCIM.UnloadReadyDone:
+                    {
+                        ChangeEQPStatusEvent(status);
+                        cimStatus.UnloadGlass.AGlass.PNLIF = data.GlassPanelJudgeA;
+                        cimStatus.UnloadGlass.BGlass.PNLIF = data.GlassPanelJudgeB;
+                        cim.SendS6F63();
+                        cim.SendS6F61();
+                    }
+                    break;
 
-            case EQPtoCIM.UpdateStatus:
-                break;
+                case EQPtoCIM.UnloadDone:
+                    {
+                        ChangeEQPStatusEvent(status);
+                        cim.MoveLoadtoUnload();
+                        //idle 보고
+                        cim.SendS1F67();
+                        log.AddLogMessage(LogType.Information, 0, $"Last Glass Unload Complete.");
+                    }
+                    break;
 
-            case EQPtoCIM.CancelReq:
-                // 알람 보고하거나 장비 DOWN 보고할 때 필요에 따라 자동으로 CR 보고함.
-                //cim.SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
-                break;
+                case EQPtoCIM.Alarm:
+                    {
+                        //알람 set 보고
+                        var alarmList = data.AlarmList;
 
-            case EQPtoCIM.GLSMV_LR:
-                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.LR);
-                break;
-            case EQPtoCIM.GLSMV_UR:
-                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.UR);
-                break;
-            case EQPtoCIM.GLSMV_ER:
-                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.ER);
-                break;
-            case EQPtoCIM.GLSMV_UW:
-                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.UW);
-                break;
-            case EQPtoCIM.GLSMV_LW:
-                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.LW);
-                break;
-            case EQPtoCIM.GLSMV_CR:
-                cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
-                break;
+                        cim.AlarmOccur(alarmList);
+                        ShowAlarm();
+                        UpdateAlarmView();
+                    }
+                    break;
+
+                case EQPtoCIM.AlarmClear:
+                    {
+                        var reportedAlarms = cimStatus.AlarmList;
+                        foreach (var a in reportedAlarms)
+                        {
+                            a.ALCD = ALCD.ReleaseCode(a.ALCD);
+                            cim.SendS5F1(a, false);
+                            cim.AlarmDBManager.ReleaseAlarm(a);
+                        }
+                        reportedAlarms.Clear();
+                        cimStatus.Save();
+
+                        status = Vars.CIMEQPStatsu((TOECIMLib.EQPStatus)data.eqpStatus);
+
+                        //cim.SendS1F61();
+                        //cim.SendS1F67();
+                        ShowAlarm();
+                        UpdateAlarmView();
+
+                    }
+                    break;
+
+                case EQPtoCIM.Pause:
+                    {
+                        cimStatus.Pause = true;
+                        status = Vars.CIMEQPStatsu((TOECIMLib.EQPStatus)data.eqpStatus);
+
+                        //Glass 없으면 바로 Process Down 상태 변경
+                        if (cimStatus.EQGlassIn == false)
+                        {
+                            ChangeEQPStatusEvent(status);
+                        }
+                    }
+                    break;
+
+                case EQPtoCIM.Error:
+                    break;
+
+                case EQPtoCIM.RecipeCreate:
+                    //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Built);
+                    break;
+
+                case EQPtoCIM.RecipeChange:
+                    //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Change);
+                    break;
+
+                case EQPtoCIM.RecipeDelete:
+                    //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Delete);
+                    break;
+
+                case EQPtoCIM.RecipeRename:
+                    //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Rename);
+                    break;
+
+                case EQPtoCIM.ShutDown:
+                    data.eqpStatus = TOECIMLib.EQPStatus.DOWN;
+                    break;
+
+                case EQPtoCIM.UpdateStatus:
+                    break;
+
+                case EQPtoCIM.CancelReq:
+                    // 알람 보고하거나 장비 DOWN 보고할 때 필요에 따라 자동으로 CR 보고함.
+                    //cim.SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
+                    break;
+
+                case EQPtoCIM.GLSMV_LR:
+                    cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.LR);
+                    break;
+                case EQPtoCIM.GLSMV_UR:
+                    cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.UR);
+                    break;
+                case EQPtoCIM.GLSMV_ER:
+                    cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.ER);
+                    break;
+                case EQPtoCIM.GLSMV_UW:
+                    cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.UW);
+                    break;
+                case EQPtoCIM.GLSMV_LW:
+                    cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.LW);
+                    break;
+                case EQPtoCIM.GLSMV_CR:
+                    cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
+                    break;
             }
 
             // 상태가 실제로 바뀐 경우에만 이벤트 발생 (무한 루프 방지)
@@ -436,47 +515,70 @@ namespace TOECIM
 
             else
             {
-                autoRunLabel.BackColor = cimStatus.IsAutoRun ? Color.Lime : Color.Red;
-                glassInlabel.BackColor = cimStatus.EQGlassIn == true ? Color.Lime : Color.Red;
-                glsmvLabel.Text = cimStatus.CimCommData.ToCIM.EqpReadyStatus.ToString();
+                // AutoRun 상태 업데이트
+                autoRunLabel.BackColor = Color.Transparent;
+                autoRunLabel.ForeColor = cimStatus.IsAutoRun ? Color.Lime : Color.Tomato;
+                autoRunLabel.Text = cimStatus.IsAutoRun ? "AutoRun ON" : "AutoRun OFF";
 
+                // GlassIn 상태 업데이트
+                glassInlabel.BackColor = Color.Transparent;
+                glassInlabel.ForeColor = (cimStatus.EQGlassIn == true) ? Color.Lime : Color.Tomato;
+                glassInlabel.Text = (cimStatus.EQGlassIn == true) ? "Glass IN" : "Glass OUT";
+
+                // GLSMV 상태 텍스트 업데이트
+                glsmvLabel.BackColor = Color.Transparent;
+                glsmvLabel.ForeColor = Color.Gainsboro;
+                glsmvLabel.Text = cimStatus.CimCommData?.ToCIM?.EqpReadyStatus.ToString() ?? "None";
+
+                // EQP 상태별 색상 및 텍스트 업데이트
+                EQStatusLabel.BackColor = Color.Transparent;
                 switch (cimStatus.EQPStatus)
                 {
                     case EQPSTATUS.EQPSTATUSEnum.RUN:
-                        EQStatusLabel.BackColor = Color.Lime;
+                        EQStatusLabel.ForeColor = Color.Lime;
+                        EQStatusLabel.Text = "RUN";
                         break;
 
                     case EQPSTATUS.EQPSTATUSEnum.IDLE:
-                        EQStatusLabel.BackColor = Color.Yellow;
+                        EQStatusLabel.ForeColor = Color.Yellow;
+                        EQStatusLabel.Text = "IDLE";
                         break;
 
                     case EQPSTATUS.EQPSTATUSEnum.DOWN:
-                        EQStatusLabel.BackColor = Color.Red;
+                        EQStatusLabel.ForeColor = Color.Tomato;
+                        EQStatusLabel.Text = "DOWN";
                         break;
 
                     default:
-                        EQStatusLabel.BackColor = Color.Gold;
+                        EQStatusLabel.ForeColor = Color.Gold;
+                        EQStatusLabel.Text = cimStatus.EQPStatus.ToString();
                         break;
                 }
-                EQStatusLabel.Text = cimStatus.EQPStatus.ToString();
 
-                // System.IO.File.AppendAllText("ui_debug.txt", $"{DateTime.Now}: UpdateStatusUI - ConsoleData.Error: {cimStatus.ConsoleData.Error}, Hash: {cimStatus.ConsoleData.GetHashCode()}\n");
+                // Console 연결 상태 업데이트 (Label - 색상으로 상태 표시)
                 if (cimStatus.ConsoleData.Error == true)
                 {
-                    consoleStatusLabel.BackColor = Color.Red;
+                    consoleStatusLabel.Text = "CONSOLE";
+                    consoleStatusLabel.ForeColor = Color.Red;
                 }
                 else
                 {
-                    consoleStatusLabel.BackColor = Color.Lime;
+                    consoleStatusLabel.Text = "CONSOLE";
+                    consoleStatusLabel.ForeColor = Color.Lime;
                 }
 
+                // Alarm 발생 여부 업데이트 (Outlined 스타일)
+                alarmStatusButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+                alarmStatusButton.HighEmphasis = false;
                 if (cimStatus.CurAlarm != null)
                 {
-                    alarmStatusLabel.BackColor = Color.Red;
+                    alarmStatusButton.Text = "ALARM!";
+                    alarmStatusButton.ForeColor = Color.Tomato;
                 }
                 else
                 {
-                    alarmStatusLabel.BackColor = Color.Lime;
+                    alarmStatusButton.Text = "Alarm";
+                    alarmStatusButton.ForeColor = Color.White;
                 }
             }
         }
@@ -900,6 +1002,56 @@ namespace TOECIM
             }
         }
 
+        #region Status Labels Custom Drawing
+        private void StatusLabel_Paint(object sender, PaintEventArgs e)
+        {
+            if (sender is Control ctrl)
+            {
+                // 테마에 맞춘 어두운 하늘색 테두리
+                using (Pen pen = new Pen(Color.FromArgb(80, 120, 140), 1))
+                {
+                    e.Graphics.DrawRectangle(pen, 0, 0, ctrl.Width - 1, ctrl.Height - 1);
+                }
+            }
+        }
+        #endregion
+
+        #region TabControl Custom Drawing (Material Style)
+        private void TabControl_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (sender is not TabControl tabControl) return;
+
+            var tabPage = tabControl.TabPages[e.Index];
+            var tabRect = tabControl.GetTabRect(e.Index);
+
+            // 배경색 결정
+            Color backColor = MaterialSkinManager.Instance.BackgroundColor;
+            Color textColor = Color.FromArgb(200, Color.White); // 기본 텍스트 색상 (약간 투명)
+            Color highlightColor = MaterialSkinManager.Instance.ColorScheme.PrimaryColor;
+
+            // 선택된 상태 확인
+            bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+
+            using (Brush backBrush = new SolidBrush(backColor))
+            {
+                e.Graphics.FillRectangle(backBrush, tabRect);
+            }
+
+            if (isSelected)
+            {
+                textColor = Color.White; // 선택된 탭은 밝은 흰색
+                // 선택된 탭 하단에 굵은 강조선 표시 (Material Style)
+                using (Pen highlightPen = new Pen(highlightColor, 3))
+                {
+                    e.Graphics.DrawLine(highlightPen, tabRect.Left + 5, tabRect.Bottom - 2, tabRect.Right - 5, tabRect.Bottom - 2);
+                }
+            }
+
+            // 텍스트 그리기
+            TextRenderer.DrawText(e.Graphics, tabPage.Text, tabControl.Font, tabRect, textColor, TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter);
+        }
+        #endregion
+
         private void alarmDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -1022,7 +1174,7 @@ namespace TOECIM
                     status = EQPSTATUS.EQPSTATUSEnum.DOWN;
 
                     //CR 보내기?
-                    if(Vars.curGLSM != GLSMVSTATUS.GLSMVSTATUSEnum.CR)
+                    if (Vars.curGLSM != GLSMVSTATUS.GLSMVSTATUSEnum.CR)
                     {
                         cim.SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
                         Vars.curGLSM = GLSMVSTATUS.GLSMVSTATUSEnum.CR;
@@ -1241,5 +1393,88 @@ namespace TOECIM
             }
         }
 
+        private void ApplyPropertyGridDarkStyle(PropertyGrid grid)
+        {
+            if (grid == null) return;
+            grid.BackColor = Color.FromArgb(43, 43, 43);
+            grid.ViewBackColor = Color.FromArgb(43, 43, 43);
+            grid.ViewForeColor = Color.Gainsboro;
+            grid.ViewBackColor = Color.FromArgb(25, 38, 52);
+            grid.LineColor = Color.FromArgb(50, 50, 50);
+            grid.CategoryForeColor = Color.LightSteelBlue;
+            grid.HelpBackColor = Color.FromArgb(25, 38, 52);
+            grid.HelpForeColor = Color.Gainsboro;
+            grid.CommandsBackColor = Color.FromArgb(25, 38, 52);
+            grid.CommandsForeColor = Color.Gainsboro;
+        }
+
+        /// <summary>
+        /// 폼 내 모든 TextBox, Panel, SplitContainer 등에 다크 모드 스타일을 재귀 적용합니다.
+        /// </summary>
+        private void ApplyDarkModeToAllTextBoxes(Control parent, Color backColor)
+        {
+            foreach (Control ctrl in parent.Controls)
+            {
+                if (ctrl is TextBox textBox)
+                {
+                    textBox.BackColor = Color.FromArgb(43, 43, 43);
+                    textBox.ForeColor = Color.Gainsboro;
+                    textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+                }
+                else if (ctrl is Panel panel)
+                {
+                    panel.BackColor = backColor;
+                }
+                else if (ctrl is SplitContainer splitContainer)
+                {
+                    splitContainer.BackColor = backColor;
+                    splitContainer.Panel1.BackColor = backColor;
+                    splitContainer.Panel2.BackColor = backColor;
+                }
+                else if (ctrl is GroupBox groupBox)
+                {
+                    groupBox.BackColor = backColor;
+                    groupBox.ForeColor = Color.Gainsboro;
+                }
+
+                // 자식 컨트롤에도 재귀 적용
+                if (ctrl.HasChildren)
+                {
+                    ApplyDarkModeToAllTextBoxes(ctrl, backColor);
+                }
+            }
+        }
+
+        private void refreshCosoleStatusButton_Click_1(object sender, EventArgs e)
+        {
+            ReqEqData();
+            //cim.SendS6F73();
+            cim.SendS1F67();
+        }
+
+        /// <summary>
+        /// 마우스 진입 시 버튼 색상을 액센트 색상으로 변경합니다.
+        /// </summary>
+        private void StatusControl_MouseEnter(object sender, EventArgs e)
+        {
+            if (sender is MaterialButton matBtn)
+            {
+                matBtn.UseAccentColor = true;
+                matBtn.Cursor = Cursors.Hand;
+            }
+        }
+
+        /// <summary>
+        /// 마우스 이탈 시 버튼 색상을 원래대로 복원합니다.
+        /// </summary>
+        private void StatusControl_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is MaterialButton matBtn)
+            {
+                matBtn.UseAccentColor = false;
+                matBtn.Cursor = Cursors.Default;
+            }
+        }
     }//
 }
+

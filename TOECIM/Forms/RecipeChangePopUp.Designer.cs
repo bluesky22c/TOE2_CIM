@@ -42,10 +42,11 @@ namespace TOECIM.Forms
             this.timerLabel = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.descriptionLabel = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.materialCardParameter = new MaterialSkin.Controls.MaterialCard();
+            this.materialLabelParameter = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.materialCardParameter.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -100,6 +101,7 @@ namespace TOECIM.Forms
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(600, 219);
             this.dataGridView1.TabIndex = 67;
+            this.dataGridView1.Location = new System.Drawing.Point(3, 17);
             // 
             // scanNoDataGridViewTextBoxColumn
             // 
@@ -158,22 +160,38 @@ namespace TOECIM.Forms
             this.descriptionLabel.TabIndex = 69;
             this.descriptionLabel.Text = "Desc : ";
             // 
-            // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dataGridView1);
-            this.groupBox1.Location = new System.Drawing.Point(5, 102);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(606, 239);
-            this.groupBox1.TabIndex = 70;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Parameter";
+            // materialCardParameter
+            // 
+            this.materialCardParameter.Controls.Add(this.materialLabelParameter);
+            this.materialCardParameter.Controls.Add(this.dataGridView1);
+            this.materialCardParameter.Depth = 0;
+            this.materialCardParameter.Location = new System.Drawing.Point(5, 102);
+            this.materialCardParameter.Margin = new System.Windows.Forms.Padding(14);
+            this.materialCardParameter.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCardParameter.Name = "materialCardParameter";
+            this.materialCardParameter.Padding = new System.Windows.Forms.Padding(14);
+            this.materialCardParameter.Size = new System.Drawing.Size(606, 239);
+            this.materialCardParameter.TabIndex = 70;
+            // 
+            // materialLabelParameter
+            // 
+            this.materialLabelParameter.AutoSize = true;
+            this.materialLabelParameter.Depth = 0;
+            this.materialLabelParameter.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabelParameter.Location = new System.Drawing.Point(10, 5);
+            this.materialLabelParameter.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabelParameter.Name = "materialLabelParameter";
+            this.materialLabelParameter.Size = new System.Drawing.Size(78, 19);
+            this.materialLabelParameter.TabIndex = 1;
+            this.materialLabelParameter.Text = "Parameter";
             // 
             // RecipeChangePopUp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(616, 403);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.materialCardParameter);
             this.Controls.Add(this.descriptionLabel);
             this.Controls.Add(this.timerLabel);
             this.Controls.Add(this.recipeIDLabel);
@@ -184,7 +202,8 @@ namespace TOECIM.Forms
             this.Load += new System.EventHandler(this.RecipeChangePopUp_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recipeBindingSource)).EndInit();
-            this.groupBox1.ResumeLayout(false);
+            this.materialCardParameter.ResumeLayout(false);
+            this.materialCardParameter.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,6 +222,7 @@ namespace TOECIM.Forms
         private System.Windows.Forms.Label recipeIDLabel;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label descriptionLabel;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private MaterialSkin.Controls.MaterialCard materialCardParameter;
+        private MaterialSkin.Controls.MaterialLabel materialLabelParameter;
     }
 }

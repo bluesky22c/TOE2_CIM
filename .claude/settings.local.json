@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start \"\" \"D:\\\\Sources\\\\LGD\\\\TOE2\\\\TOE2_CIM\\\\TOECIM\\\\bin\\\\Debug\\\\net8.0-windows8.0\\\\TOECIM.exe\")"
+    ]
+  }
+}

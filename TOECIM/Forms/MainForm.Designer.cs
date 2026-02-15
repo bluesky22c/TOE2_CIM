@@ -31,57 +31,63 @@ namespace TOECIM
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            groupBox1 = new GroupBox();
-            rcsButton = new Button();
-            groupBox2 = new GroupBox();
-            opModeButton = new Button();
+            materialCardRCS = new MaterialSkin.Controls.MaterialCard();
+            materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            rcsButton = new MaterialSkin.Controls.MaterialButton();
+            materialCardOPMode = new MaterialSkin.Controls.MaterialCard();
+            materialLabelOPMode = new MaterialSkin.Controls.MaterialLabel();
+            opModeButton = new MaterialSkin.Controls.MaterialButton();
             splitContainer1 = new SplitContainer();
             splitContainer2 = new SplitContainer();
-            groupBoxScenario = new GroupBox();
-            scrapReportButton = new Button();
-            unloadButton = new Button();
-            glassDataReqButton = new Button();
-            LoadButton = new Button();
-            autoRunLabel = new Label();
-            glassInlabel = new Label();
-            groupBox3 = new GroupBox();
-            alarmStatusLabel = new Label();
-            consoleStatusLabel = new Label();
-            EQStatusLabel = new Label();
-            groupBox4 = new GroupBox();
-            glsmvLabel = new Label();
-            tabControl1 = new TabControl();
+            materialCardScenario = new MaterialSkin.Controls.MaterialCard();
+            materialLabelScenario = new MaterialSkin.Controls.MaterialLabel();
+            scrapReportButton = new MaterialSkin.Controls.MaterialButton();
+            unloadButton = new MaterialSkin.Controls.MaterialButton();
+            glassDataReqButton = new MaterialSkin.Controls.MaterialButton();
+            LoadButton = new MaterialSkin.Controls.MaterialButton();
+            materialCardEQPStatus = new MaterialSkin.Controls.MaterialCard();
+            materialLabelEQPStatus = new MaterialSkin.Controls.MaterialLabel();
+            autoRunLabel = new MaterialSkin.Controls.MaterialLabel();
+            glassInlabel = new MaterialSkin.Controls.MaterialLabel();
+            glsmvLabel = new MaterialSkin.Controls.MaterialLabel();
+            alarmStatusButton = new MaterialSkin.Controls.MaterialButton();
+            consoleStatusLabel = new MaterialSkin.Controls.MaterialLabel();
+            EQStatusLabel = new MaterialSkin.Controls.MaterialLabel();
+            tabControl1 = new TOECIM.Controls.DarkTabControl();
             tabPage1 = new TabPage();
             splitContainer3 = new SplitContainer();
-            groupBox5 = new GroupBox();
-            refreshCosoleStatusButton = new Button();
+            materialCardGlassStatus = new MaterialSkin.Controls.MaterialCard();
+            materialLabelGlassStatus = new MaterialSkin.Controls.MaterialLabel();
+            refreshCosoleStatusButton = new MaterialSkin.Controls.MaterialButton();
             GLSStatusTextBox = new TextBox();
-            label12 = new Label();
+            label12 = new MaterialSkin.Controls.MaterialLabel();
             cstidTextBox = new TextBox();
-            groupBox7 = new GroupBox();
+            materialCardBGlassInfo = new MaterialSkin.Controls.MaterialCard();
+            materialLabelBGlassInfo = new MaterialSkin.Controls.MaterialLabel();
             bGlassOdrTextBox = new TextBox();
-            label8 = new Label();
+            label8 = new MaterialSkin.Controls.MaterialLabel();
             bGlassCodeTextBox = new TextBox();
             bGlassIDTextBox = new TextBox();
-            label4 = new Label();
-            label5 = new Label();
-            label9 = new Label();
-            groupBox6 = new GroupBox();
+            label4 = new MaterialSkin.Controls.MaterialLabel();
+            label5 = new MaterialSkin.Controls.MaterialLabel();
+            label9 = new MaterialSkin.Controls.MaterialLabel();
+            materialCardAGlassInfo = new MaterialSkin.Controls.MaterialCard();
+            materialLabelAGlassInfo = new MaterialSkin.Controls.MaterialLabel();
             aGlassOdrTextBox = new TextBox();
-            label1 = new Label();
+            label1 = new MaterialSkin.Controls.MaterialLabel();
             aGlassCodeTextBox = new TextBox();
             aGlassIDTextBox = new TextBox();
-            label6 = new Label();
-            label7 = new Label();
+            label6 = new MaterialSkin.Controls.MaterialLabel();
+            label7 = new MaterialSkin.Controls.MaterialLabel();
             lotidTextBox = new TextBox();
             stageIDTextBox = new TextBox();
             portidTextBox = new TextBox();
-            label10 = new Label();
+            label10 = new MaterialSkin.Controls.MaterialLabel();
             unitIDTextBox = new TextBox();
-            label11 = new Label();
-            label3 = new Label();
-            label2 = new Label();
-            tabControl2 = new TabControl();
+            label11 = new MaterialSkin.Controls.MaterialLabel();
+            label3 = new MaterialSkin.Controls.MaterialLabel();
+            label2 = new MaterialSkin.Controls.MaterialLabel();
+            tabControl2 = new TOECIM.Controls.DarkTabControl();
             tabPage4 = new TabPage();
             splitContainer4 = new SplitContainer();
             aLoadPropertyGrid = new PropertyGrid();
@@ -91,11 +97,11 @@ namespace TOECIM
             aUnLoadPropertyGrid = new PropertyGrid();
             bUnLoadPropertyGrid = new PropertyGrid();
             tabPage2 = new TabPage();
-            allAlarmClearButton = new Button();
-            RefreshButton = new Button();
-            selectedAlarmClearButton = new Button();
-            alarmHistoryButton = new Button();
-            curAlarmButton = new Button();
+            allAlarmClearButton = new MaterialSkin.Controls.MaterialButton();
+            RefreshButton = new MaterialSkin.Controls.MaterialButton();
+            selectedAlarmClearButton = new MaterialSkin.Controls.MaterialButton();
+            alarmHistoryButton = new MaterialSkin.Controls.MaterialButton();
+            curAlarmButton = new MaterialSkin.Controls.MaterialButton();
             alarmDataGridView = new DataGridView();
             ID = new DataGridViewTextBoxColumn();
             _ALID = new DataGridViewTextBoxColumn();
@@ -105,10 +111,12 @@ namespace TOECIM
             _DateTime = new DataGridViewTextBoxColumn();
             _IsRelease = new DataGridViewTextBoxColumn();
             tabPage3 = new TabPage();
-            groupBox13 = new GroupBox();
-            glassdataresetButton = new Button();
+            materialCardGlassClearOpt = new MaterialSkin.Controls.MaterialCard();
+            materialLabelGlassClearOpt = new MaterialSkin.Controls.MaterialLabel();
+            glassdataresetButton = new MaterialSkin.Controls.MaterialButton();
             GlassCodeCheckBox = new CheckBox();
-            groupBox12 = new GroupBox();
+            materialCardGlassType = new MaterialSkin.Controls.MaterialCard();
+            materialLabelGlassType = new MaterialSkin.Controls.MaterialLabel();
             Aglass = new RadioButton();
             Bglass = new RadioButton();
             GlassIDCheckBox = new CheckBox();
@@ -120,8 +128,8 @@ namespace TOECIM
             testToolStripMenuItem = new ToolStripMenuItem();
             loopBackToolStripMenuItem = new ToolStripMenuItem();
             timeCheckToolStripMenuItem = new ToolStripMenuItem();
-            eQPStatusToolStripMenuItem = new ToolStripMenuItem();
             gLSMVStatusToolStripMenuItem = new ToolStripMenuItem();
+            eQPStatusToolStripMenuItem = new ToolStripMenuItem();
             eQPSimulatorToolStripMenuItem = new ToolStripMenuItem();
             alarmToolStripMenuItem = new ToolStripMenuItem();
             glassData초기화ToolStripMenuItem = new ToolStripMenuItem();
@@ -134,7 +142,8 @@ namespace TOECIM
             configToolStripMenuItem = new ToolStripMenuItem();
             sW변경이력ToolStripMenuItem = new ToolStripMenuItem();
             logViewer1 = new Engion.LogViewer(components);
-            groupBox2.SuspendLayout();
+            materialCardRCS.SuspendLayout();
+            materialCardOPMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -143,18 +152,17 @@ namespace TOECIM
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
-            groupBoxScenario.SuspendLayout();
-            groupBox3.SuspendLayout();
-            groupBox4.SuspendLayout();
+            materialCardScenario.SuspendLayout();
+            materialCardEQPStatus.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer3).BeginInit();
             splitContainer3.Panel1.SuspendLayout();
             splitContainer3.Panel2.SuspendLayout();
             splitContainer3.SuspendLayout();
-            groupBox5.SuspendLayout();
-            groupBox7.SuspendLayout();
-            groupBox6.SuspendLayout();
+            materialCardGlassStatus.SuspendLayout();
+            materialCardBGlassInfo.SuspendLayout();
+            materialCardAGlassInfo.SuspendLayout();
             tabControl2.SuspendLayout();
             tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer4).BeginInit();
@@ -169,85 +177,132 @@ namespace TOECIM
             tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)alarmDataGridView).BeginInit();
             tabPage3.SuspendLayout();
-            groupBox13.SuspendLayout();
-            groupBox12.SuspendLayout();
+            materialCardGlassClearOpt.SuspendLayout();
+            materialCardGlassType.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // groupBox1
+            // materialCardRCS
             // 
-            groupBox1.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBox1.Location = new Point(3, 2);
-            groupBox1.Margin = new Padding(3, 4, 3, 4);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(3, 4, 3, 4);
-            groupBox1.Size = new Size(120, 92);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "RCS";
+            materialCardRCS.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardRCS.Controls.Add(materialLabel1);
+            materialCardRCS.Depth = 0;
+            materialCardRCS.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardRCS.Location = new Point(3, 2);
+            materialCardRCS.Margin = new Padding(14);
+            materialCardRCS.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardRCS.Name = "materialCardRCS";
+            materialCardRCS.Padding = new Padding(14);
+            materialCardRCS.Size = new Size(120, 92);
+            materialCardRCS.TabIndex = 0;
+            // 
+            // materialLabel1
+            // 
+            materialLabel1.AutoSize = true;
+            materialLabel1.Depth = 0;
+            materialLabel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel1.Location = new Point(10, 5);
+            materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel1.Name = "materialLabel1";
+            materialLabel1.Size = new Size(31, 19);
+            materialLabel1.TabIndex = 1;
+            materialLabel1.Text = "RCS";
             // 
             // rcsButton
             // 
-            rcsButton.Font = new Font("Arial", 10F, FontStyle.Bold);
-            rcsButton.Location = new Point(4, 20);
-            rcsButton.Margin = new Padding(3, 4, 3, 4);
+            rcsButton.AutoSize = false;
+            rcsButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            rcsButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            rcsButton.Depth = 0;
+            rcsButton.HighEmphasis = false;
+            rcsButton.Icon = null;
+            rcsButton.Location = new Point(4, 27);
+            rcsButton.Margin = new Padding(0);
+            rcsButton.MouseState = MaterialSkin.MouseState.HOVER;
             rcsButton.Name = "rcsButton";
-            rcsButton.Size = new Size(115, 65);
+            rcsButton.NoAccentTextColor = Color.Empty;
+            rcsButton.Size = new Size(115, 54);
             rcsButton.TabIndex = 0;
             rcsButton.Text = "Offline";
+            rcsButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            rcsButton.UseAccentColor = false;
             rcsButton.UseVisualStyleBackColor = true;
             rcsButton.Click += rcsButton_Click;
             // 
-            // groupBox2
+            // materialCardOPMode
             // 
-            groupBox2.Controls.Add(opModeButton);
-            groupBox2.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBox2.Location = new Point(609, 2);
-            groupBox2.Margin = new Padding(3, 4, 3, 4);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Padding = new Padding(3, 4, 3, 4);
-            groupBox2.Size = new Size(132, 92);
-            groupBox2.TabIndex = 1;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "OPMode";
+            materialCardOPMode.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardOPMode.Controls.Add(materialLabelOPMode);
+            materialCardOPMode.Controls.Add(opModeButton);
+            materialCardOPMode.Depth = 0;
+            materialCardOPMode.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardOPMode.Location = new Point(605, 2);
+            materialCardOPMode.Margin = new Padding(14);
+            materialCardOPMode.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardOPMode.Name = "materialCardOPMode";
+            materialCardOPMode.Padding = new Padding(14);
+            materialCardOPMode.Size = new Size(132, 95);
+            materialCardOPMode.TabIndex = 1;
+            // 
+            // materialLabelOPMode
+            // 
+            materialLabelOPMode.AutoSize = true;
+            materialLabelOPMode.Depth = 0;
+            materialLabelOPMode.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabelOPMode.Location = new Point(10, 5);
+            materialLabelOPMode.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabelOPMode.Name = "materialLabelOPMode";
+            materialLabelOPMode.Size = new Size(62, 19);
+            materialLabelOPMode.TabIndex = 1;
+            materialLabelOPMode.Text = "OPMode";
             // 
             // opModeButton
             // 
-            opModeButton.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            opModeButton.Location = new Point(7, 19);
-            opModeButton.Margin = new Padding(3, 4, 3, 4);
+            opModeButton.AutoSize = false;
+            opModeButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            opModeButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            opModeButton.Depth = 0;
+            opModeButton.HighEmphasis = false;
+            opModeButton.Icon = null;
+            opModeButton.Location = new Point(7, 29);
+            opModeButton.Margin = new Padding(0);
+            opModeButton.MouseState = MaterialSkin.MouseState.HOVER;
             opModeButton.Name = "opModeButton";
-            opModeButton.Size = new Size(123, 67);
+            opModeButton.NoAccentTextColor = Color.White;
+            opModeButton.Size = new Size(117, 52);
             opModeButton.TabIndex = 0;
             opModeButton.Text = "Normal";
+            opModeButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            opModeButton.UseAccentColor = false;
             opModeButton.UseVisualStyleBackColor = true;
             opModeButton.Click += opModeButton_Click;
             // 
             // splitContainer1
             // 
-            splitContainer1.BackColor = Color.WhiteSmoke;
-            splitContainer1.BorderStyle = BorderStyle.Fixed3D;
+            splitContainer1.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Location = new Point(3, 64);
             splitContainer1.Margin = new Padding(3, 4, 3, 4);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer1.Panel1.Controls.Add(splitContainer2);
             splitContainer1.Panel1.Controls.Add(menuStrip1);
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer1.Panel2.Controls.Add(logViewer1);
-            splitContainer1.Size = new Size(1319, 926);
-            splitContainer1.SplitterDistance = 771;
+            splitContainer1.Size = new Size(1323, 898);
+            splitContainer1.SplitterDistance = 747;
             splitContainer1.TabIndex = 2;
             // 
             // splitContainer2
             // 
-            splitContainer2.BorderStyle = BorderStyle.Fixed3D;
+            splitContainer2.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer2.Dock = DockStyle.Fill;
             splitContainer2.Location = new Point(0, 24);
             splitContainer2.Name = "splitContainer2";
@@ -255,274 +310,384 @@ namespace TOECIM
             // 
             // splitContainer2.Panel1
             // 
-            splitContainer2.Panel1.Controls.Add(groupBoxScenario);
-            splitContainer2.Panel1.Controls.Add(autoRunLabel);
-            splitContainer2.Panel1.Controls.Add(groupBox2);
-            splitContainer2.Panel1.Controls.Add(glassInlabel);
-            splitContainer2.Panel1.Controls.Add(groupBox3);
-            splitContainer2.Panel1.Controls.Add(groupBox4);
+            splitContainer2.Panel1.BackColor = Color.FromArgb(25, 38, 52);
+            splitContainer2.Panel1.Controls.Add(materialCardScenario);
+            splitContainer2.Panel1.Controls.Add(materialCardOPMode);
+            splitContainer2.Panel1.Controls.Add(materialCardEQPStatus);
             // 
             // splitContainer2.Panel2
             // 
+            splitContainer2.Panel2.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer2.Panel2.Controls.Add(tabControl1);
-            splitContainer2.Size = new Size(1319, 747);
-            splitContainer2.SplitterDistance = 100;
+            splitContainer2.Size = new Size(1323, 723);
+            splitContainer2.SplitterDistance = 96;
             splitContainer2.SplitterWidth = 2;
             splitContainer2.TabIndex = 7;
             // 
-            // groupBoxScenario
+            // materialCardScenario
             // 
-            groupBoxScenario.Controls.Add(scrapReportButton);
-            groupBoxScenario.Controls.Add(unloadButton);
-            groupBoxScenario.Controls.Add(glassDataReqButton);
-            groupBoxScenario.Controls.Add(LoadButton);
-            groupBoxScenario.Controls.Add(rcsButton);
-            groupBoxScenario.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxScenario.Location = new Point(3, 2);
-            groupBoxScenario.Margin = new Padding(3, 4, 3, 4);
-            groupBoxScenario.Name = "groupBoxScenario";
-            groupBoxScenario.Padding = new Padding(3, 4, 3, 4);
-            groupBoxScenario.Size = new Size(600, 92);
-            groupBoxScenario.TabIndex = 0;
-            groupBoxScenario.TabStop = false;
-            groupBoxScenario.Text = "Scenario Sequence";
+            materialCardScenario.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardScenario.Controls.Add(materialLabelScenario);
+            materialCardScenario.Controls.Add(scrapReportButton);
+            materialCardScenario.Controls.Add(unloadButton);
+            materialCardScenario.Controls.Add(glassDataReqButton);
+            materialCardScenario.Controls.Add(LoadButton);
+            materialCardScenario.Controls.Add(rcsButton);
+            materialCardScenario.Depth = 0;
+            materialCardScenario.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardScenario.Location = new Point(3, 2);
+            materialCardScenario.Margin = new Padding(14);
+            materialCardScenario.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardScenario.Name = "materialCardScenario";
+            materialCardScenario.Padding = new Padding(14);
+            materialCardScenario.Size = new Size(600, 95);
+            materialCardScenario.TabIndex = 0;
+            // 
+            // materialLabelScenario
+            // 
+            materialLabelScenario.AutoSize = true;
+            materialLabelScenario.Depth = 0;
+            materialLabelScenario.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabelScenario.Location = new Point(10, 5);
+            materialLabelScenario.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabelScenario.Name = "materialLabelScenario";
+            materialLabelScenario.Size = new Size(136, 19);
+            materialLabelScenario.TabIndex = 5;
+            materialLabelScenario.Text = "Scenario Sequence";
             // 
             // scrapReportButton
             // 
-            scrapReportButton.Font = new Font("Arial", 10F, FontStyle.Bold);
-            scrapReportButton.Location = new Point(480, 20);
+            scrapReportButton.AutoSize = false;
+            scrapReportButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            scrapReportButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            scrapReportButton.Depth = 0;
+            scrapReportButton.HighEmphasis = false;
+            scrapReportButton.Icon = null;
+            scrapReportButton.Location = new Point(480, 27);
+            scrapReportButton.Margin = new Padding(0);
+            scrapReportButton.MouseState = MaterialSkin.MouseState.HOVER;
             scrapReportButton.Name = "scrapReportButton";
-            scrapReportButton.Size = new Size(115, 65);
+            scrapReportButton.NoAccentTextColor = Color.Empty;
+            scrapReportButton.Size = new Size(115, 54);
             scrapReportButton.TabIndex = 4;
             scrapReportButton.Text = "Scrap Report";
+            scrapReportButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            scrapReportButton.UseAccentColor = false;
             scrapReportButton.UseVisualStyleBackColor = true;
             scrapReportButton.Click += scrapReportButton_Click;
             // 
             // unloadButton
             // 
-            unloadButton.Font = new Font("Arial", 10F, FontStyle.Bold);
-            unloadButton.Location = new Point(361, 20);
+            unloadButton.AutoSize = false;
+            unloadButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            unloadButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            unloadButton.Depth = 0;
+            unloadButton.HighEmphasis = false;
+            unloadButton.Icon = null;
+            unloadButton.Location = new Point(361, 27);
+            unloadButton.Margin = new Padding(0);
+            unloadButton.MouseState = MaterialSkin.MouseState.HOVER;
             unloadButton.Name = "unloadButton";
-            unloadButton.Size = new Size(115, 65);
+            unloadButton.NoAccentTextColor = Color.Empty;
+            unloadButton.Size = new Size(115, 54);
             unloadButton.TabIndex = 3;
             unloadButton.Text = "Unload Done";
+            unloadButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            unloadButton.UseAccentColor = false;
             unloadButton.UseVisualStyleBackColor = true;
             unloadButton.Click += unloadButton_Click;
             // 
             // glassDataReqButton
             // 
-            glassDataReqButton.BackColor = Color.Cyan;
-            glassDataReqButton.Font = new Font("Arial", 10F, FontStyle.Bold);
-            glassDataReqButton.Location = new Point(242, 20);
-            glassDataReqButton.Margin = new Padding(3, 4, 3, 4);
+            glassDataReqButton.AutoSize = false;
+            glassDataReqButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            glassDataReqButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            glassDataReqButton.Depth = 0;
+            glassDataReqButton.HighEmphasis = false;
+            glassDataReqButton.Icon = null;
+            glassDataReqButton.Location = new Point(242, 27);
+            glassDataReqButton.Margin = new Padding(0);
+            glassDataReqButton.MouseState = MaterialSkin.MouseState.HOVER;
             glassDataReqButton.Name = "glassDataReqButton";
-            glassDataReqButton.Size = new Size(115, 65);
+            glassDataReqButton.NoAccentTextColor = Color.Empty;
+            glassDataReqButton.Size = new Size(115, 54);
             glassDataReqButton.TabIndex = 2;
             glassDataReqButton.Text = "Data Request";
+            glassDataReqButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            glassDataReqButton.UseAccentColor = false;
             glassDataReqButton.UseVisualStyleBackColor = true;
             glassDataReqButton.Click += glassDataReqButton_Click;
             // 
             // LoadButton
             // 
-            LoadButton.Font = new Font("Arial", 10F, FontStyle.Bold);
-            LoadButton.Location = new Point(123, 20);
+            LoadButton.AutoSize = false;
+            LoadButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            LoadButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            LoadButton.Depth = 0;
+            LoadButton.HighEmphasis = false;
+            LoadButton.Icon = null;
+            LoadButton.Location = new Point(123, 27);
+            LoadButton.Margin = new Padding(0);
+            LoadButton.MouseState = MaterialSkin.MouseState.HOVER;
             LoadButton.Name = "LoadButton";
-            LoadButton.Size = new Size(115, 65);
+            LoadButton.NoAccentTextColor = Color.Empty;
+            LoadButton.Size = new Size(115, 54);
             LoadButton.TabIndex = 1;
             LoadButton.Text = "Load Done";
+            LoadButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            LoadButton.UseAccentColor = false;
             LoadButton.UseVisualStyleBackColor = true;
             LoadButton.Click += LoadButton_Click;
             // 
+            // materialCardEQPStatus
+            // 
+            materialCardEQPStatus.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            materialCardEQPStatus.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardEQPStatus.Controls.Add(materialLabelEQPStatus);
+            materialCardEQPStatus.Controls.Add(autoRunLabel);
+            materialCardEQPStatus.Controls.Add(glassInlabel);
+            materialCardEQPStatus.Controls.Add(glsmvLabel);
+            materialCardEQPStatus.Controls.Add(alarmStatusButton);
+            materialCardEQPStatus.Controls.Add(consoleStatusLabel);
+            materialCardEQPStatus.Controls.Add(EQStatusLabel);
+            materialCardEQPStatus.Depth = 0;
+            materialCardEQPStatus.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardEQPStatus.Location = new Point(740, 2);
+            materialCardEQPStatus.Margin = new Padding(14);
+            materialCardEQPStatus.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardEQPStatus.Name = "materialCardEQPStatus";
+            materialCardEQPStatus.Padding = new Padding(14);
+            materialCardEQPStatus.Size = new Size(583, 95);
+            materialCardEQPStatus.TabIndex = 2;
+            // 
+            // materialLabelEQPStatus
+            // 
+            materialLabelEQPStatus.AutoSize = true;
+            materialLabelEQPStatus.Depth = 0;
+            materialLabelEQPStatus.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabelEQPStatus.Location = new Point(10, 5);
+            materialLabelEQPStatus.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabelEQPStatus.Name = "materialLabelEQPStatus";
+            materialLabelEQPStatus.Size = new Size(77, 19);
+            materialLabelEQPStatus.TabIndex = 11;
+            materialLabelEQPStatus.Text = "EQPStatus";
+            // 
             // autoRunLabel
             // 
-            autoRunLabel.BackColor = Color.Red;
-            autoRunLabel.Font = new Font("Arial", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            autoRunLabel.Location = new Point(1074, 4);
+            autoRunLabel.BorderStyle = BorderStyle.FixedSingle;
+            autoRunLabel.Depth = 0;
+            autoRunLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            autoRunLabel.Location = new Point(337, 27);
+            autoRunLabel.MouseState = MaterialSkin.MouseState.HOVER;
             autoRunLabel.Name = "autoRunLabel";
-            autoRunLabel.Size = new Size(113, 90);
-            autoRunLabel.TabIndex = 6;
-            autoRunLabel.Text = "AutoRun";
+            autoRunLabel.Size = new Size(122, 56);
+            autoRunLabel.TabIndex = 10;
+            autoRunLabel.Text = "AutoRun OFF";
             autoRunLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // glassInlabel
             // 
-            glassInlabel.BackColor = Color.Red;
-            glassInlabel.Font = new Font("Arial", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            glassInlabel.Location = new Point(1193, 4);
+            glassInlabel.Depth = 0;
+            glassInlabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            glassInlabel.Location = new Point(356, 17);
+            glassInlabel.MouseState = MaterialSkin.MouseState.HOVER;
             glassInlabel.Name = "glassInlabel";
-            glassInlabel.Size = new Size(113, 90);
-            glassInlabel.TabIndex = 5;
-            glassInlabel.Text = "GlassIn";
+            glassInlabel.Size = new Size(86, 45);
+            glassInlabel.TabIndex = 9;
+            glassInlabel.Text = "Glass IN";
             glassInlabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // groupBox3
+            // glsmvLabel
             // 
-            groupBox3.Controls.Add(alarmStatusLabel);
-            groupBox3.Controls.Add(consoleStatusLabel);
-            groupBox3.Controls.Add(EQStatusLabel);
-            groupBox3.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBox3.Location = new Point(744, 1);
-            groupBox3.Margin = new Padding(3, 4, 3, 4);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Padding = new Padding(3, 4, 3, 4);
-            groupBox3.Size = new Size(155, 93);
-            groupBox3.TabIndex = 2;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "EQPStatus";
+            glsmvLabel.BorderStyle = BorderStyle.FixedSingle;
+            glsmvLabel.Depth = 0;
+            glsmvLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            glsmvLabel.Location = new Point(465, 27);
+            glsmvLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            glsmvLabel.Name = "glsmvLabel";
+            glsmvLabel.Size = new Size(97, 56);
+            glsmvLabel.TabIndex = 8;
+            glsmvLabel.Text = "LW";
+            glsmvLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // alarmStatusLabel
+            // alarmStatusButton
             // 
-            alarmStatusLabel.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            alarmStatusLabel.Location = new Point(90, 59);
-            alarmStatusLabel.Name = "alarmStatusLabel";
-            alarmStatusLabel.Size = new Size(57, 28);
-            alarmStatusLabel.TabIndex = 1;
-            alarmStatusLabel.Text = "Alarm";
-            alarmStatusLabel.TextAlign = ContentAlignment.MiddleCenter;
-            alarmStatusLabel.Click += alarmStatusLabel_Click;
+            alarmStatusButton.AutoSize = false;
+            alarmStatusButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            alarmStatusButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            alarmStatusButton.Depth = 0;
+            alarmStatusButton.HighEmphasis = true;
+            alarmStatusButton.Icon = null;
+            alarmStatusButton.Location = new Point(15, 27);
+            alarmStatusButton.Margin = new Padding(4, 6, 4, 6);
+            alarmStatusButton.MouseState = MaterialSkin.MouseState.HOVER;
+            alarmStatusButton.Name = "alarmStatusButton";
+            alarmStatusButton.NoAccentTextColor = Color.Empty;
+            alarmStatusButton.Size = new Size(101, 56);
+            alarmStatusButton.TabIndex = 1;
+            alarmStatusButton.Text = "Alarm";
+            alarmStatusButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            alarmStatusButton.UseAccentColor = false;
+            alarmStatusButton.UseVisualStyleBackColor = true;
+            alarmStatusButton.Click += alarmStatusLabel_Click;
             // 
             // consoleStatusLabel
             // 
-            consoleStatusLabel.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            consoleStatusLabel.Location = new Point(6, 58);
+            consoleStatusLabel.BorderStyle = BorderStyle.FixedSingle;
+            consoleStatusLabel.Depth = 0;
+            consoleStatusLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            consoleStatusLabel.ForeColor = Color.Lime;
+            consoleStatusLabel.Location = new Point(123, 27);
+            consoleStatusLabel.Margin = new Padding(4, 6, 4, 6);
+            consoleStatusLabel.MouseState = MaterialSkin.MouseState.HOVER;
             consoleStatusLabel.Name = "consoleStatusLabel";
-            consoleStatusLabel.Size = new Size(80, 28);
+            consoleStatusLabel.Size = new Size(94, 56);
             consoleStatusLabel.TabIndex = 1;
-            consoleStatusLabel.Text = "Console";
+            consoleStatusLabel.Text = "CONSOLE";
             consoleStatusLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // EQStatusLabel
             // 
-            EQStatusLabel.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            EQStatusLabel.Location = new Point(6, 22);
+            EQStatusLabel.BorderStyle = BorderStyle.FixedSingle;
+            EQStatusLabel.Depth = 0;
+            EQStatusLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            EQStatusLabel.Location = new Point(224, 27);
+            EQStatusLabel.MouseState = MaterialSkin.MouseState.HOVER;
             EQStatusLabel.Name = "EQStatusLabel";
-            EQStatusLabel.Size = new Size(143, 26);
+            EQStatusLabel.Size = new Size(107, 56);
             EQStatusLabel.TabIndex = 0;
-            EQStatusLabel.Text = "Idle";
+            EQStatusLabel.Text = "DOWN";
             EQStatusLabel.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(glsmvLabel);
-            groupBox4.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBox4.Location = new Point(905, 2);
-            groupBox4.Margin = new Padding(3, 4, 3, 4);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Padding = new Padding(3, 4, 3, 4);
-            groupBox4.Size = new Size(165, 92);
-            groupBox4.TabIndex = 3;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Glass Move Status";
-            // 
-            // glsmvLabel
-            // 
-            glsmvLabel.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            glsmvLabel.Location = new Point(3, 31);
-            glsmvLabel.Name = "glsmvLabel";
-            glsmvLabel.Size = new Size(149, 57);
-            glsmvLabel.TabIndex = 0;
-            glsmvLabel.Text = "LW";
-            glsmvLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tabControl1
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
+            tabControl1.DarkBackColor = Color.FromArgb(25, 38, 52);
             tabControl1.Dock = DockStyle.Fill;
+            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControl1.HighlightColor = Color.FromArgb(129, 212, 250);
+            tabControl1.ItemSize = new Size(100, 35);
             tabControl1.Location = new Point(0, 0);
             tabControl1.Margin = new Padding(3, 4, 3, 4);
+            tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1315, 641);
+            tabControl1.Size = new Size(1323, 625);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 4;
             // 
             // tabPage1
             // 
-            tabPage1.BorderStyle = BorderStyle.Fixed3D;
             tabPage1.Controls.Add(splitContainer3);
-            tabPage1.Location = new Point(4, 24);
+            tabPage1.Location = new Point(4, 39);
             tabPage1.Margin = new Padding(3, 4, 3, 4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3, 4, 3, 4);
-            tabPage1.Size = new Size(1307, 613);
+            tabPage1.Size = new Size(1315, 582);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Status";
-            tabPage1.UseVisualStyleBackColor = true;
             // 
             // splitContainer3
             // 
-            splitContainer3.BackColor = Color.WhiteSmoke;
-            splitContainer3.BorderStyle = BorderStyle.Fixed3D;
+            splitContainer3.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer3.Dock = DockStyle.Fill;
             splitContainer3.Location = new Point(3, 4);
             splitContainer3.Name = "splitContainer3";
             // 
             // splitContainer3.Panel1
             // 
-            splitContainer3.Panel1.Controls.Add(groupBox5);
+            splitContainer3.Panel1.BackColor = Color.FromArgb(25, 38, 52);
+            splitContainer3.Panel1.Controls.Add(materialCardGlassStatus);
             // 
             // splitContainer3.Panel2
             // 
+            splitContainer3.Panel2.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer3.Panel2.Controls.Add(tabControl2);
-            splitContainer3.Size = new Size(1297, 601);
-            splitContainer3.SplitterDistance = 431;
+            splitContainer3.Size = new Size(1309, 574);
+            splitContainer3.SplitterDistance = 434;
             splitContainer3.SplitterWidth = 2;
             splitContainer3.TabIndex = 3;
             // 
-            // groupBox5
+            // materialCardGlassStatus
             // 
-            groupBox5.Controls.Add(refreshCosoleStatusButton);
-            groupBox5.Controls.Add(GLSStatusTextBox);
-            groupBox5.Controls.Add(label12);
-            groupBox5.Controls.Add(cstidTextBox);
-            groupBox5.Controls.Add(groupBox7);
-            groupBox5.Controls.Add(label9);
-            groupBox5.Controls.Add(groupBox6);
-            groupBox5.Controls.Add(lotidTextBox);
-            groupBox5.Controls.Add(stageIDTextBox);
-            groupBox5.Controls.Add(portidTextBox);
-            groupBox5.Controls.Add(label10);
-            groupBox5.Controls.Add(unitIDTextBox);
-            groupBox5.Controls.Add(label11);
-            groupBox5.Controls.Add(label3);
-            groupBox5.Controls.Add(label2);
-            groupBox5.Dock = DockStyle.Fill;
-            groupBox5.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBox5.Location = new Point(0, 0);
-            groupBox5.Margin = new Padding(3, 4, 3, 4);
-            groupBox5.Name = "groupBox5";
-            groupBox5.Padding = new Padding(3, 4, 3, 4);
-            groupBox5.Size = new Size(427, 597);
-            groupBox5.TabIndex = 3;
-            groupBox5.TabStop = false;
-            groupBox5.Text = "Current Load Status";
+            materialCardGlassStatus.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardGlassStatus.Controls.Add(materialLabelGlassStatus);
+            materialCardGlassStatus.Controls.Add(refreshCosoleStatusButton);
+            materialCardGlassStatus.Controls.Add(GLSStatusTextBox);
+            materialCardGlassStatus.Controls.Add(label12);
+            materialCardGlassStatus.Controls.Add(cstidTextBox);
+            materialCardGlassStatus.Controls.Add(materialCardBGlassInfo);
+            materialCardGlassStatus.Controls.Add(label9);
+            materialCardGlassStatus.Controls.Add(materialCardAGlassInfo);
+            materialCardGlassStatus.Controls.Add(lotidTextBox);
+            materialCardGlassStatus.Controls.Add(stageIDTextBox);
+            materialCardGlassStatus.Controls.Add(portidTextBox);
+            materialCardGlassStatus.Controls.Add(label10);
+            materialCardGlassStatus.Controls.Add(unitIDTextBox);
+            materialCardGlassStatus.Controls.Add(label11);
+            materialCardGlassStatus.Controls.Add(label3);
+            materialCardGlassStatus.Controls.Add(label2);
+            materialCardGlassStatus.Depth = 0;
+            materialCardGlassStatus.Dock = DockStyle.Fill;
+            materialCardGlassStatus.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardGlassStatus.Location = new Point(0, 0);
+            materialCardGlassStatus.Margin = new Padding(14);
+            materialCardGlassStatus.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardGlassStatus.Name = "materialCardGlassStatus";
+            materialCardGlassStatus.Padding = new Padding(14);
+            materialCardGlassStatus.Size = new Size(434, 574);
+            materialCardGlassStatus.TabIndex = 3;
+            // 
+            // materialLabelGlassStatus
+            // 
+            materialLabelGlassStatus.AutoSize = true;
+            materialLabelGlassStatus.Depth = 0;
+            materialLabelGlassStatus.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabelGlassStatus.Location = new Point(10, 15);
+            materialLabelGlassStatus.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabelGlassStatus.Name = "materialLabelGlassStatus";
+            materialLabelGlassStatus.Size = new Size(142, 19);
+            materialLabelGlassStatus.TabIndex = 21;
+            materialLabelGlassStatus.Text = "Current Load Status";
             // 
             // refreshCosoleStatusButton
             // 
-            refreshCosoleStatusButton.BackColor = Color.FloralWhite;
-            refreshCosoleStatusButton.Location = new Point(6, 532);
+            refreshCosoleStatusButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            refreshCosoleStatusButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            refreshCosoleStatusButton.Depth = 0;
+            refreshCosoleStatusButton.HighEmphasis = true;
+            refreshCosoleStatusButton.Icon = null;
+            refreshCosoleStatusButton.Location = new Point(234, 495);
             refreshCosoleStatusButton.Margin = new Padding(3, 4, 3, 4);
+            refreshCosoleStatusButton.MouseState = MaterialSkin.MouseState.HOVER;
             refreshCosoleStatusButton.Name = "refreshCosoleStatusButton";
-            refreshCosoleStatusButton.Size = new Size(289, 55);
+            refreshCosoleStatusButton.NoAccentTextColor = Color.Empty;
+            refreshCosoleStatusButton.Size = new Size(84, 36);
             refreshCosoleStatusButton.TabIndex = 20;
             refreshCosoleStatusButton.Text = "Refresh";
+            refreshCosoleStatusButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            refreshCosoleStatusButton.UseAccentColor = false;
             refreshCosoleStatusButton.UseVisualStyleBackColor = false;
+            refreshCosoleStatusButton.Click += refreshCosoleStatusButton_Click_1;
             // 
             // GLSStatusTextBox
             // 
-            GLSStatusTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            GLSStatusTextBox.Location = new Point(145, 206);
-            GLSStatusTextBox.Margin = new Padding(3, 4, 3, 4);
+            GLSStatusTextBox.BorderStyle = BorderStyle.FixedSingle;
+            GLSStatusTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            GLSStatusTextBox.Location = new Point(173, 195);
             GLSStatusTextBox.Name = "GLSStatusTextBox";
             GLSStatusTextBox.ReadOnly = true;
-            GLSStatusTextBox.Size = new Size(136, 26);
+            GLSStatusTextBox.Size = new Size(136, 23);
             GLSStatusTextBox.TabIndex = 19;
             // 
             // label12
             // 
-            label12.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.Location = new Point(24, 209);
+            label12.Depth = 0;
+            label12.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label12.Location = new Point(52, 197);
+            label12.MouseState = MaterialSkin.MouseState.HOVER;
             label12.Name = "label12";
             label12.Size = new Size(115, 23);
             label12.TabIndex = 18;
@@ -531,45 +696,62 @@ namespace TOECIM
             // 
             // cstidTextBox
             // 
-            cstidTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            cstidTextBox.Location = new Point(145, 170);
-            cstidTextBox.Margin = new Padding(3, 4, 3, 4);
+            cstidTextBox.BorderStyle = BorderStyle.FixedSingle;
+            cstidTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            cstidTextBox.Location = new Point(173, 165);
             cstidTextBox.Name = "cstidTextBox";
             cstidTextBox.ReadOnly = true;
-            cstidTextBox.Size = new Size(136, 26);
+            cstidTextBox.Size = new Size(136, 23);
             cstidTextBox.TabIndex = 17;
             // 
-            // groupBox7
+            // materialCardBGlassInfo
             // 
-            groupBox7.BackColor = Color.PaleGreen;
-            groupBox7.Controls.Add(bGlassOdrTextBox);
-            groupBox7.Controls.Add(label8);
-            groupBox7.Controls.Add(bGlassCodeTextBox);
-            groupBox7.Controls.Add(bGlassIDTextBox);
-            groupBox7.Controls.Add(label4);
-            groupBox7.Controls.Add(label5);
-            groupBox7.Location = new Point(6, 392);
-            groupBox7.Margin = new Padding(3, 4, 3, 4);
-            groupBox7.Name = "groupBox7";
-            groupBox7.Padding = new Padding(3, 4, 3, 4);
-            groupBox7.Size = new Size(289, 132);
-            groupBox7.TabIndex = 11;
-            groupBox7.TabStop = false;
-            groupBox7.Text = "B Glass";
+            materialCardBGlassInfo.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardBGlassInfo.Controls.Add(materialLabelBGlassInfo);
+            materialCardBGlassInfo.Controls.Add(bGlassOdrTextBox);
+            materialCardBGlassInfo.Controls.Add(label8);
+            materialCardBGlassInfo.Controls.Add(bGlassCodeTextBox);
+            materialCardBGlassInfo.Controls.Add(bGlassIDTextBox);
+            materialCardBGlassInfo.Controls.Add(label4);
+            materialCardBGlassInfo.Controls.Add(label5);
+            materialCardBGlassInfo.Depth = 0;
+            materialCardBGlassInfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardBGlassInfo.Location = new Point(28, 358);
+            materialCardBGlassInfo.Margin = new Padding(14);
+            materialCardBGlassInfo.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardBGlassInfo.Name = "materialCardBGlassInfo";
+            materialCardBGlassInfo.Padding = new Padding(14);
+            materialCardBGlassInfo.Size = new Size(289, 115);
+            materialCardBGlassInfo.TabIndex = 11;
+            // 
+            // materialLabelBGlassInfo
+            // 
+            materialLabelBGlassInfo.AutoSize = true;
+            materialLabelBGlassInfo.Depth = 0;
+            materialLabelBGlassInfo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabelBGlassInfo.Location = new Point(10, 5);
+            materialLabelBGlassInfo.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabelBGlassInfo.Name = "materialLabelBGlassInfo";
+            materialLabelBGlassInfo.Size = new Size(55, 19);
+            materialLabelBGlassInfo.TabIndex = 12;
+            materialLabelBGlassInfo.Text = "B Glass";
             // 
             // bGlassOdrTextBox
             // 
-            bGlassOdrTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            bGlassOdrTextBox.Location = new Point(154, 97);
-            bGlassOdrTextBox.Margin = new Padding(3, 4, 3, 4);
+            bGlassOdrTextBox.BorderStyle = BorderStyle.FixedSingle;
+            bGlassOdrTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            bGlassOdrTextBox.Location = new Point(145, 85);
             bGlassOdrTextBox.Name = "bGlassOdrTextBox";
             bGlassOdrTextBox.ReadOnly = true;
-            bGlassOdrTextBox.Size = new Size(130, 26);
+            bGlassOdrTextBox.Size = new Size(122, 23);
             bGlassOdrTextBox.TabIndex = 11;
             // 
             // label8
             // 
-            label8.Location = new Point(6, 100);
+            label8.Depth = 0;
+            label8.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label8.Location = new Point(6, 88);
+            label8.MouseState = MaterialSkin.MouseState.HOVER;
             label8.Name = "label8";
             label8.Size = new Size(142, 23);
             label8.TabIndex = 10;
@@ -578,27 +760,30 @@ namespace TOECIM
             // 
             // bGlassCodeTextBox
             // 
-            bGlassCodeTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            bGlassCodeTextBox.Location = new Point(153, 61);
-            bGlassCodeTextBox.Margin = new Padding(3, 4, 3, 4);
+            bGlassCodeTextBox.BorderStyle = BorderStyle.FixedSingle;
+            bGlassCodeTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            bGlassCodeTextBox.Location = new Point(145, 55);
             bGlassCodeTextBox.Name = "bGlassCodeTextBox";
             bGlassCodeTextBox.ReadOnly = true;
-            bGlassCodeTextBox.Size = new Size(130, 26);
+            bGlassCodeTextBox.Size = new Size(122, 23);
             bGlassCodeTextBox.TabIndex = 9;
             // 
             // bGlassIDTextBox
             // 
-            bGlassIDTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            bGlassIDTextBox.Location = new Point(154, 25);
-            bGlassIDTextBox.Margin = new Padding(3, 4, 3, 4);
+            bGlassIDTextBox.BorderStyle = BorderStyle.FixedSingle;
+            bGlassIDTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            bGlassIDTextBox.Location = new Point(145, 25);
             bGlassIDTextBox.Name = "bGlassIDTextBox";
             bGlassIDTextBox.ReadOnly = true;
-            bGlassIDTextBox.Size = new Size(130, 26);
+            bGlassIDTextBox.Size = new Size(122, 23);
             bGlassIDTextBox.TabIndex = 8;
             // 
             // label4
             // 
-            label4.Location = new Point(6, 64);
+            label4.Depth = 0;
+            label4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label4.Location = new Point(6, 59);
+            label4.MouseState = MaterialSkin.MouseState.HOVER;
             label4.Name = "label4";
             label4.Size = new Size(142, 23);
             label4.TabIndex = 3;
@@ -607,7 +792,10 @@ namespace TOECIM
             // 
             // label5
             // 
-            label5.Location = new Point(6, 28);
+            label5.Depth = 0;
+            label5.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label5.Location = new Point(6, 29);
+            label5.MouseState = MaterialSkin.MouseState.HOVER;
             label5.Name = "label5";
             label5.Size = new Size(142, 23);
             label5.TabIndex = 2;
@@ -616,45 +804,64 @@ namespace TOECIM
             // 
             // label9
             // 
-            label9.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label9.Location = new Point(24, 173);
+            label9.Depth = 0;
+            label9.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label9.Location = new Point(52, 167);
+            label9.MouseState = MaterialSkin.MouseState.HOVER;
             label9.Name = "label9";
             label9.Size = new Size(115, 23);
             label9.TabIndex = 16;
             label9.Text = "CSTID :";
             label9.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // groupBox6
+            // materialCardAGlassInfo
             // 
-            groupBox6.BackColor = Color.PaleTurquoise;
-            groupBox6.Controls.Add(aGlassOdrTextBox);
-            groupBox6.Controls.Add(label1);
-            groupBox6.Controls.Add(aGlassCodeTextBox);
-            groupBox6.Controls.Add(aGlassIDTextBox);
-            groupBox6.Controls.Add(label6);
-            groupBox6.Controls.Add(label7);
-            groupBox6.Location = new Point(6, 252);
-            groupBox6.Margin = new Padding(3, 4, 3, 4);
-            groupBox6.Name = "groupBox6";
-            groupBox6.Padding = new Padding(3, 4, 3, 4);
-            groupBox6.Size = new Size(289, 132);
-            groupBox6.TabIndex = 10;
-            groupBox6.TabStop = false;
-            groupBox6.Text = "A Glass";
+            materialCardAGlassInfo.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardAGlassInfo.Controls.Add(materialLabelAGlassInfo);
+            materialCardAGlassInfo.Controls.Add(aGlassOdrTextBox);
+            materialCardAGlassInfo.Controls.Add(label1);
+            materialCardAGlassInfo.Controls.Add(aGlassCodeTextBox);
+            materialCardAGlassInfo.Controls.Add(aGlassIDTextBox);
+            materialCardAGlassInfo.Controls.Add(label6);
+            materialCardAGlassInfo.Controls.Add(label7);
+            materialCardAGlassInfo.Depth = 0;
+            materialCardAGlassInfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardAGlassInfo.Location = new Point(28, 238);
+            materialCardAGlassInfo.Margin = new Padding(14);
+            materialCardAGlassInfo.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardAGlassInfo.Name = "materialCardAGlassInfo";
+            materialCardAGlassInfo.Padding = new Padding(14);
+            materialCardAGlassInfo.Size = new Size(289, 115);
+            materialCardAGlassInfo.TabIndex = 10;
+            // 
+            // materialLabelAGlassInfo
+            // 
+            materialLabelAGlassInfo.AutoSize = true;
+            materialLabelAGlassInfo.Depth = 0;
+            materialLabelAGlassInfo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabelAGlassInfo.Location = new Point(10, 5);
+            materialLabelAGlassInfo.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabelAGlassInfo.Name = "materialLabelAGlassInfo";
+            materialLabelAGlassInfo.Size = new Size(55, 19);
+            materialLabelAGlassInfo.TabIndex = 12;
+            materialLabelAGlassInfo.Text = "A Glass";
             // 
             // aGlassOdrTextBox
             // 
-            aGlassOdrTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            aGlassOdrTextBox.Location = new Point(154, 97);
-            aGlassOdrTextBox.Margin = new Padding(3, 4, 3, 4);
+            aGlassOdrTextBox.BorderStyle = BorderStyle.FixedSingle;
+            aGlassOdrTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            aGlassOdrTextBox.Location = new Point(145, 85);
             aGlassOdrTextBox.Name = "aGlassOdrTextBox";
             aGlassOdrTextBox.ReadOnly = true;
-            aGlassOdrTextBox.Size = new Size(129, 26);
+            aGlassOdrTextBox.Size = new Size(122, 23);
             aGlassOdrTextBox.TabIndex = 11;
             // 
             // label1
             // 
-            label1.Location = new Point(6, 98);
+            label1.Depth = 0;
+            label1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label1.Location = new Point(6, 88);
+            label1.MouseState = MaterialSkin.MouseState.HOVER;
             label1.Name = "label1";
             label1.Size = new Size(142, 23);
             label1.TabIndex = 10;
@@ -663,27 +870,30 @@ namespace TOECIM
             // 
             // aGlassCodeTextBox
             // 
-            aGlassCodeTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            aGlassCodeTextBox.Location = new Point(154, 61);
-            aGlassCodeTextBox.Margin = new Padding(3, 4, 3, 4);
+            aGlassCodeTextBox.BorderStyle = BorderStyle.FixedSingle;
+            aGlassCodeTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            aGlassCodeTextBox.Location = new Point(145, 55);
             aGlassCodeTextBox.Name = "aGlassCodeTextBox";
             aGlassCodeTextBox.ReadOnly = true;
-            aGlassCodeTextBox.Size = new Size(129, 26);
+            aGlassCodeTextBox.Size = new Size(122, 23);
             aGlassCodeTextBox.TabIndex = 9;
             // 
             // aGlassIDTextBox
             // 
-            aGlassIDTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            aGlassIDTextBox.Location = new Point(154, 25);
-            aGlassIDTextBox.Margin = new Padding(3, 4, 3, 4);
+            aGlassIDTextBox.BorderStyle = BorderStyle.FixedSingle;
+            aGlassIDTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            aGlassIDTextBox.Location = new Point(145, 25);
             aGlassIDTextBox.Name = "aGlassIDTextBox";
             aGlassIDTextBox.ReadOnly = true;
-            aGlassIDTextBox.Size = new Size(129, 26);
+            aGlassIDTextBox.Size = new Size(122, 23);
             aGlassIDTextBox.TabIndex = 8;
             // 
             // label6
             // 
-            label6.Location = new Point(6, 62);
+            label6.Depth = 0;
+            label6.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label6.Location = new Point(6, 59);
+            label6.MouseState = MaterialSkin.MouseState.HOVER;
             label6.Name = "label6";
             label6.Size = new Size(142, 23);
             label6.TabIndex = 3;
@@ -692,7 +902,10 @@ namespace TOECIM
             // 
             // label7
             // 
-            label7.Location = new Point(6, 26);
+            label7.Depth = 0;
+            label7.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label7.Location = new Point(6, 29);
+            label7.MouseState = MaterialSkin.MouseState.HOVER;
             label7.Name = "label7";
             label7.Size = new Size(142, 23);
             label7.TabIndex = 2;
@@ -701,38 +914,40 @@ namespace TOECIM
             // 
             // lotidTextBox
             // 
-            lotidTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            lotidTextBox.Location = new Point(145, 134);
-            lotidTextBox.Margin = new Padding(3, 4, 3, 4);
+            lotidTextBox.BorderStyle = BorderStyle.FixedSingle;
+            lotidTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lotidTextBox.Location = new Point(173, 136);
             lotidTextBox.Name = "lotidTextBox";
             lotidTextBox.ReadOnly = true;
-            lotidTextBox.Size = new Size(136, 26);
+            lotidTextBox.Size = new Size(136, 23);
             lotidTextBox.TabIndex = 15;
             // 
             // stageIDTextBox
             // 
-            stageIDTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            stageIDTextBox.Location = new Point(145, 62);
-            stageIDTextBox.Margin = new Padding(3, 4, 3, 4);
+            stageIDTextBox.BorderStyle = BorderStyle.FixedSingle;
+            stageIDTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            stageIDTextBox.Location = new Point(173, 77);
             stageIDTextBox.Name = "stageIDTextBox";
             stageIDTextBox.ReadOnly = true;
-            stageIDTextBox.Size = new Size(136, 26);
+            stageIDTextBox.Size = new Size(136, 23);
             stageIDTextBox.TabIndex = 7;
             // 
             // portidTextBox
             // 
-            portidTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            portidTextBox.Location = new Point(145, 98);
-            portidTextBox.Margin = new Padding(3, 4, 3, 4);
+            portidTextBox.BorderStyle = BorderStyle.FixedSingle;
+            portidTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            portidTextBox.Location = new Point(173, 106);
             portidTextBox.Name = "portidTextBox";
             portidTextBox.ReadOnly = true;
-            portidTextBox.Size = new Size(136, 26);
+            portidTextBox.Size = new Size(136, 23);
             portidTextBox.TabIndex = 14;
             // 
             // label10
             // 
-            label10.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label10.Location = new Point(24, 137);
+            label10.Depth = 0;
+            label10.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label10.Location = new Point(52, 138);
+            label10.MouseState = MaterialSkin.MouseState.HOVER;
             label10.Name = "label10";
             label10.Size = new Size(115, 23);
             label10.TabIndex = 13;
@@ -741,18 +956,20 @@ namespace TOECIM
             // 
             // unitIDTextBox
             // 
-            unitIDTextBox.Font = new Font("Arial", 12F, FontStyle.Bold);
-            unitIDTextBox.Location = new Point(145, 26);
-            unitIDTextBox.Margin = new Padding(3, 4, 3, 4);
+            unitIDTextBox.BorderStyle = BorderStyle.FixedSingle;
+            unitIDTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            unitIDTextBox.Location = new Point(173, 48);
             unitIDTextBox.Name = "unitIDTextBox";
             unitIDTextBox.ReadOnly = true;
-            unitIDTextBox.Size = new Size(136, 26);
+            unitIDTextBox.Size = new Size(136, 23);
             unitIDTextBox.TabIndex = 6;
             // 
             // label11
             // 
-            label11.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label11.Location = new Point(24, 101);
+            label11.Depth = 0;
+            label11.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label11.Location = new Point(52, 108);
+            label11.MouseState = MaterialSkin.MouseState.HOVER;
             label11.Name = "label11";
             label11.Size = new Size(115, 23);
             label11.TabIndex = 12;
@@ -761,8 +978,10 @@ namespace TOECIM
             // 
             // label3
             // 
-            label3.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(24, 65);
+            label3.Depth = 0;
+            label3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label3.Location = new Point(52, 79);
+            label3.MouseState = MaterialSkin.MouseState.HOVER;
             label3.Name = "label3";
             label3.Size = new Size(115, 23);
             label3.TabIndex = 1;
@@ -771,55 +990,63 @@ namespace TOECIM
             // 
             // label2
             // 
-            label2.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(24, 29);
+            label2.Depth = 0;
+            label2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label2.Location = new Point(52, 50);
+            label2.MouseState = MaterialSkin.MouseState.HOVER;
             label2.Name = "label2";
             label2.Size = new Size(115, 23);
-            label2.TabIndex = 0;
-            label2.Text = "UNITID :";
+            label2.TabIndex = 22;
+            label2.Text = "UnitID :";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tabControl2
             // 
             tabControl2.Controls.Add(tabPage4);
             tabControl2.Controls.Add(tabPage5);
+            tabControl2.DarkBackColor = Color.FromArgb(25, 38, 52);
             tabControl2.Dock = DockStyle.Fill;
+            tabControl2.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControl2.HighlightColor = Color.FromArgb(129, 212, 250);
+            tabControl2.ItemSize = new Size(100, 30);
             tabControl2.Location = new Point(0, 0);
             tabControl2.Margin = new Padding(3, 4, 3, 4);
+            tabControl2.Multiline = true;
             tabControl2.Name = "tabControl2";
             tabControl2.SelectedIndex = 0;
-            tabControl2.Size = new Size(860, 597);
+            tabControl2.Size = new Size(873, 574);
+            tabControl2.SizeMode = TabSizeMode.Fixed;
             tabControl2.TabIndex = 2;
             // 
             // tabPage4
             // 
-            tabPage4.BorderStyle = BorderStyle.FixedSingle;
             tabPage4.Controls.Add(splitContainer4);
-            tabPage4.Location = new Point(4, 24);
+            tabPage4.Location = new Point(4, 34);
             tabPage4.Margin = new Padding(3, 4, 3, 4);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3, 4, 3, 4);
-            tabPage4.Size = new Size(852, 569);
+            tabPage4.Size = new Size(865, 536);
             tabPage4.TabIndex = 0;
             tabPage4.Text = "LoadGlass";
-            tabPage4.UseVisualStyleBackColor = true;
             // 
             // splitContainer4
             // 
-            splitContainer4.BorderStyle = BorderStyle.FixedSingle;
+            splitContainer4.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer4.Dock = DockStyle.Fill;
             splitContainer4.Location = new Point(3, 4);
             splitContainer4.Name = "splitContainer4";
             // 
             // splitContainer4.Panel1
             // 
+            splitContainer4.Panel1.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer4.Panel1.Controls.Add(aLoadPropertyGrid);
             // 
             // splitContainer4.Panel2
             // 
+            splitContainer4.Panel2.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer4.Panel2.Controls.Add(bLoadPropertyGrid);
-            splitContainer4.Size = new Size(844, 559);
-            splitContainer4.SplitterDistance = 422;
+            splitContainer4.Size = new Size(859, 528);
+            splitContainer4.SplitterDistance = 429;
             splitContainer4.SplitterWidth = 2;
             splitContainer4.TabIndex = 9;
             // 
@@ -829,7 +1056,7 @@ namespace TOECIM
             aLoadPropertyGrid.Location = new Point(0, 0);
             aLoadPropertyGrid.Margin = new Padding(3, 4, 3, 4);
             aLoadPropertyGrid.Name = "aLoadPropertyGrid";
-            aLoadPropertyGrid.Size = new Size(420, 557);
+            aLoadPropertyGrid.Size = new Size(429, 528);
             aLoadPropertyGrid.TabIndex = 9;
             // 
             // bLoadPropertyGrid
@@ -838,38 +1065,38 @@ namespace TOECIM
             bLoadPropertyGrid.Location = new Point(0, 0);
             bLoadPropertyGrid.Margin = new Padding(3, 4, 3, 4);
             bLoadPropertyGrid.Name = "bLoadPropertyGrid";
-            bLoadPropertyGrid.Size = new Size(418, 557);
+            bLoadPropertyGrid.Size = new Size(428, 528);
             bLoadPropertyGrid.TabIndex = 11;
             // 
             // tabPage5
             // 
-            tabPage5.BorderStyle = BorderStyle.FixedSingle;
             tabPage5.Controls.Add(splitContainer5);
-            tabPage5.Location = new Point(4, 24);
+            tabPage5.Location = new Point(4, 34);
             tabPage5.Margin = new Padding(3, 4, 3, 4);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3, 4, 3, 4);
-            tabPage5.Size = new Size(852, 569);
+            tabPage5.Size = new Size(865, 536);
             tabPage5.TabIndex = 1;
             tabPage5.Text = "UnloadGlass";
-            tabPage5.UseVisualStyleBackColor = true;
             // 
             // splitContainer5
             // 
-            splitContainer5.BorderStyle = BorderStyle.FixedSingle;
+            splitContainer5.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer5.Dock = DockStyle.Fill;
             splitContainer5.Location = new Point(3, 4);
             splitContainer5.Name = "splitContainer5";
             // 
             // splitContainer5.Panel1
             // 
+            splitContainer5.Panel1.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer5.Panel1.Controls.Add(aUnLoadPropertyGrid);
             // 
             // splitContainer5.Panel2
             // 
+            splitContainer5.Panel2.BackColor = Color.FromArgb(25, 38, 52);
             splitContainer5.Panel2.Controls.Add(bUnLoadPropertyGrid);
-            splitContainer5.Size = new Size(844, 559);
-            splitContainer5.SplitterDistance = 422;
+            splitContainer5.Size = new Size(859, 528);
+            splitContainer5.SplitterDistance = 429;
             splitContainer5.SplitterWidth = 2;
             splitContainer5.TabIndex = 4;
             // 
@@ -879,7 +1106,7 @@ namespace TOECIM
             aUnLoadPropertyGrid.Location = new Point(0, 0);
             aUnLoadPropertyGrid.Margin = new Padding(3, 4, 3, 4);
             aUnLoadPropertyGrid.Name = "aUnLoadPropertyGrid";
-            aUnLoadPropertyGrid.Size = new Size(420, 557);
+            aUnLoadPropertyGrid.Size = new Size(429, 528);
             aUnLoadPropertyGrid.TabIndex = 4;
             // 
             // bUnLoadPropertyGrid
@@ -888,7 +1115,7 @@ namespace TOECIM
             bUnLoadPropertyGrid.Location = new Point(0, 0);
             bUnLoadPropertyGrid.Margin = new Padding(3, 4, 3, 4);
             bUnLoadPropertyGrid.Name = "bUnLoadPropertyGrid";
-            bUnLoadPropertyGrid.Size = new Size(418, 557);
+            bUnLoadPropertyGrid.Size = new Size(428, 528);
             bUnLoadPropertyGrid.TabIndex = 6;
             // 
             // tabPage2
@@ -899,72 +1126,116 @@ namespace TOECIM
             tabPage2.Controls.Add(alarmHistoryButton);
             tabPage2.Controls.Add(curAlarmButton);
             tabPage2.Controls.Add(alarmDataGridView);
-            tabPage2.Location = new Point(4, 24);
+            tabPage2.Location = new Point(4, 39);
             tabPage2.Margin = new Padding(3, 4, 3, 4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3, 4, 3, 4);
-            tabPage2.Size = new Size(1307, 613);
+            tabPage2.Size = new Size(1315, 582);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Alarm";
-            tabPage2.UseVisualStyleBackColor = true;
             // 
             // allAlarmClearButton
             // 
+            allAlarmClearButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            allAlarmClearButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            allAlarmClearButton.Depth = 0;
             allAlarmClearButton.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            allAlarmClearButton.Location = new Point(632, 172);
+            allAlarmClearButton.HighEmphasis = true;
+            allAlarmClearButton.Icon = null;
+            allAlarmClearButton.Location = new Point(651, 134);
             allAlarmClearButton.Margin = new Padding(3, 4, 3, 4);
+            allAlarmClearButton.MouseState = MaterialSkin.MouseState.HOVER;
             allAlarmClearButton.Name = "allAlarmClearButton";
-            allAlarmClearButton.Size = new Size(106, 75);
+            allAlarmClearButton.NoAccentTextColor = Color.Empty;
+            allAlarmClearButton.Size = new Size(149, 36);
             allAlarmClearButton.TabIndex = 5;
             allAlarmClearButton.Text = "All Alarm Clear";
+            allAlarmClearButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            allAlarmClearButton.UseAccentColor = false;
             allAlarmClearButton.UseVisualStyleBackColor = true;
             allAlarmClearButton.Click += allAlarmClearButton_Click;
             // 
             // RefreshButton
             // 
+            RefreshButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            RefreshButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            RefreshButton.Depth = 0;
             RefreshButton.Font = new Font("맑은 고딕", 12F, FontStyle.Bold, GraphicsUnit.Point, 129);
+            RefreshButton.HighEmphasis = true;
+            RefreshButton.Icon = null;
             RefreshButton.Location = new Point(632, 538);
             RefreshButton.Margin = new Padding(3, 4, 3, 4);
+            RefreshButton.MouseState = MaterialSkin.MouseState.HOVER;
             RefreshButton.Name = "RefreshButton";
-            RefreshButton.Size = new Size(106, 48);
+            RefreshButton.NoAccentTextColor = Color.Empty;
+            RefreshButton.Size = new Size(84, 36);
             RefreshButton.TabIndex = 4;
             RefreshButton.Text = "Refresh";
+            RefreshButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            RefreshButton.UseAccentColor = false;
             RefreshButton.UseVisualStyleBackColor = true;
             RefreshButton.Click += RefreshButton_Click;
             // 
             // selectedAlarmClearButton
             // 
+            selectedAlarmClearButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            selectedAlarmClearButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            selectedAlarmClearButton.Depth = 0;
             selectedAlarmClearButton.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            selectedAlarmClearButton.Location = new Point(632, 90);
+            selectedAlarmClearButton.HighEmphasis = true;
+            selectedAlarmClearButton.Icon = null;
+            selectedAlarmClearButton.Location = new Point(651, 90);
             selectedAlarmClearButton.Margin = new Padding(3, 4, 3, 4);
+            selectedAlarmClearButton.MouseState = MaterialSkin.MouseState.HOVER;
             selectedAlarmClearButton.Name = "selectedAlarmClearButton";
-            selectedAlarmClearButton.Size = new Size(106, 75);
+            selectedAlarmClearButton.NoAccentTextColor = Color.Empty;
+            selectedAlarmClearButton.Size = new Size(194, 36);
             selectedAlarmClearButton.TabIndex = 3;
             selectedAlarmClearButton.Text = "Selected Alarm Clear";
+            selectedAlarmClearButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            selectedAlarmClearButton.UseAccentColor = false;
             selectedAlarmClearButton.UseVisualStyleBackColor = true;
             selectedAlarmClearButton.Click += alarmClearButton_Click;
             // 
             // alarmHistoryButton
             // 
+            alarmHistoryButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            alarmHistoryButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            alarmHistoryButton.Depth = 0;
             alarmHistoryButton.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            alarmHistoryButton.Location = new Point(632, 255);
+            alarmHistoryButton.HighEmphasis = true;
+            alarmHistoryButton.Icon = null;
+            alarmHistoryButton.Location = new Point(651, 182);
             alarmHistoryButton.Margin = new Padding(3, 4, 3, 4);
+            alarmHistoryButton.MouseState = MaterialSkin.MouseState.HOVER;
             alarmHistoryButton.Name = "alarmHistoryButton";
-            alarmHistoryButton.Size = new Size(106, 75);
+            alarmHistoryButton.NoAccentTextColor = Color.Empty;
+            alarmHistoryButton.Size = new Size(135, 36);
             alarmHistoryButton.TabIndex = 2;
             alarmHistoryButton.Text = "Alarm History";
+            alarmHistoryButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            alarmHistoryButton.UseAccentColor = false;
             alarmHistoryButton.UseVisualStyleBackColor = true;
             alarmHistoryButton.Click += alarmHistoryButton_Click;
             // 
             // curAlarmButton
             // 
+            curAlarmButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            curAlarmButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            curAlarmButton.Depth = 0;
             curAlarmButton.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            curAlarmButton.Location = new Point(632, 8);
+            curAlarmButton.HighEmphasis = true;
+            curAlarmButton.Icon = null;
+            curAlarmButton.Location = new Point(651, 44);
             curAlarmButton.Margin = new Padding(3, 4, 3, 4);
+            curAlarmButton.MouseState = MaterialSkin.MouseState.HOVER;
             curAlarmButton.Name = "curAlarmButton";
-            curAlarmButton.Size = new Size(106, 75);
+            curAlarmButton.NoAccentTextColor = Color.Empty;
+            curAlarmButton.Size = new Size(140, 36);
             curAlarmButton.TabIndex = 1;
             curAlarmButton.Text = "Current Alarm";
+            curAlarmButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            curAlarmButton.UseAccentColor = false;
             curAlarmButton.UseVisualStyleBackColor = true;
             curAlarmButton.Click += curAlarmButton_Click;
             // 
@@ -1032,47 +1303,68 @@ namespace TOECIM
             // 
             // tabPage3
             // 
-            tabPage3.BorderStyle = BorderStyle.Fixed3D;
-            tabPage3.Controls.Add(groupBox13);
-            tabPage3.Location = new Point(4, 24);
+            tabPage3.Controls.Add(materialCardGlassClearOpt);
+            tabPage3.Location = new Point(4, 39);
             tabPage3.Margin = new Padding(3, 4, 3, 4);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3, 4, 3, 4);
-            tabPage3.Size = new Size(1307, 613);
+            tabPage3.Size = new Size(1315, 582);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "ETC";
-            tabPage3.UseVisualStyleBackColor = true;
             // 
-            // groupBox13
+            // materialCardGlassClearOpt
             // 
-            groupBox13.Controls.Add(glassdataresetButton);
-            groupBox13.Controls.Add(GlassCodeCheckBox);
-            groupBox13.Controls.Add(groupBox12);
-            groupBox13.Controls.Add(GlassIDCheckBox);
-            groupBox13.Controls.Add(glassIDTextBox);
-            groupBox13.Controls.Add(glassCodeTextBox);
-            groupBox13.Dock = DockStyle.Fill;
-            groupBox13.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBox13.Location = new Point(3, 4);
-            groupBox13.Margin = new Padding(3, 4, 3, 4);
-            groupBox13.Name = "groupBox13";
-            groupBox13.Padding = new Padding(3, 4, 3, 4);
-            groupBox13.Size = new Size(1297, 601);
-            groupBox13.TabIndex = 18;
-            groupBox13.TabStop = false;
-            groupBox13.Text = "Glass Data Req";
+            materialCardGlassClearOpt.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardGlassClearOpt.Controls.Add(materialLabelGlassClearOpt);
+            materialCardGlassClearOpt.Controls.Add(glassdataresetButton);
+            materialCardGlassClearOpt.Controls.Add(GlassCodeCheckBox);
+            materialCardGlassClearOpt.Controls.Add(materialCardGlassType);
+            materialCardGlassClearOpt.Controls.Add(GlassIDCheckBox);
+            materialCardGlassClearOpt.Controls.Add(glassIDTextBox);
+            materialCardGlassClearOpt.Controls.Add(glassCodeTextBox);
+            materialCardGlassClearOpt.Depth = 0;
+            materialCardGlassClearOpt.Dock = DockStyle.Fill;
+            materialCardGlassClearOpt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardGlassClearOpt.Location = new Point(3, 4);
+            materialCardGlassClearOpt.Margin = new Padding(14);
+            materialCardGlassClearOpt.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardGlassClearOpt.Name = "materialCardGlassClearOpt";
+            materialCardGlassClearOpt.Padding = new Padding(14);
+            materialCardGlassClearOpt.Size = new Size(1309, 574);
+            materialCardGlassClearOpt.TabIndex = 18;
+            // 
+            // materialLabelGlassClearOpt
+            // 
+            materialLabelGlassClearOpt.AutoSize = true;
+            materialLabelGlassClearOpt.Depth = 0;
+            materialLabelGlassClearOpt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabelGlassClearOpt.Location = new Point(10, 5);
+            materialLabelGlassClearOpt.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabelGlassClearOpt.Name = "materialLabelGlassClearOpt";
+            materialLabelGlassClearOpt.Size = new Size(110, 19);
+            materialLabelGlassClearOpt.TabIndex = 34;
+            materialLabelGlassClearOpt.Text = "Glass Data Req";
             // 
             // glassdataresetButton
             // 
+            glassdataresetButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             glassdataresetButton.BackColor = Color.Red;
+            glassdataresetButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            glassdataresetButton.Depth = 0;
             glassdataresetButton.Font = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             glassdataresetButton.ForeColor = Color.Yellow;
-            glassdataresetButton.Location = new Point(482, 193);
+            glassdataresetButton.HighEmphasis = true;
+            glassdataresetButton.Icon = null;
+            glassdataresetButton.Location = new Point(26, 167);
             glassdataresetButton.Margin = new Padding(3, 4, 3, 4);
+            glassdataresetButton.MouseState = MaterialSkin.MouseState.HOVER;
             glassdataresetButton.Name = "glassdataresetButton";
-            glassdataresetButton.Size = new Size(283, 101);
+            glassdataresetButton.NoAccentTextColor = Color.Empty;
+            glassdataresetButton.Size = new Size(156, 36);
             glassdataresetButton.TabIndex = 33;
             glassdataresetButton.Text = "Glass Data Reset";
+            glassdataresetButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            glassdataresetButton.UseAccentColor = false;
             glassdataresetButton.UseVisualStyleBackColor = false;
             glassdataresetButton.Click += glassdataresetButton_Click;
             // 
@@ -1090,18 +1382,33 @@ namespace TOECIM
             GlassCodeCheckBox.TextAlign = ContentAlignment.MiddleCenter;
             GlassCodeCheckBox.UseVisualStyleBackColor = true;
             // 
-            // groupBox12
+            // materialCardGlassType
             // 
-            groupBox12.Controls.Add(Aglass);
-            groupBox12.Controls.Add(Bglass);
-            groupBox12.Location = new Point(26, 48);
-            groupBox12.Margin = new Padding(3, 4, 3, 4);
-            groupBox12.Name = "groupBox12";
-            groupBox12.Padding = new Padding(3, 4, 3, 4);
-            groupBox12.Size = new Size(135, 101);
-            groupBox12.TabIndex = 18;
-            groupBox12.TabStop = false;
-            groupBox12.Text = "Glass";
+            materialCardGlassType.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardGlassType.Controls.Add(materialLabelGlassType);
+            materialCardGlassType.Controls.Add(Aglass);
+            materialCardGlassType.Controls.Add(Bglass);
+            materialCardGlassType.Depth = 0;
+            materialCardGlassType.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardGlassType.Location = new Point(26, 48);
+            materialCardGlassType.Margin = new Padding(14);
+            materialCardGlassType.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardGlassType.Name = "materialCardGlassType";
+            materialCardGlassType.Padding = new Padding(14);
+            materialCardGlassType.Size = new Size(135, 101);
+            materialCardGlassType.TabIndex = 18;
+            // 
+            // materialLabelGlassType
+            // 
+            materialLabelGlassType.AutoSize = true;
+            materialLabelGlassType.Depth = 0;
+            materialLabelGlassType.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabelGlassType.Location = new Point(10, 5);
+            materialLabelGlassType.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabelGlassType.Name = "materialLabelGlassType";
+            materialLabelGlassType.Size = new Size(41, 19);
+            materialLabelGlassType.TabIndex = 2;
+            materialLabelGlassType.Text = "Glass";
             // 
             // Aglass
             // 
@@ -1145,20 +1452,24 @@ namespace TOECIM
             // 
             // glassIDTextBox
             // 
-            glassIDTextBox.Location = new Point(328, 54);
-            glassIDTextBox.Margin = new Padding(3, 4, 3, 4);
+            glassIDTextBox.BorderStyle = BorderStyle.FixedSingle;
+            glassIDTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            glassIDTextBox.ForeColor = Color.Black;
+            glassIDTextBox.Location = new Point(328, 56);
             glassIDTextBox.Name = "glassIDTextBox";
-            glassIDTextBox.Size = new Size(132, 26);
+            glassIDTextBox.Size = new Size(132, 23);
             glassIDTextBox.TabIndex = 30;
             glassIDTextBox.Text = "1111";
             glassIDTextBox.TextAlign = HorizontalAlignment.Center;
             // 
             // glassCodeTextBox
             // 
+            glassCodeTextBox.BorderStyle = BorderStyle.FixedSingle;
+            glassCodeTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            glassCodeTextBox.ForeColor = Color.Black;
             glassCodeTextBox.Location = new Point(328, 116);
-            glassCodeTextBox.Margin = new Padding(3, 4, 3, 4);
             glassCodeTextBox.Name = "glassCodeTextBox";
-            glassCodeTextBox.Size = new Size(132, 26);
+            glassCodeTextBox.Size = new Size(132, 23);
             glassCodeTextBox.TabIndex = 32;
             glassCodeTextBox.Text = "1111";
             glassCodeTextBox.TextAlign = HorizontalAlignment.Center;
@@ -1170,7 +1481,7 @@ namespace TOECIM
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, testToolStripMenuItem, eTCToolStripMenuItem, configToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1319, 24);
+            menuStrip1.Size = new Size(1323, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -1184,7 +1495,7 @@ namespace TOECIM
             // systemSetupToolStripMenuItem
             // 
             systemSetupToolStripMenuItem.Name = "systemSetupToolStripMenuItem";
-            systemSetupToolStripMenuItem.Size = new Size(180, 22);
+            systemSetupToolStripMenuItem.Size = new Size(147, 22);
             systemSetupToolStripMenuItem.Text = "SystemSetup";
             systemSetupToolStripMenuItem.Click += systemSetupToolStripMenuItem_Click;
             // 
@@ -1198,49 +1509,49 @@ namespace TOECIM
             // loopBackToolStripMenuItem
             // 
             loopBackToolStripMenuItem.Name = "loopBackToolStripMenuItem";
-            loopBackToolStripMenuItem.Size = new Size(180, 22);
+            loopBackToolStripMenuItem.Size = new Size(175, 22);
             loopBackToolStripMenuItem.Text = "LoopBack";
             loopBackToolStripMenuItem.Click += loopBackToolStripMenuItem_Click;
             // 
             // timeCheckToolStripMenuItem
             // 
             timeCheckToolStripMenuItem.Name = "timeCheckToolStripMenuItem";
-            timeCheckToolStripMenuItem.Size = new Size(180, 22);
+            timeCheckToolStripMenuItem.Size = new Size(175, 22);
             timeCheckToolStripMenuItem.Text = "Time Check";
             timeCheckToolStripMenuItem.Click += timeCheckToolStripMenuItem_Click;
-            // 
-            // eQPStatusToolStripMenuItem
-            // 
-            eQPStatusToolStripMenuItem.Name = "eQPStatusToolStripMenuItem";
-            eQPStatusToolStripMenuItem.Size = new Size(180, 22);
-            eQPStatusToolStripMenuItem.Text = "EQPStatus";
-            eQPStatusToolStripMenuItem.Click += eQPStatusToolStripMenuItem_Click;
             // 
             // gLSMVStatusToolStripMenuItem
             // 
             gLSMVStatusToolStripMenuItem.Name = "gLSMVStatusToolStripMenuItem";
-            gLSMVStatusToolStripMenuItem.Size = new Size(180, 22);
+            gLSMVStatusToolStripMenuItem.Size = new Size(175, 22);
             gLSMVStatusToolStripMenuItem.Text = "GLSMVStatus";
             gLSMVStatusToolStripMenuItem.Click += gLSMVStatusToolStripMenuItem_Click;
+            // 
+            // eQPStatusToolStripMenuItem
+            // 
+            eQPStatusToolStripMenuItem.Name = "eQPStatusToolStripMenuItem";
+            eQPStatusToolStripMenuItem.Size = new Size(175, 22);
+            eQPStatusToolStripMenuItem.Text = "EQPStatus";
+            eQPStatusToolStripMenuItem.Click += eQPStatusToolStripMenuItem_Click;
             // 
             // eQPSimulatorToolStripMenuItem
             // 
             eQPSimulatorToolStripMenuItem.Name = "eQPSimulatorToolStripMenuItem";
-            eQPSimulatorToolStripMenuItem.Size = new Size(180, 22);
+            eQPSimulatorToolStripMenuItem.Size = new Size(175, 22);
             eQPSimulatorToolStripMenuItem.Text = "EQP Simulator";
             eQPSimulatorToolStripMenuItem.Click += eQPSimulatorToolStripMenuItem_Click;
             // 
             // alarmToolStripMenuItem
             // 
             alarmToolStripMenuItem.Name = "alarmToolStripMenuItem";
-            alarmToolStripMenuItem.Size = new Size(180, 22);
+            alarmToolStripMenuItem.Size = new Size(175, 22);
             alarmToolStripMenuItem.Text = "Alarm";
             alarmToolStripMenuItem.Click += alarmToolStripMenuItem_Click;
             // 
             // glassData초기화ToolStripMenuItem
             // 
             glassData초기화ToolStripMenuItem.Name = "glassData초기화ToolStripMenuItem";
-            glassData초기화ToolStripMenuItem.Size = new Size(180, 22);
+            glassData초기화ToolStripMenuItem.Size = new Size(175, 22);
             glassData초기화ToolStripMenuItem.Text = "Glass Data 초기화";
             glassData초기화ToolStripMenuItem.Click += glassData초기화ToolStripMenuItem_Click;
             // 
@@ -1301,15 +1612,16 @@ namespace TOECIM
             // 
             // logViewer1
             // 
-            logViewer1.BackColor = Color.WhiteSmoke;
+            logViewer1.BackColor = Color.FromArgb(25, 38, 52);
             logViewer1.Dock = DockStyle.Fill;
+            logViewer1.ForeColor = Color.Gainsboro;
             logViewer1.Format = "[{0:MM-dd HH:mm:ss.fff}] {3}";
             logViewer1.Location = new Point(0, 0);
             logViewer1.Log = null;
             logViewer1.Margin = new Padding(3, 4, 3, 4);
             logViewer1.Name = "logViewer1";
             logViewer1.ReadOnly = true;
-            logViewer1.Size = new Size(1315, 147);
+            logViewer1.Size = new Size(1323, 147);
             logViewer1.TabIndex = 0;
             logViewer1.Text = "";
             logViewer1.WordWrap = false;
@@ -1318,7 +1630,7 @@ namespace TOECIM
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1319, 926);
+            ClientSize = new Size(1329, 965);
             Controls.Add(splitContainer1);
             Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -1327,10 +1639,14 @@ namespace TOECIM
             MaximumSize = new Size(1335, 965);
             MinimumSize = new Size(1300, 965);
             Name = "MainForm";
+            StartPosition = FormStartPosition.Manual;
             Text = "TOE CIM";
             FormClosing += MainForm_FormClosing;
             Load += FormMain_Load;
-            groupBox2.ResumeLayout(false);
+            materialCardRCS.ResumeLayout(false);
+            materialCardRCS.PerformLayout();
+            materialCardOPMode.ResumeLayout(false);
+            materialCardOPMode.PerformLayout();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
@@ -1340,21 +1656,22 @@ namespace TOECIM
             splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
-            groupBoxScenario.ResumeLayout(false);
-            groupBox3.ResumeLayout(false);
-            groupBox4.ResumeLayout(false);
+            materialCardScenario.ResumeLayout(false);
+            materialCardScenario.PerformLayout();
+            materialCardEQPStatus.ResumeLayout(false);
+            materialCardEQPStatus.PerformLayout();
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             splitContainer3.Panel1.ResumeLayout(false);
             splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer3).EndInit();
             splitContainer3.ResumeLayout(false);
-            groupBox5.ResumeLayout(false);
-            groupBox5.PerformLayout();
-            groupBox7.ResumeLayout(false);
-            groupBox7.PerformLayout();
-            groupBox6.ResumeLayout(false);
-            groupBox6.PerformLayout();
+            materialCardGlassStatus.ResumeLayout(false);
+            materialCardGlassStatus.PerformLayout();
+            materialCardBGlassInfo.ResumeLayout(false);
+            materialCardBGlassInfo.PerformLayout();
+            materialCardAGlassInfo.ResumeLayout(false);
+            materialCardAGlassInfo.PerformLayout();
             tabControl2.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
             splitContainer4.Panel1.ResumeLayout(false);
@@ -1367,11 +1684,13 @@ namespace TOECIM
             ((System.ComponentModel.ISupportInitialize)splitContainer5).EndInit();
             splitContainer5.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)alarmDataGridView).EndInit();
             tabPage3.ResumeLayout(false);
-            groupBox13.ResumeLayout(false);
-            groupBox13.PerformLayout();
-            groupBox12.ResumeLayout(false);
+            materialCardGlassClearOpt.ResumeLayout(false);
+            materialCardGlassClearOpt.PerformLayout();
+            materialCardGlassType.ResumeLayout(false);
+            materialCardGlassType.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -1380,62 +1699,60 @@ namespace TOECIM
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button rcsButton;
-        private System.Windows.Forms.GroupBox groupBoxScenario;
-        private System.Windows.Forms.Button scrapReportButton;
-        private System.Windows.Forms.Button unloadButton;
-        private System.Windows.Forms.Button LoadButton;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button opModeButton;
+        private MaterialSkin.Controls.MaterialCard materialCardRCS;
+        private MaterialSkin.Controls.MaterialLabel materialLabel1;
+        private MaterialSkin.Controls.MaterialButton rcsButton;
+        private MaterialSkin.Controls.MaterialCard materialCardScenario;
+        private MaterialSkin.Controls.MaterialLabel materialLabelScenario;
+        private MaterialSkin.Controls.MaterialButton scrapReportButton;
+        private MaterialSkin.Controls.MaterialButton unloadButton;
+        private MaterialSkin.Controls.MaterialButton LoadButton;
+        private MaterialSkin.Controls.MaterialCard materialCardOPMode;
+        private MaterialSkin.Controls.MaterialLabel materialLabelOPMode;
+        private MaterialSkin.Controls.MaterialButton opModeButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Engion.LogViewer logViewer1;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label EQStatusLabel;
+        private MaterialSkin.Controls.MaterialCard materialCardEQPStatus;
+        private MaterialSkin.Controls.MaterialLabel materialLabelEQPStatus;
+        private MaterialSkin.Controls.MaterialLabel EQStatusLabel;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eQPStatusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gLSMVStatusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem systemSetupToolStripMenuItem;
-        private System.Windows.Forms.TabControl tabControl1;
+        private TOECIM.Controls.DarkTabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView alarmDataGridView;
-        private System.Windows.Forms.Button curAlarmButton;
-        private System.Windows.Forms.Button alarmHistoryButton;
-        private System.Windows.Forms.Button selectedAlarmClearButton;
+        private MaterialSkin.Controls.MaterialButton curAlarmButton;
+        private MaterialSkin.Controls.MaterialButton alarmHistoryButton;
+        private MaterialSkin.Controls.MaterialButton selectedAlarmClearButton;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.ToolStripMenuItem eQPSimulatorToolStripMenuItem;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label glsmvLabel;
         private System.Windows.Forms.ToolStripMenuItem alarmToolStripMenuItem;
-        private System.Windows.Forms.Button RefreshButton;
-        private System.Windows.Forms.Button allAlarmClearButton;
-        private System.Windows.Forms.GroupBox groupBox12;
+        private MaterialSkin.Controls.MaterialButton RefreshButton;
+        private MaterialSkin.Controls.MaterialButton allAlarmClearButton;
+        private MaterialSkin.Controls.MaterialCard materialCardGlassType;
+        private MaterialSkin.Controls.MaterialLabel materialLabelGlassType;
         private System.Windows.Forms.RadioButton Aglass;
         private System.Windows.Forms.RadioButton Bglass;
         private System.Windows.Forms.ToolStripMenuItem eTCToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem messageViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cassetteMAPRequestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recipeViewToolStripMenuItem;
-
-        private System.Windows.Forms.Label glassInlabel;
-        private System.Windows.Forms.Label autoRunLabel;
         private System.Windows.Forms.ToolStripMenuItem ionizerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reworkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem glassData초기화ToolStripMenuItem;
         private System.Windows.Forms.TextBox glassCodeTextBox;
         private System.Windows.Forms.TextBox glassIDTextBox;
-        private System.Windows.Forms.Button glassDataReqButton;
-        private System.Windows.Forms.GroupBox groupBox13;
+        private MaterialSkin.Controls.MaterialButton glassDataReqButton;
+        private MaterialSkin.Controls.MaterialCard materialCardGlassClearOpt;
+        private MaterialSkin.Controls.MaterialLabel materialLabelGlassClearOpt;
         private System.Windows.Forms.CheckBox GlassIDCheckBox;
         private System.Windows.Forms.CheckBox GlassCodeCheckBox;
         private System.Windows.Forms.ToolStripMenuItem loopBackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem timeCheckToolStripMenuItem;
-        private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn _ALID;
         private System.Windows.Forms.DataGridViewTextBoxColumn _ALCD;
@@ -1443,47 +1760,56 @@ namespace TOECIM
         private System.Windows.Forms.DataGridViewTextBoxColumn _ALTX;
         private System.Windows.Forms.DataGridViewTextBoxColumn _DateTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn _IsRelease;
-        private System.Windows.Forms.Label alarmStatusLabel;
-        private System.Windows.Forms.Label consoleStatusLabel;
+        private MaterialSkin.Controls.MaterialButton alarmStatusButton;
+        private MaterialSkin.Controls.MaterialLabel consoleStatusLabel;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button refreshCosoleStatusButton;
-        private System.Windows.Forms.TextBox GLSStatusTextBox;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox cstidTextBox;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.TextBox bGlassOdrTextBox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox bGlassCodeTextBox;
-        private System.Windows.Forms.TextBox bGlassIDTextBox;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.TextBox aGlassOdrTextBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox aGlassCodeTextBox;
-        private System.Windows.Forms.TextBox aGlassIDTextBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox lotidTextBox;
-        private System.Windows.Forms.TextBox stageIDTextBox;
-        private System.Windows.Forms.TextBox portidTextBox;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox unitIDTextBox;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.SplitContainer splitContainer4;
-        private System.Windows.Forms.PropertyGrid aLoadPropertyGrid;
-        private System.Windows.Forms.PropertyGrid bLoadPropertyGrid;
-        private System.Windows.Forms.SplitContainer splitContainer5;
-        private System.Windows.Forms.PropertyGrid aUnLoadPropertyGrid;
-        private System.Windows.Forms.PropertyGrid bUnLoadPropertyGrid;
-        private System.Windows.Forms.Button glassdataresetButton;
+        private MaterialSkin.Controls.MaterialButton glassdataresetButton;
         private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sW변경이력ToolStripMenuItem;
+        private MaterialSkin.Controls.MaterialLabel autoRunLabel;
+        private MaterialSkin.Controls.MaterialLabel glassInlabel;
+        private MaterialSkin.Controls.MaterialLabel glsmvLabel;
+        private SplitContainer splitContainer3;
+        private MaterialSkin.Controls.MaterialCard materialCardGlassStatus;
+        private MaterialSkin.Controls.MaterialLabel materialLabelGlassStatus;
+        private MaterialSkin.Controls.MaterialButton refreshCosoleStatusButton;
+        private TextBox GLSStatusTextBox;
+        private MaterialSkin.Controls.MaterialLabel label12;
+        private TextBox cstidTextBox;
+        private MaterialSkin.Controls.MaterialCard materialCardBGlassInfo;
+        private MaterialSkin.Controls.MaterialLabel materialLabelBGlassInfo;
+        private TextBox bGlassOdrTextBox;
+        private MaterialSkin.Controls.MaterialLabel label8;
+        private TextBox bGlassCodeTextBox;
+        private TextBox bGlassIDTextBox;
+        private MaterialSkin.Controls.MaterialLabel label4;
+        private MaterialSkin.Controls.MaterialLabel label5;
+        private MaterialSkin.Controls.MaterialLabel label9;
+        private MaterialSkin.Controls.MaterialCard materialCardAGlassInfo;
+        private MaterialSkin.Controls.MaterialLabel materialLabelAGlassInfo;
+        private TextBox aGlassOdrTextBox;
+        private MaterialSkin.Controls.MaterialLabel label1;
+        private TextBox aGlassCodeTextBox;
+        private TextBox aGlassIDTextBox;
+        private MaterialSkin.Controls.MaterialLabel label6;
+        private MaterialSkin.Controls.MaterialLabel label7;
+        private TextBox lotidTextBox;
+        private TextBox stageIDTextBox;
+        private TextBox portidTextBox;
+        private MaterialSkin.Controls.MaterialLabel label10;
+        private TextBox unitIDTextBox;
+        private MaterialSkin.Controls.MaterialLabel label11;
+        private MaterialSkin.Controls.MaterialLabel label3;
+        private MaterialSkin.Controls.MaterialLabel label2;
+        private TOECIM.Controls.DarkTabControl tabControl2;
+        private TabPage tabPage4;
+        private SplitContainer splitContainer4;
+        private PropertyGrid aLoadPropertyGrid;
+        private PropertyGrid bLoadPropertyGrid;
+        private TabPage tabPage5;
+        private SplitContainer splitContainer5;
+        private PropertyGrid aUnLoadPropertyGrid;
+        private PropertyGrid bUnLoadPropertyGrid;
     }
 }
 

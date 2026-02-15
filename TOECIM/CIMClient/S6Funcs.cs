@@ -338,6 +338,7 @@ namespace TOECIM
 
         public void SendS6F73()
         {
+            /* 사양서 미정의 메시지로 주석 처리 (LGD ECS v1.6 기준)
             try
             {
                 //if (cimStatus.UnloadGlass == null)
@@ -501,6 +502,7 @@ namespace TOECIM
             {
                 log.AddLogMessage(LogType.Error, 0, e.ToString());
             }
+            */
         }
 
 

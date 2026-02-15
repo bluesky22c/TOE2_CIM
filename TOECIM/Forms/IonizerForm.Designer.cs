@@ -29,23 +29,40 @@ namespace TOECIM.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.materialCardIonizer = new MaterialSkin.Controls.MaterialCard();
+            this.materialLabelIonizer = new MaterialSkin.Controls.MaterialLabel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.s1f75Button = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.materialCardIonizer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
-            // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dataGridView1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(367, 321);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Ionizer Items";
+            // materialCardIonizer
+            // 
+            this.materialCardIonizer.Controls.Add(this.materialLabelIonizer);
+            this.materialCardIonizer.Controls.Add(this.dataGridView1);
+            this.materialCardIonizer.Depth = 0;
+            this.materialCardIonizer.Location = new System.Drawing.Point(12, 12);
+            this.materialCardIonizer.Margin = new System.Windows.Forms.Padding(14);
+            this.materialCardIonizer.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCardIonizer.Name = "materialCardIonizer";
+            this.materialCardIonizer.Padding = new System.Windows.Forms.Padding(14);
+            this.materialCardIonizer.Size = new System.Drawing.Size(367, 321);
+            this.materialCardIonizer.TabIndex = 0;
+            // 
+            // materialLabelIonizer
+            // 
+            this.materialLabelIonizer.AutoSize = true;
+            this.materialLabelIonizer.Depth = 0;
+            this.materialLabelIonizer.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabelIonizer.Location = new System.Drawing.Point(10, 5);
+            this.materialLabelIonizer.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabelIonizer.Name = "materialLabelIonizer";
+            this.materialLabelIonizer.Size = new System.Drawing.Size(100, 19);
+            this.materialLabelIonizer.TabIndex = 1;
+            this.materialLabelIonizer.Text = "Ionizer Items";
             // 
             // dataGridView1
             // 
@@ -82,10 +99,11 @@ namespace TOECIM.Forms
             this.ClientSize = new System.Drawing.Size(391, 388);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.s1f75Button);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.materialCardIonizer);
             this.Name = "IonizerForm";
             this.Text = "IonizerForm";
-            this.groupBox1.ResumeLayout(false);
+            this.materialCardIonizer.ResumeLayout(false);
+            this.materialCardIonizer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -93,7 +111,8 @@ namespace TOECIM.Forms
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private MaterialSkin.Controls.MaterialCard materialCardIonizer;
+        private MaterialSkin.Controls.MaterialLabel materialLabelIonizer;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button s1f75Button;
         private System.Windows.Forms.Button button2;

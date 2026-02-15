@@ -99,7 +99,8 @@ namespace Engion
         public LogViewer()
         {
             this.ReadOnly = true;
-            this.BackColor = Color.WhiteSmoke;
+            this.BackColor = Color.FromArgb(32, 32, 32);
+            this.ForeColor = Color.Gainsboro;
         }
 
         public LogViewer(System.ComponentModel.IContainer container) : this()
@@ -123,12 +124,12 @@ namespace Engion
                 string msg = string.Format(Format, e.DateTime, e.Type, e.ID, e.Message);
                 
                 // Color based on type
-                Color color = Color.Black;
+                Color color = Color.Gainsboro;
                 switch (e.Type)
                 {
                     case LogType.Error: color = Color.Red; break;
-                    case LogType.Warning: color = Color.Orange; break;
-                    case LogType.Verbose: color = Color.Gray; break;
+                    case LogType.Warning: color = Color.Gold; break;
+                    case LogType.Verbose: color = Color.Silver; break;
                 }
 
                 this.SelectionStart = this.TextLength;

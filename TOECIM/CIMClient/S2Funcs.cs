@@ -381,7 +381,7 @@ namespace TOECIM
                 
             UpdateUI(this, null);
 
-            SendS6F73();
+            // SendS6F73(); // 사양서 미정의 메시지로 주석 처리
         }
 
 
@@ -592,7 +592,7 @@ namespace TOECIM
                     SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.UW);
                     Thread.Sleep(500);
                     SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.UR);
-                    SendS6F73();
+                    // SendS6F73(); // 사양서 미정의 메시지로 주석 처리
 
                     Vars.curGLSM = GLSMVSTATUS.GLSMVSTATUSEnum.UR;
                     //GlassMoveEvent(this, new GLSMVArgs
@@ -625,7 +625,7 @@ namespace TOECIM
                 {
                     SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.UW);
                     SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.ER);
-                    SendS6F73();
+                    // SendS6F73(); // 사양서 미정의 메시지로 주석 처리
 
                     Vars.curGLSM = GLSMVSTATUS.GLSMVSTATUSEnum.ER;
                     //GlassMoveEvent(this, new GLSMVArgs
