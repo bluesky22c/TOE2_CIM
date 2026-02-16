@@ -664,14 +664,28 @@
         <!-- 5. Load -->
         <section id="sc-prod">
             <h1>5. Load</h1>
+            <p>시나리오 A(Loading) 진행을 위한 필수 조건입니다.</p>
+            <div class="info-panel"
+                style="background: #1c2128; border: 1px solid #30363d; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <strong style="color: #ff7b72;">⚠️ 필수 전제 조건 (Prerequisites)</strong>
+                <ul style="margin-top: 10px; color: #adbac7;">
+                    <li><strong>설비 상태:</strong> <span style="color: #58a6ff;">RUN</span> (필수 - IDLE 상태 시 AutoRun=False
+                        보고되어 중단됨)</li>
+                    <li><strong>Ready 상태:</strong> <span style="color: #58a6ff;">LoadReady</span></li>
+                    <li><strong>Glass 존재:</strong> <span style="color: #58a6ff;">False</span> (유리가 없는 상태여야 함)</li>
+                    <li><strong>기타:</strong> AutoRun 체크박스 ON, 활성 알람 없음</li>
+                </ul>
+            </div>
             <div class="mermaid">
                 sequenceDiagram
                 autonumber
                 participant H as "ECS Simulator"
                 participant C as "TOECIM (Main)"
                 participant S as "EQP Simulator"
+                Note over H, S: "Prerequisite: EQPStatus = RUN"
                 H->>C: "S2F87 (Load Glass Data)"
-                C-->>H: "S2F88 (Ack)"
+                Note right of C: "IsTransferReady check (AutoRun & RUN)"
+                C-->>H: "S2F88 (Ack: Accept)"
                 C->>S: "Glass Move Req (LR)"
                 C->>H: "S6F67 (Glass Move Start Report)"
                 H-->>C: "S6F68 (Ack)"
@@ -713,7 +727,31 @@
         <!-- 7. ExchangeDone (Unload) -->
         <section id="sc-exchange">
             <h1>7. ExchangeDone (Unload)</h1>
-            <p>검사 완료된 Glass가 반출(Unload) 준비가 되었을 때의 흐름입니다.</p>
+            <p>시나리오 B(Exchange) 및 C(Unloading) 진행을 위한 필수 조건입니다.</p>
+            <div class="info-panel"
+                style="background: #1c2128; border: 1px solid #30363d; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <strong style="color: #58a6ff;">📋 시나리오별 필수 조건</strong>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px; color: #adbac7;">
+                    <tr>
+                        <th style="border: 1px solid #444; padding: 8px;">시나리오</th>
+                        <th style="border: 1px solid #444; padding: 8px;">설비 상태</th>
+                        <th style="border: 1px solid #444; padding: 8px;">Ready 상태</th>
+                        <th style="border: 1px solid #444; padding: 8px;">GlassIn</th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444; padding: 8px;"><strong>Scenario B (Exchange)</strong></td>
+                        <td style="border: 1px solid #444; padding: 8px;">RUN</td>
+                        <td style="border: 1px solid #444; padding: 8px;">ExchangeReady</td>
+                        <td style="border: 1px solid #444; padding: 8px;">True</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #444; padding: 8px;"><strong>Scenario C (Unloading)</strong></td>
+                        <td style="border: 1px solid #444; padding: 8px;">RUN</td>
+                        <td style="border: 1px solid #444; padding: 8px;">UnloadReady</td>
+                        <td style="border: 1px solid #444; padding: 8px;">True</td>
+                    </tr>
+                </table>
+            </div>
             <div class="mermaid">
                 sequenceDiagram
                 autonumber

@@ -23,7 +23,11 @@ namespace LGCIMServer
         {
             InitializeComponent();
             InitializeComponents();
-            this.WindowState = FormWindowState.Maximized;
+            
+            // 시작 위치 설정 (-1920, 0)
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(-1920, 0);
+            // this.WindowState = FormWindowState.Maximized;
         }
 
         private void InitializeComponents()
@@ -83,7 +87,7 @@ namespace LGCIMServer
 
             // 2. Recipe 탭
             TabPage recipeTabPage = new TabPage("Recipe");
-            recipeSimulForm = new RecipeSimulForm();
+            recipeSimulForm = new RecipeSimulForm(eqpSimulForm.Simulator);
             recipeSimulForm.TopLevel = false;
             recipeSimulForm.FormBorderStyle = FormBorderStyle.None;
             recipeSimulForm.Dock = DockStyle.Fill;

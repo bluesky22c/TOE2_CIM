@@ -1,4 +1,4 @@
-﻿using Engion.Net;
+﻿using Elp.Net;
 using LGHSMSBase;
 using System;
 using System.Collections.Generic;
@@ -16,10 +16,21 @@ using System.Windows.Forms;
 
 namespace LGCIMServer.EQPSimul
 {
+    public enum ScenarioStep
+    {
+        Idle,
+        UnloadStarted,      // S6F63 대기
+        UnloadReported,     // S6F63 완료
+        LoadReadyRequested, // S6F61 로딩 요청 중
+        LoadDataReceived,   // S2F87 수신 완료
+        ProcessStarted      // S6F65 등 공정 시작
+    }
+
     [Serializable]
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public class EQPSimulatorData
     {
+        public ScenarioStep CurrentStep { get; set; } = ScenarioStep.Idle;
         public int CIMServerPort { get; set; } = 3500;
         public int EQServerPort { get; set; } = 3501;
         public bool IsListen { get; set; } = false;
@@ -212,6 +223,12 @@ namespace LGCIMServer.EQPSimul
                     g.PRODTYPE = src.ProdType;
                 }
                 OnDataUpdate?.Invoke();
+                
+                // 수신 시 시퀀스 상태 업데이트 (S2F87 Load Data Send 대응)
+                if (spec.ToConsole.Command == CIMtoEQP.GlassDataSend)
+                {
+                    UpdateScenarioStep(ScenarioStep.LoadDataReceived);
+                }
             }
 
             spec.ToCIM.eqpStatus = eqData.eqpStatus;
@@ -342,6 +359,7 @@ namespace LGCIMServer.EQPSimul
             eqData.EqpReadyStatus = EQPReadyStatus.LoadyReady;
             eqData.Command = EQPtoCIM.LoadReadyDone;
             SendToCIM(eqData);
+            UpdateScenarioStep(ScenarioStep.LoadReadyRequested);
         }
 
         public void LoadDone()
@@ -351,6 +369,7 @@ namespace LGCIMServer.EQPSimul
             eqData.eqpStatus = EQPStatus.RUN;
             eqData.GlassIn = true;
             SendToCIM(eqData);
+            UpdateScenarioStep(ScenarioStep.ProcessStarted);
         }
 
         public void InspectDone()
@@ -376,6 +395,7 @@ namespace LGCIMServer.EQPSimul
             eqData.GlassIn = true;
 
             SendToCIM(eqData);
+            UpdateScenarioStep(ScenarioStep.UnloadReported);
         }
 
         public void ExchangeReadyDone()
@@ -389,6 +409,7 @@ namespace LGCIMServer.EQPSimul
             eqData.GlassPanelJudgeB = "G";
 
             SendToCIM(eqData);
+            UpdateScenarioStep(ScenarioStep.UnloadReported);
         }
 
         public void ExchangeDone()
@@ -408,6 +429,7 @@ namespace LGCIMServer.EQPSimul
             eqData.eqpStatus = EQPStatus.IDLE;
 
             SendToCIM(eqData);
+            UpdateScenarioStep(ScenarioStep.Idle); // 완료 후 초기화
         }
 
         public void ChangeStatus(EQPStatus status)
@@ -415,6 +437,74 @@ namespace LGCIMServer.EQPSimul
             eqData.eqpStatus = status;
             eqData.Command = EQPtoCIM.SendData;
             SendToCIM(eqData);
+            
+            // RUN으로 변경될 때 Idle이면 시작으로 간주 가능 (필요시)
+            if (status == EQPStatus.RUN && Data.CurrentStep == ScenarioStep.Idle)
+            {
+                 // Trace 용도
+            }
+        }
+
+        private void UpdateScenarioStep(ScenarioStep step)
+        {
+            Data.CurrentStep = step;
+            OnLog?.Invoke($"[SEQUENCE] Current Step Changed to: {step}");
+            Save(LastValuePath);
+        }
+
+        // --- 매크로 기능 (메시지 누락 방지용) ---
+        
+        /// <summary>
+        /// 원자적 Unload 보고: ReadyDone 전송 시 S6F63이 유발되도록 상태 강제
+        /// </summary>
+        public void MacroUnloadReport()
+        {
+            if (!CheckInterlock(EQPtoCIM.UnloadReadyDone, out string reason))
+            {
+                OnLog?.Invoke($"[MACRO INTERLOCK] {reason}");
+                return;
+            }
+
+            UpdateScenarioStep(ScenarioStep.UnloadStarted);
+            UnloadReady();
+            UpdateScenarioStep(ScenarioStep.UnloadReported);
+        }
+
+        /// <summary>
+        /// 원자적 Exchange 보고: ExchangeReady 전송 시 S6F63이 유발되도록 상태 강제
+        /// </summary>
+        public void MacroExchangeReport()
+        {
+            if (!CheckInterlock(EQPtoCIM.ExchangeReadyDone, out string reason))
+            {
+                OnLog?.Invoke($"[MACRO INTERLOCK] {reason}");
+                return;
+            }
+
+            UpdateScenarioStep(ScenarioStep.UnloadStarted);
+            ExchangeReadyDone();
+            UpdateScenarioStep(ScenarioStep.UnloadReported);
+        }
+
+        /// <summary>
+        /// 표준 로딩 시퀀스: RUN 변경 -> LR 전송
+        /// </summary>
+        public void MacroStandardLoad()
+        {
+            if (eqData.eqpStatus != EQPStatus.RUN)
+            {
+                ChangeStatus(EQPStatus.RUN);
+                Thread.Sleep(500); // 딜레이
+            }
+            
+            if (!CheckInterlock(EQPtoCIM.GLSMV_LR, out string reason))
+            {
+                OnLog?.Invoke($"[MACRO INTERLOCK] {reason}");
+                return;
+            }
+
+            UpdateScenarioStep(ScenarioStep.LoadReadyRequested);
+            SendLR();
         }
 
         public void SendLR() { eqData.Command = EQPtoCIM.GLSMV_LR; SendToCIM(eqData); }
@@ -423,5 +513,78 @@ namespace LGCIMServer.EQPSimul
         public void SendUW() { eqData.Command = EQPtoCIM.GLSMV_UW; SendToCIM(eqData); }
         public void SendLW() { eqData.Command = EQPtoCIM.GLSMV_LW; SendToCIM(eqData); }
         public void SendCR() { eqData.Command = EQPtoCIM.GLSMV_CR; SendToCIM(eqData); }
+
+        public bool CheckInterlock(EQPtoCIM cmd, out string reason)
+        {
+            reason = string.Empty;
+
+            // 공통: RUN 상태가 아니면 인터락 발생 (UpdateStatus는 제외)
+            if (eqData.eqpStatus != EQPStatus.RUN && cmd != EQPtoCIM.UpdateStatus && cmd != EQPtoCIM.SendData)
+            {
+                // S6F61 (Load Request) 보낼 때만 예외적으로 IDLE 상태 허용 (계획준수)
+                if (cmd == EQPtoCIM.GLSMV_LR && eqData.eqpStatus == EQPStatus.IDLE)
+                {
+                    // OK
+                }
+                else
+                {
+                    reason = $"설비 상태가 RUN이 아닙니다. (현재: {eqData.eqpStatus})";
+                    return false;
+                }
+            }
+
+            // 시퀀스 검증 (ScenarioStep 기반)
+            switch (cmd)
+            {
+                case EQPtoCIM.LoadReadyDone:
+                case EQPtoCIM.GLSMV_LR:
+                    // Load 시작 전에는 반드시 이전 Unload가 완료(Reported)되었거나 Idle이어야 함
+                    if (Data.CurrentStep != ScenarioStep.Idle && Data.CurrentStep != ScenarioStep.UnloadReported)
+                    {
+                        reason = "이전 Unload 보고(S6F63)가 완료되지 않았습니다. 현재 단계: " + Data.CurrentStep;
+                        return false;
+                    }
+                    break;
+                case EQPtoCIM.UnloadReadyDone:
+                case EQPtoCIM.ExchangeReadyDone:
+                    if (!eqData.GlassIn)
+                    {
+                        reason = "설비 내부에 유리가 없습니다. (GlassIn: False)";
+                        return false;
+                    }
+                    break;
+            }
+
+            switch (cmd)
+            {
+                case EQPtoCIM.LoadReadyDone:
+                    if (eqData.GlassIn) reason = "설비 내부에 유리가 이미 존재합니다. (GlassIn: True)";
+                    break;
+                case EQPtoCIM.LoadDone:
+                    // LoadDone은 외부에서 유리가 들어온 뒤 호출되므로 GlassIn이 True인 경우가 많지만, 
+                    // 시나리오 흐름상 보수적으로 체크 가능
+                    break;
+                case EQPtoCIM.UnloadReadyDone:
+                    if (!eqData.GlassIn) reason = "설비 내부에 배출할 유리가 없습니다. (GlassIn: False)";
+                    break;
+                case EQPtoCIM.ExchangeReadyDone:
+                    if (!eqData.GlassIn) reason = "교체할 유리가 설비 내부에 없습니다. (GlassIn: False)";
+                    break;
+                case EQPtoCIM.InspectDone:
+                    if (!eqData.GlassIn) reason = "검사할 유리가 설비 내부에 없습니다. (GlassIn: False)";
+                    break;
+                case EQPtoCIM.GLSMV_LR:
+                    if (eqData.GlassIn) reason = "로딩 요청(LR) 인터락: 유리가 이미 존재합니다.";
+                    break;
+                case EQPtoCIM.GLSMV_UR:
+                    if (!eqData.GlassIn) reason = "언로딩 요청(UR) 인터락: 유리가 없습니다.";
+                    break;
+                case EQPtoCIM.GLSMV_ER:
+                    if (!eqData.GlassIn) reason = "교체 요청(ER) 인터락: 교체할 유리가 없습니다.";
+                    break;
+            }
+
+            return string.IsNullOrEmpty(reason);
+        }
     }
 }

@@ -1,7 +1,33 @@
 {
   "permissions": {
     "allow": [
-      "Bash(start \"\" \"D:\\\\Sources\\\\LGD\\\\TOE2\\\\TOE2_CIM\\\\TOECIM\\\\bin\\\\Debug\\\\net8.0-windows8.0\\\\TOECIM.exe\")"
+      "Bash(start \"\" \"D:\\\\Sources\\\\LGD\\\\TOE2\\\\TOE2_CIM\\\\TOECIM\\\\bin\\\\Debug\\\\net8.0-windows8.0\\\\TOECIM.exe\")",
+      "Bash(git -C \"d:\\Sources\\LGD\\TOE2\\TOE2_CIM\" log --oneline -20)",
+      "Bash(git -C \"d:\\Sources\\LGD\\TOE2\\TOE2_CIM\" log --oneline --all)",
+      "Bash(git -C \"d:\\Sources\\LGD\\TOE2\\TOE2_CIM\" show --stat a1b67d6)",
+      "Bash(git -C \"d:\\Sources\\LGD\\TOE2\\TOE2_CIM\" show --stat 7b229fc)",
+      "Bash(git -C \"d:\\Sources\\LGD\\TOE2\\TOE2_CIM\" show --stat fc97d99)",
+      "Bash(dir \"d:\\Sources\\LGD\\TOE2\\TOE2_CIM\\Docs\"\" /a)",
+      "WebFetch(domain:)",
+      "Bash(unzip:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"\nAdd-Type -AssemblyName System.IO.Compression.FileSystem\n$docxPath = ''C:\\\\Users\\\\bluesky22c\\\\spec_cim.docx''\n$zip = [System.IO.Compression.ZipFile]::OpenRead\\($docxPath\\)\nWrite-Host ''Entries:'' $zip.Entries.Count\n$entry = $zip.Entries | Where-Object { $_.FullName -eq ''word/document.xml'' }\nWrite-Host ''Entry found:'' \\($entry -ne $null\\)\n$zip.Dispose\\(\\)\n\")",
+      "Bash(/c/Users/bluesky22c/search_s2f21.ps1:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\bluesky22c\\\\search_s2f21.ps1\")",
+      "Bash(/c/Users/bluesky22c/search_s2f21b.ps1:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\bluesky22c\\\\search_s2f21b.ps1\")",
+      "Bash(/c/Users/bluesky22c/search_s2f21c.ps1:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\bluesky22c\\\\search_s2f21c.ps1\")",
+      "Bash(/c/Users/bluesky22c/search_s2f21d.ps1:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\bluesky22c\\\\search_s2f21d.ps1\")",
+      "Bash(# .vs 캐시 제외하고 실제 소스코드만 검색 grep -rn \"\"DBMulti\\\\|DBTest\\\\|DBComm\\\\|EqpStatDb\\\\|UDPSender\\\\|UDPListener\\\\|StatCommBase\"\" \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/TOECIM/ \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/TOECIMLib/ \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/LGCIMSimul/ \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/LGHSMSBase/ \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/MmiHsms/ \\\\ \\\\)",
+      "Bash(# MainForm.cs와 Program.cs에서 실제로 DBMulti 타입을 사용하는지 확인 \\(using만 있는지\\) grep -n \"\"EqpStat\\\\|DBComm\\\\|UDPSend\\\\|StatSend\\\\|UDPListen\\\\|StatListen\\\\|EqpStatDb\\\\|StatCommBase\\\\|DBMulti\\\\.\"\" \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/TOECIM/Forms/MainForm.cs \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/TOECIM/Program.cs \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/TOECIM/CIMClient/ClientCIM.cs)",
+      "Bash(# TOECIM 전체에서 DBMulti 타입 실사용 확인 grep -rn \"\"EqpStat\\\\b\\\\|DBComm\\\\b\\\\|StatSender\\\\b\\\\|StatListener\\\\b\\\\|EqpStatDb\\\\b\\\\|StatCommBase\\\\b\\\\|UDPSender\\\\b\\\\|UDPListener\\\\b\"\" \\\\ /d/Sources/LGD/TOE2/TOE2_CIM/TOECIM/)",
+      "Bash(echo:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(claude mcp list:*)",
+      "Bash(python3:*)"
     ]
   }
 }

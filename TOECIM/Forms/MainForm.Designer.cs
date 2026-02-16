@@ -40,6 +40,7 @@ namespace TOECIM
             splitContainer1 = new SplitContainer();
             splitContainer2 = new SplitContainer();
             materialCardScenario = new MaterialSkin.Controls.MaterialCard();
+            scenarioPrereqLabel = new Label();
             materialLabelScenario = new MaterialSkin.Controls.MaterialLabel();
             scrapReportButton = new MaterialSkin.Controls.MaterialButton();
             unloadButton = new MaterialSkin.Controls.MaterialButton();
@@ -47,12 +48,12 @@ namespace TOECIM
             LoadButton = new MaterialSkin.Controls.MaterialButton();
             materialCardEQPStatus = new MaterialSkin.Controls.MaterialCard();
             materialLabelEQPStatus = new MaterialSkin.Controls.MaterialLabel();
-            autoRunLabel = new MaterialSkin.Controls.MaterialLabel();
-            glassInlabel = new MaterialSkin.Controls.MaterialLabel();
-            glsmvLabel = new MaterialSkin.Controls.MaterialLabel();
-            alarmStatusButton = new MaterialSkin.Controls.MaterialButton();
-            consoleStatusLabel = new MaterialSkin.Controls.MaterialLabel();
-            EQStatusLabel = new MaterialSkin.Controls.MaterialLabel();
+            autoRunLabel = new Label();
+            glassInlabel = new Label();
+            glsmvLabel = new Label();
+            alarmStatusButton = new Button();
+            consoleStatusLabel = new Label();
+            EQStatusLabel = new Label();
             tabControl1 = new TOECIM.Controls.DarkTabControl();
             tabPage1 = new TabPage();
             splitContainer3 = new SplitContainer();
@@ -141,7 +142,7 @@ namespace TOECIM
             ionizerToolStripMenuItem = new ToolStripMenuItem();
             configToolStripMenuItem = new ToolStripMenuItem();
             sW변경이력ToolStripMenuItem = new ToolStripMenuItem();
-            logViewer1 = new Engion.LogViewer(components);
+            logViewer1 = new Elp.LogViewer(components);
             materialCardRCS.SuspendLayout();
             materialCardOPMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -221,7 +222,7 @@ namespace TOECIM
             rcsButton.MouseState = MaterialSkin.MouseState.HOVER;
             rcsButton.Name = "rcsButton";
             rcsButton.NoAccentTextColor = Color.Empty;
-            rcsButton.Size = new Size(115, 54);
+            rcsButton.Size = new Size(115, 38);
             rcsButton.TabIndex = 0;
             rcsButton.Text = "Offline";
             rcsButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -327,6 +328,7 @@ namespace TOECIM
             // materialCardScenario
             // 
             materialCardScenario.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardScenario.Controls.Add(scenarioPrereqLabel);
             materialCardScenario.Controls.Add(materialLabelScenario);
             materialCardScenario.Controls.Add(scrapReportButton);
             materialCardScenario.Controls.Add(unloadButton);
@@ -340,8 +342,19 @@ namespace TOECIM
             materialCardScenario.MouseState = MaterialSkin.MouseState.HOVER;
             materialCardScenario.Name = "materialCardScenario";
             materialCardScenario.Padding = new Padding(14);
-            materialCardScenario.Size = new Size(600, 95);
+            materialCardScenario.Size = new Size(600, 115);
             materialCardScenario.TabIndex = 0;
+            // 
+            // scenarioPrereqLabel
+            // 
+            scenarioPrereqLabel.AutoSize = true;
+            scenarioPrereqLabel.Font = new Font("맑은 고딕", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 129);
+            scenarioPrereqLabel.ForeColor = Color.IndianRed;
+            scenarioPrereqLabel.Location = new Point(10, 70);
+            scenarioPrereqLabel.Name = "scenarioPrereqLabel";
+            scenarioPrereqLabel.Size = new Size(368, 17);
+            scenarioPrereqLabel.TabIndex = 6;
+            scenarioPrereqLabel.Text = "※ 시나리오 시작 전 필수 조건을 시뮬레이터에서 설정하세요.";
             // 
             // materialLabelScenario
             // 
@@ -368,7 +381,7 @@ namespace TOECIM
             scrapReportButton.MouseState = MaterialSkin.MouseState.HOVER;
             scrapReportButton.Name = "scrapReportButton";
             scrapReportButton.NoAccentTextColor = Color.Empty;
-            scrapReportButton.Size = new Size(115, 54);
+            scrapReportButton.Size = new Size(115, 38);
             scrapReportButton.TabIndex = 4;
             scrapReportButton.Text = "Scrap Report";
             scrapReportButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -389,7 +402,7 @@ namespace TOECIM
             unloadButton.MouseState = MaterialSkin.MouseState.HOVER;
             unloadButton.Name = "unloadButton";
             unloadButton.NoAccentTextColor = Color.Empty;
-            unloadButton.Size = new Size(115, 54);
+            unloadButton.Size = new Size(115, 38);
             unloadButton.TabIndex = 3;
             unloadButton.Text = "Unload Done";
             unloadButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -410,7 +423,7 @@ namespace TOECIM
             glassDataReqButton.MouseState = MaterialSkin.MouseState.HOVER;
             glassDataReqButton.Name = "glassDataReqButton";
             glassDataReqButton.NoAccentTextColor = Color.Empty;
-            glassDataReqButton.Size = new Size(115, 54);
+            glassDataReqButton.Size = new Size(115, 38);
             glassDataReqButton.TabIndex = 2;
             glassDataReqButton.Text = "Data Request";
             glassDataReqButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -431,7 +444,7 @@ namespace TOECIM
             LoadButton.MouseState = MaterialSkin.MouseState.HOVER;
             LoadButton.Name = "LoadButton";
             LoadButton.NoAccentTextColor = Color.Empty;
-            LoadButton.Size = new Size(115, 54);
+            LoadButton.Size = new Size(115, 38);
             LoadButton.TabIndex = 1;
             LoadButton.Text = "Load Done";
             LoadButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -475,24 +488,21 @@ namespace TOECIM
             // autoRunLabel
             // 
             autoRunLabel.BorderStyle = BorderStyle.FixedSingle;
-            autoRunLabel.Depth = 0;
-            autoRunLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            autoRunLabel.Location = new Point(337, 27);
-            autoRunLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            autoRunLabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            autoRunLabel.Location = new Point(315, 27);
             autoRunLabel.Name = "autoRunLabel";
-            autoRunLabel.Size = new Size(122, 56);
+            autoRunLabel.Size = new Size(79, 56);
             autoRunLabel.TabIndex = 10;
             autoRunLabel.Text = "AutoRun OFF";
             autoRunLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // glassInlabel
             // 
-            glassInlabel.Depth = 0;
-            glassInlabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            glassInlabel.Location = new Point(356, 17);
-            glassInlabel.MouseState = MaterialSkin.MouseState.HOVER;
+            glassInlabel.BorderStyle = BorderStyle.FixedSingle;
+            glassInlabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            glassInlabel.Location = new Point(400, 27);
             glassInlabel.Name = "glassInlabel";
-            glassInlabel.Size = new Size(86, 45);
+            glassInlabel.Size = new Size(86, 56);
             glassInlabel.TabIndex = 9;
             glassInlabel.Text = "Glass IN";
             glassInlabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -500,46 +510,32 @@ namespace TOECIM
             // glsmvLabel
             // 
             glsmvLabel.BorderStyle = BorderStyle.FixedSingle;
-            glsmvLabel.Depth = 0;
-            glsmvLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            glsmvLabel.Location = new Point(465, 27);
-            glsmvLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            glsmvLabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            glsmvLabel.Location = new Point(492, 27);
             glsmvLabel.Name = "glsmvLabel";
-            glsmvLabel.Size = new Size(97, 56);
+            glsmvLabel.Size = new Size(80, 56);
             glsmvLabel.TabIndex = 8;
             glsmvLabel.Text = "LW";
             glsmvLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // alarmStatusButton
             // 
-            alarmStatusButton.AutoSize = false;
-            alarmStatusButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            alarmStatusButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            alarmStatusButton.Depth = 0;
-            alarmStatusButton.HighEmphasis = true;
-            alarmStatusButton.Icon = null;
+            alarmStatusButton.FlatStyle = FlatStyle.Flat;
+            alarmStatusButton.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
             alarmStatusButton.Location = new Point(15, 27);
-            alarmStatusButton.Margin = new Padding(4, 6, 4, 6);
-            alarmStatusButton.MouseState = MaterialSkin.MouseState.HOVER;
             alarmStatusButton.Name = "alarmStatusButton";
-            alarmStatusButton.NoAccentTextColor = Color.Empty;
             alarmStatusButton.Size = new Size(101, 56);
             alarmStatusButton.TabIndex = 1;
             alarmStatusButton.Text = "Alarm";
-            alarmStatusButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            alarmStatusButton.UseAccentColor = false;
             alarmStatusButton.UseVisualStyleBackColor = true;
             alarmStatusButton.Click += alarmStatusLabel_Click;
             // 
             // consoleStatusLabel
             // 
             consoleStatusLabel.BorderStyle = BorderStyle.FixedSingle;
-            consoleStatusLabel.Depth = 0;
-            consoleStatusLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            consoleStatusLabel.ForeColor = Color.Lime;
+            consoleStatusLabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            consoleStatusLabel.ForeColor = Color.Green;
             consoleStatusLabel.Location = new Point(123, 27);
-            consoleStatusLabel.Margin = new Padding(4, 6, 4, 6);
-            consoleStatusLabel.MouseState = MaterialSkin.MouseState.HOVER;
             consoleStatusLabel.Name = "consoleStatusLabel";
             consoleStatusLabel.Size = new Size(94, 56);
             consoleStatusLabel.TabIndex = 1;
@@ -549,12 +545,10 @@ namespace TOECIM
             // EQStatusLabel
             // 
             EQStatusLabel.BorderStyle = BorderStyle.FixedSingle;
-            EQStatusLabel.Depth = 0;
-            EQStatusLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            EQStatusLabel.Location = new Point(224, 27);
-            EQStatusLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            EQStatusLabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            EQStatusLabel.Location = new Point(223, 27);
             EQStatusLabel.Name = "EQStatusLabel";
-            EQStatusLabel.Size = new Size(107, 56);
+            EQStatusLabel.Size = new Size(86, 56);
             EQStatusLabel.TabIndex = 0;
             EQStatusLabel.Text = "DOWN";
             EQStatusLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -1707,14 +1701,15 @@ namespace TOECIM
         private MaterialSkin.Controls.MaterialButton scrapReportButton;
         private MaterialSkin.Controls.MaterialButton unloadButton;
         private MaterialSkin.Controls.MaterialButton LoadButton;
+        private System.Windows.Forms.Label scenarioPrereqLabel;
         private MaterialSkin.Controls.MaterialCard materialCardOPMode;
         private MaterialSkin.Controls.MaterialLabel materialLabelOPMode;
         private MaterialSkin.Controls.MaterialButton opModeButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private Engion.LogViewer logViewer1;
+        private Elp.LogViewer logViewer1;
         private MaterialSkin.Controls.MaterialCard materialCardEQPStatus;
         private MaterialSkin.Controls.MaterialLabel materialLabelEQPStatus;
-        private MaterialSkin.Controls.MaterialLabel EQStatusLabel;
+        private System.Windows.Forms.Label EQStatusLabel;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
@@ -1760,15 +1755,15 @@ namespace TOECIM
         private System.Windows.Forms.DataGridViewTextBoxColumn _ALTX;
         private System.Windows.Forms.DataGridViewTextBoxColumn _DateTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn _IsRelease;
-        private MaterialSkin.Controls.MaterialButton alarmStatusButton;
-        private MaterialSkin.Controls.MaterialLabel consoleStatusLabel;
+        private System.Windows.Forms.Button alarmStatusButton;
+        private System.Windows.Forms.Label consoleStatusLabel;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private MaterialSkin.Controls.MaterialButton glassdataresetButton;
         private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sW변경이력ToolStripMenuItem;
-        private MaterialSkin.Controls.MaterialLabel autoRunLabel;
-        private MaterialSkin.Controls.MaterialLabel glassInlabel;
-        private MaterialSkin.Controls.MaterialLabel glsmvLabel;
+        private System.Windows.Forms.Label autoRunLabel;
+        private System.Windows.Forms.Label glassInlabel;
+        private System.Windows.Forms.Label glsmvLabel;
         private SplitContainer splitContainer3;
         private MaterialSkin.Controls.MaterialCard materialCardGlassStatus;
         private MaterialSkin.Controls.MaterialLabel materialLabelGlassStatus;

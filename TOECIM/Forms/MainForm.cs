@@ -1,6 +1,6 @@
 ﻿// using System.Windows.Forms.DataVisualization.Charting;
-using Engion;
-using Engion.Net;
+using Elp;
+using Elp.Net;
 using LGHSMSBase;
 using LGHSMSBase.Forms;
 using MaterialSkin;
@@ -89,6 +89,13 @@ namespace TOECIM
             {
                 ctrl.MouseEnter += StatusControl_MouseEnter;
                 ctrl.MouseLeave += StatusControl_MouseLeave;
+
+                // 시나리오 관련 버튼인 경우 필수 조건 안내 이벤트 추가
+                if (ctrl == LoadButton || ctrl == glassDataReqButton || ctrl == unloadButton)
+                {
+                    ctrl.MouseEnter += ScenarioButton_MouseEnter;
+                    ctrl.MouseLeave += ScenarioButton_MouseLeave;
+                }
             }
 
             // 탭 컨트롤 DrawItem 이벤트는 Designer.cs에서 등록됨 (중복 방지)
@@ -383,15 +390,15 @@ namespace TOECIM
                     break;
 
                 case EQPtoCIM.RecipeCreate:
-                    //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Built);
+                    cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Built);
                     break;
 
                 case EQPtoCIM.RecipeChange:
-                    //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Change);
+                    cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Change);
                     break;
 
                 case EQPtoCIM.RecipeDelete:
-                    //cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Delete);
+                    cim.SendS15F79(data.RecipeItem, RECIPEIDCMD.RECIPEIDCMDEnum.Delete);
                     break;
 
                 case EQPtoCIM.RecipeRename:
@@ -520,13 +527,34 @@ namespace TOECIM
             {
                 // AutoRun 상태 업데이트
                 autoRunLabel.BackColor = Color.Transparent;
-                autoRunLabel.ForeColor = cimStatus.IsAutoRun ? Color.Lime : Color.Tomato;
+                autoRunLabel.ForeColor = cimStatus.IsAutoRun ? Color.Lime : Color.OrangeRed; // Tomato보다 조금 더 선명한 OrangeRed 사용
                 autoRunLabel.Text = cimStatus.IsAutoRun ? "AutoRun ON" : "AutoRun OFF";
 
-                // GlassIn 상태 업데이트
+                // GlassIn 상태 업데이트 (데이터 연동 정합성 체크 추가)
                 glassInlabel.BackColor = Color.Transparent;
-                glassInlabel.ForeColor = (cimStatus.EQGlassIn == true) ? Color.Lime : Color.Tomato;
-                glassInlabel.Text = (cimStatus.EQGlassIn == true) ? "Glass IN" : "Glass OUT";
+                if (cimStatus.EQGlassIn == true)
+                {
+                    // 실제 유리 데이터(ID)가 있는지 체크
+                    bool hasData = !string.IsNullOrEmpty(cimStatus.LoadGlass?.AGlass?.GLSID) || 
+                                   !string.IsNullOrEmpty(cimStatus.UnloadGlass?.AGlass?.GLSID);
+
+                    if (hasData)
+                    {
+                        glassInlabel.ForeColor = Color.Lime;
+                        glassInlabel.Text = "Glass IN";
+                    }
+                    else
+                    {
+                        // 센서는 IN인데 데이터는 없는 경우 (Warning 상태)
+                        glassInlabel.ForeColor = Color.Yellow;
+                        glassInlabel.Text = "Glass IN (No Data)";
+                    }
+                }
+                else
+                {
+                    glassInlabel.ForeColor = Color.OrangeRed;
+                    glassInlabel.Text = "Glass OUT";
+                }
 
                 // GLSMV 상태 텍스트 업데이트
                 glsmvLabel.BackColor = Color.Transparent;
@@ -567,11 +595,11 @@ namespace TOECIM
                 else
                 {
                     consoleStatusLabel.Text = "CONSOLE";
-                    consoleStatusLabel.ForeColor = Color.Green;
+                    consoleStatusLabel.ForeColor = Color.Lime; // Green에서 Lime으로 변경하여 가독성 향상
                 }
 
                 // Alarm 발생 여부 업데이트
-                if (cimStatus.CurAlarm != null)
+                if (cimStatus.CurAlarm != null || (cimStatus.AlarmList != null && cimStatus.AlarmList.Count > 0))
                 {
                     alarmStatusButton.Text = "ALARM!";
                     alarmStatusButton.ForeColor = Color.Red;
@@ -581,7 +609,94 @@ namespace TOECIM
                     alarmStatusButton.Text = "Alarm";
                     alarmStatusButton.ForeColor = Color.White;
                 }
+
+                // 시나리오 필수 조건 UI 업데이트 (현재 호버 중인 시나리오 기준 또는 기본)
+                UpdateScenarioPrereqUI();
             }
+        }
+
+        private string currentHoverScenario = null;
+        private void UpdateScenarioPrereqUI()
+        {
+            if (scenarioPrereqLabel == null) return;
+
+            // 공통: RUN 상태가 아니면 무조건 경고
+            if (cimStatus.EQPStatus != EQPSTATUS.EQPSTATUSEnum.RUN)
+            {
+                scenarioPrereqLabel.ForeColor = Color.IndianRed;
+                scenarioPrereqLabel.Text = "⚠️ [필수] 설비 상태를 시뮬레이터에서 'RUN'으로 변경하세요.";
+                return;
+            }
+
+            // 시나리오별 상세 체크
+            if (currentHoverScenario == "A") // Loading
+            {
+                bool isReady = (cimStatus.CimCommData?.ToCIM?.EqpReadyStatus == EQPReadyStatus.LoadyReady);
+                bool noGlass = (cimStatus.EQGlassIn == false);
+
+                if (isReady && noGlass)
+                {
+                    scenarioPrereqLabel.ForeColor = Color.Lime;
+                    scenarioPrereqLabel.Text = "✅ [Scenario A] Loading 시퀀스 시작 가능 (LoadReady + No Glass)";
+                }
+                else
+                {
+                    scenarioPrereqLabel.ForeColor = Color.Yellow;
+                    scenarioPrereqLabel.Text = $"❌ [Scenario A] 필요: LoadReady({(isReady ? "OK" : "NO")}), No Glass({(noGlass ? "OK" : "NO")})";
+                }
+            }
+            else if (currentHoverScenario == "B") // Exchange (Data Request 지점)
+            {
+                bool isReady = (cimStatus.CimCommData?.ToCIM?.EqpReadyStatus == EQPReadyStatus.ExchangeReady);
+                bool hasGlass = (cimStatus.EQGlassIn == true);
+
+                if (isReady && hasGlass)
+                {
+                    scenarioPrereqLabel.ForeColor = Color.Lime;
+                    scenarioPrereqLabel.Text = "✅ [Scenario B] Exchange 시퀀스 시작 가능 (ExchangeReady + Glass In)";
+                }
+                else
+                {
+                    scenarioPrereqLabel.ForeColor = Color.Yellow;
+                    scenarioPrereqLabel.Text = $"❌ [Scenario B] 필요: ExchangeReady({(isReady ? "OK" : "NO")}), Glass In({(hasGlass ? "OK" : "NO")})";
+                }
+            }
+            else if (currentHoverScenario == "C") // Unloading
+            {
+                bool isReady = (cimStatus.CimCommData?.ToCIM?.EqpReadyStatus == EQPReadyStatus.UnloadReady);
+                bool hasGlass = (cimStatus.EQGlassIn == true);
+
+                if (isReady && hasGlass)
+                {
+                    scenarioPrereqLabel.ForeColor = Color.Lime;
+                    scenarioPrereqLabel.Text = "✅ [Scenario C] Unloading 시퀀스 시작 가능 (UnloadReady + Glass In)";
+                }
+                else
+                {
+                    scenarioPrereqLabel.ForeColor = Color.Yellow;
+                    scenarioPrereqLabel.Text = $"❌ [Scenario C] 필요: UnloadReady({(isReady ? "OK" : "NO")}), Glass In({(hasGlass ? "OK" : "NO")})";
+                }
+            }
+            else
+            {
+                scenarioPrereqLabel.ForeColor = Color.Gainsboro;
+                scenarioPrereqLabel.Text = "💡 버튼 근처로 마우스를 가져가면 시나리오별 필수 조건을 확인할 수 있습니다.";
+            }
+        }
+
+        private void ScenarioButton_MouseEnter(object sender, EventArgs e)
+        {
+            if (sender == LoadButton) currentHoverScenario = "A";
+            else if (sender == glassDataReqButton) currentHoverScenario = "B";
+            else if (sender == unloadButton) currentHoverScenario = "C";
+
+            UpdateScenarioPrereqUI();
+        }
+
+        private void ScenarioButton_MouseLeave(object sender, EventArgs e)
+        {
+            currentHoverScenario = null;
+            UpdateScenarioPrereqUI();
         }
 
         private void UpdateJobDataUI()

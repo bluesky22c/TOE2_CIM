@@ -1,6 +1,6 @@
 using System;
 
-namespace Engion.Net
+namespace Elp.Net
 {
     [Serializable]
     public class TENetData

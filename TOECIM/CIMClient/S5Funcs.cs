@@ -34,8 +34,8 @@ namespace TOECIM
                 func.ALID = alarm.ALID;
                 func.ALCD = alarm.ALCD;
                 func.ALTX = alarm.ALTX;
-                gem.HSMSSend(func);
-                log.AddLogMessage(Engion.LogType.Information, 0, $"[S5F1] Alarm Report Complete. ALID : {func.ALID.Value}, ALCD : {func.ALCD.Value}");
+                bool sendResult = gem.HSMSSend(func);
+                log.AddLogMessage(Elp.LogType.Information, 0, $"[S5F1] Alarm Report attempt. ALID : {func.ALID.Value}, ALCD : {func.ALCD.Value}, Online: {cimStatus.IsOnline}, HSMSState: {gem.ConnectMode}, SendSuccess: {sendResult}");
 
                 //10.14 eqpStatus는 eq에서 직접 받아서 보고
                 //heavy 알람 발생 시 설비 상태 down으로 변경
@@ -71,7 +71,8 @@ namespace TOECIM
 
         private void Gem_OnS5F2Event(object sender, MMISoft.HSMS.GemEventArgs e)
         {
-            
+            // S5F2: Host Alarm Report ACK
+            log.AddLogMessage(Elp.LogType.Information, 0, $"[S5F2] Alarm Report ACK 수신.");
         }
     }
 }

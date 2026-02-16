@@ -17,6 +17,7 @@ namespace LGCIMServer.EQPSimul
     public partial class EQPSimulForm : Form
     {
         EQPSimulator simul = new EQPSimulator();
+        public EQPSimulator Simulator => simul;
 
         public EQPtoCIMData eqData => simul.eqData;
         public TOECIMLib.ECSData LoadGlass => simul.LoadGlass;
@@ -71,19 +72,31 @@ namespace LGCIMServer.EQPSimul
             FlowLayoutPanel scenarioBPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.TopDown, WrapContents = false };
             scenarioBGroup.Controls.Add(scenarioBPanel);
 
-            // [추가] 시나리오 B 시작 매크로 버튼
-            Button btnBStart = new Button { Text = "Macro: Inspect + Exchange Ready", AutoSize = true, Margin = new Padding(0, 5, 0, 5), BackColor = Color.LightBlue };
-            btnBStart.Click += async (s, e) => {
-                simul.InspectDone();
-                await Task.Delay(200); // ToECIM 처리 대기 및 메시지 병목 방지
-                simul.ExchangeReadyDone();
-                UpdateInfo();
-            };
-            scenarioBPanel.Controls.Add(btnBStart);
-
             GroupBox eventGroup = new GroupBox { Text = "Done/Event Report", Dock = DockStyle.Top, AutoSize = true, Padding = new Padding(5) };
             FlowLayoutPanel eventPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.TopDown, WrapContents = false };
             eventGroup.Controls.Add(eventPanel);
+
+            // [추가] 시나리오 A/C 표준 매크로 버튼
+            Button btnAStart = new Button { Text = "Macro: Standard Loading (RUN+LR)", AutoSize = true, Margin = new Padding(0, 5, 0, 5), BackColor = Color.LightYellow };
+            btnAStart.Click += (s, e) => {
+                simul.MacroStandardLoad();
+                UpdateInfo();
+            };
+            flowPanel.Controls.Add(btnAStart);
+
+            Button btnCStart = new Button { Text = "Macro: Atomic Unload Report", AutoSize = true, Margin = new Padding(0, 5, 0, 5), BackColor = Color.LightCoral };
+            btnCStart.Click += (s, e) => {
+                simul.MacroUnloadReport();
+                UpdateInfo();
+            };
+            eventPanel.Controls.Add(btnCStart);
+
+            Button btnBStart = new Button { Text = "Macro: Atomic Exchange Report", AutoSize = true, Margin = new Padding(0, 5, 0, 5), BackColor = Color.LightBlue };
+            btnBStart.Click += (s, e) => {
+                simul.MacroExchangeReport();
+                UpdateInfo();
+            };
+            scenarioBPanel.Controls.Add(btnBStart);
 
             eqpControlPanel.Controls.Clear();
             eqpControlPanel.Controls.Add(flowGroup);
@@ -180,6 +193,15 @@ namespace LGCIMServer.EQPSimul
             button.Checked = true;
 
             var cmd = (EQPtoCIM)Enum.Parse(typeof(EQPtoCIM), button.Tag.ToString());
+
+            // 인터락 체크
+            if (!simul.CheckInterlock(cmd, out string interlockReason))
+            {
+                button.Checked = false; // 선택 취소
+                AddLog($"[INTERLOCK] {cmd} 실행 실패: {interlockReason}");
+                return;
+            }
+
             eqData.Command = cmd;
             eqData.AutoRun = autoRunCheckBox.Checked;
             eqData.GlassIn = glassInCheckBox.Checked;
@@ -265,6 +287,43 @@ namespace LGCIMServer.EQPSimul
                     unloadGlassOrdertextBox.Text = $"AGlass : {UnloadGlass.AGlass.GLSODR}, BGlass: {UnloadGlass.BGlass.GLSODR}";
                 }
 
+                // 시퀀스 가이드 하이라이트
+                HighlightNextStep();
+            }
+        }
+
+        private void HighlightNextStep()
+        {
+            foreach (var radio in radioCmd)
+            {
+                radio.BackColor = Color.Transparent;
+                radio.ForeColor = Color.Black;
+            }
+
+            string nextTarget = "";
+            switch (simul.Data.CurrentStep)
+            {
+                case ScenarioStep.Idle:
+                case ScenarioStep.UnloadReported:
+                    nextTarget = "GLSMV_LR"; // 다음 권장: Load Request
+                    break;
+                case ScenarioStep.LoadReadyRequested:
+                    nextTarget = "LoadDone"; // 다음 권장: Loading 완료
+                    break;
+                case ScenarioStep.LoadDataReceived:
+                case ScenarioStep.ProcessStarted:
+                    nextTarget = "InspectDone"; // 다음 권장: 검사 완료
+                    break;
+            }
+
+            if (!string.IsNullOrEmpty(nextTarget))
+            {
+                var target = radioCmd.FirstOrDefault(r => r.Tag.ToString() == nextTarget);
+                if (target != null)
+                {
+                    target.BackColor = Color.Yellow;
+                    target.ForeColor = Color.Red;
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using Engion.Net;
+﻿using Elp.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +29,17 @@ namespace LGCIMServer.EQPSimul
             {
                 throw;
             }
+        }
+
+        internal void SyncStatus(EQPSimulatorData currentEqData)
+        {
+            if (currentEqData == null) return;
+
+            consoleData.ToCIM.eqpStatus = currentEqData.eqData.eqpStatus;
+            consoleData.ToCIM.AutoRun = currentEqData.eqData.AutoRun;
+            consoleData.ToCIM.GlassIn = currentEqData.eqData.GlassIn;
+            consoleData.ToCIM.EqpReadyStatus = currentEqData.eqData.EqpReadyStatus;
+            consoleData.ToCIM.AlarmList = currentEqData.eqData.AlarmList;
         }
 
         internal void RecipeCreate(RecipeSet recipe)

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 
-namespace Engion
+namespace Elp
 {
     public enum LogType
     {
@@ -91,7 +91,7 @@ namespace Engion
         public static LogEx Log { get; set; }
     }
 
-    public class LogViewer : RichTextBox
+    public class LogViewer : System.Windows.Forms.RichTextBox
     {
         public LogEx Log { get; set; }
         public string Format { get; set; } = "[{0:MM-dd HH:mm:ss.fff}] {3}";
@@ -99,8 +99,10 @@ namespace Engion
         public LogViewer()
         {
             this.ReadOnly = true;
-            this.BackColor = Color.FromArgb(32, 32, 32);
+            this.BackColor = Color.FromArgb(25, 38, 52);
             this.ForeColor = Color.Gainsboro;
+            this.BorderStyle = BorderStyle.None;
+            this.ScrollBars = RichTextBoxScrollBars.Both;
         }
 
         public LogViewer(System.ComponentModel.IContainer container) : this()
@@ -132,14 +134,17 @@ namespace Engion
                     case LogType.Verbose: color = Color.Silver; break;
                 }
 
-                this.SelectionStart = this.TextLength;
-                this.SelectionLength = 0;
-                this.SelectionColor = color;
+                // Add colored text
+                int start = this.TextLength;
                 this.AppendText(msg + Environment.NewLine);
+                this.Select(start, msg.Length);
+                this.SelectionColor = color;
+                this.DeselectAll();
                 
                 // Limit lines
                 if (this.Lines.Length > 1000)
                 {
+                    // Selecting and removing the first line is more efficient for RichTextBox formatting than resetting .Text
                     this.Select(0, this.GetFirstCharIndexFromLine(this.Lines.Length - 1000));
                     this.SelectedText = "";
                 }

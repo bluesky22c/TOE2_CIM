@@ -16,13 +16,15 @@ namespace LGCIMServer.EQPSimul
     public partial class RecipeSimulForm : Form
     {
         RecipeSimulator simul = new RecipeSimulator();
+        EQPSimulator eqpSimul;
         
         string recipePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Simul", "Recipe");
         RecipeSet selected;
 
-        public RecipeSimulForm()
+        public RecipeSimulForm(EQPSimulator eqpSimul = null)
         {
             InitializeComponent();
+            this.eqpSimul = eqpSimul;
         }
 
         private void ConsoleSimulator_Load(object sender, EventArgs e)
@@ -60,6 +62,8 @@ namespace LGCIMServer.EQPSimul
             recipeSet.Save(recipePath, recipeSet.RECIPEID);
             UpdateUI();
 
+            if (eqpSimul != null) simul.SyncStatus(eqpSimul.Data);
+
             ConsoleSimulator_OnConsoleEvent(new CimCommData 
             {
                 ToCIM = new EQPtoCIMData {
@@ -77,17 +81,28 @@ namespace LGCIMServer.EQPSimul
                 return;
             }
 
+            if (eqpSimul != null) simul.SyncStatus(eqpSimul.Data);
+
             ConsoleSimulator_OnConsoleEvent(new CimCommData
             {
                 ToCIM = new EQPtoCIMData {
-                    Command = EQPtoCIM.RecipeCreate,
+                    Command = EQPtoCIM.RecipeDelete,
                     RecipeItem = selected,
                 }
             });
 
             var delete = Path.Combine(recipePath, selected.RECIPEID);
-            DirectoryInfo di = new DirectoryInfo(delete);
-            di.Delete(true);
+            try
+            {
+                if (Directory.Exists(delete))
+                {
+                    Directory.Delete(delete, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"레시피 폴더 삭제 실패: {ex.Message}");
+            }
 
             UpdateUI();
         }
@@ -140,6 +155,8 @@ namespace LGCIMServer.EQPSimul
                 MessageBox.Show("저장할 레시피가 없습니다.");
                 return;
             }
+
+            if (eqpSimul != null) simul.SyncStatus(eqpSimul.Data);
 
             ConsoleSimulator_OnConsoleEvent(new CimCommData
             {

@@ -1,4 +1,4 @@
-﻿using Engion;
+﻿using Elp;
 using LGHSMSBase;
 using System;
 using System.Collections.Generic;
@@ -125,8 +125,8 @@ namespace TOECIM
 
                 gem.HSMSSend(func);
 
-                ////Unload Glass에 값 복사
-                //MoveLoadtoUnload();
+                // Unload 보고 후 Load → Unload 상태 이동
+                MoveLoadtoUnload();
 
                 UpdateUI(this, null);
 
@@ -243,20 +243,15 @@ namespace TOECIM
                     }
                 }
 
-                //console에서 받아와야 함
-                //cimStatus.APDIItems = new List<APDInfo>();
-                //cimStatus.APDIItems.Add(new APDInfo { APDName = "APD1", APDValue = "1" });
-                //cimStatus.APDIItems.Add(new APDInfo { APDName = "APD2", APDValue = "2" });
-                //cimStatus.APDIItems.Add(new APDInfo { APDName = "APD3", APDValue = "3" });
-
-                //func_83.DVITEMS = new List<DVItem>();
-                //foreach (var apd in cimStatus.APDIItems)
-                //{
-                //    var dv = new DVItem();
-                //    dv.DVNAME = apd.APDName;
-                //    dv.DVVAL = apd.APDValue;
-                //    func_83.DVITEMS.Add(dv);
-                //}
+                // S6F73에서 수집된 APDIItems를 LOT 레벨 보고에도 포함
+                if (cimStatus.APDIItems != null && cimStatus.APDIItems.Count > 0)
+                {
+                    func_83.DVITEMS = new List<DVItem>();
+                    foreach (var apd in cimStatus.APDIItems)
+                    {
+                        func_83.DVITEMS.Add(new DVItem { DVNAME = apd.APDName, DVVAL = apd.APDValue });
+                    }
+                }
 
                 gem.HSMSSend(func_83);
             }
@@ -338,171 +333,106 @@ namespace TOECIM
 
         public void SendS6F73()
         {
-            /* 사양서 미정의 메시지로 주석 처리 (LGD ECS v1.6 기준)
+            // v50 스펙에서 정식 정의됨: InspectDone → S6F73 → S6F74
             try
             {
-                //if (cimStatus.UnloadGlass == null)
-                //{
-                //    var func = new CIMS6F73();
-                //    log.AddLogMessage(LogType.Error, 0, $"[SendS6F73] No Unload Glass Data.");
-                //    gem.HSMSSend(func);
-                //    return;
-                //}
+                if (cimStatus.UnloadGlass == null)
+                {
+                    log.AddLogMessage(LogType.Warning, 0, $"[SendS6F73] UnloadGlass 데이터 없음. 전송 건너뜀.");
+                    return;
+                }
 
-                // 보내기전에 Console 한테 받아오기
+                // Console에서 APD 데이터 요청
                 var res = Common.ToConsole(new CIMtoEQPData { Command = CIMtoEQP.APDReq });
-                var Aapd = res.AcutAPD;
-                var bapd = res.BcutAPD;
+                var aapd = res?.AcutAPD ?? new ActualProcessData();
+                var bapd = res?.BcutAPD ?? new ActualProcessData();
 
-                //A Glass 보고----------------------------------------------------------------
-                if (cimStatus.UnloadGlass != null && cimStatus.UnloadGlass.AGlass.GlassInfoExist)
+                List<APDInfo> BuildAPDItems(ActualProcessData apd)
                 {
-                    var func_A = new CIMS6F73();
-                    func_A.LOTID = cimStatus.UnloadGlass.AGlass.LOTID;
-                    func_A.CSTID = cimStatus.UnloadGlass.AGlass.CSTID;
-                    func_A.RECIPEID = cimStatus.UnloadGlass.AGlass.RECIPEID;
-                    func_A.PRCID = cimStatus.UnloadGlass.AGlass.PRCID;
-                    func_A.SLOTID = cimStatus.UnloadGlass.AGlass.SLOTID;
-                    func_A.UNITID = cimStatus.UnitID;
-
-                    func_A.GLSPRCS.GLSID = cimStatus.UnloadGlass.AGlass.GLSID;
-                    func_A.GLSPRCS.GLSJUDGE = cimStatus.UnloadGlass.AGlass.GLSJUDGE;
-                    func_A.GLSPRCS.PNLIF = cimStatus.UnloadGlass.AGlass.PNLIF;
-                    func_A.GLSPRCS.SUBMDLIF = cimStatus.UnloadGlass.AGlass.SUBMDLIF;
-                    func_A.GLSPRCS.GLSCODE = cimStatus.UnloadGlass.AGlass.GLSCODE;
-
-                    func_A.GLSPRCS.GSDS = new List<LGHSMSBase.GSD>();
-                    foreach (var g in cimStatus.UnloadGlass.AGlass.GSDS)
+                    return new List<APDInfo>
                     {
-                        var gsd = new LGHSMSBase.GSD();
-                        gsd.GSDITEM = g.GSDITEM;
-                        gsd.GSDVALUE = g.GSDVALUE;
-                        func_A.GLSPRCS.GSDS.Add(gsd);
-                    }
-
-                    // Console에서 받아온 APD 구성
-                    cimStatus.APDIItems = new List<APDInfo>();
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "GLS_START_TIME", APDValue = Aapd.GLS_START_TIME });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "GLS_END_TIME", APDValue = Aapd.GLS_END_TIME });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_LOT_ID", APDValue = Aapd.A_LOT_ID });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_LOT_ID", APDValue = Aapd.B_LOT_ID });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_GLASS_ID", APDValue = Aapd.A_GLASS_ID });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_GLASS_ID", APDValue = Aapd.B_GLASS_ID });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_0_ALIGN", APDValue = Aapd.A_0_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_0_ALIGN", APDValue = Aapd.B_0_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_90_ALIGN", APDValue = Aapd.A_90_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_90_ALIGN", APDValue = Aapd.B_90_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_180_ALIGN", APDValue = Aapd.A_180_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_180_ALIGN", APDValue = Aapd.B_180_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_270_ALIGN", APDValue = Aapd.A_270_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_270_ALIGN", APDValue = Aapd.B_270_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_0_RATE", APDValue = Aapd.A_0_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_0_RATE", APDValue = Aapd.B_0_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_90_RATE", APDValue = Aapd.A_90_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_90_RATE", APDValue = Aapd.B_90_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_180_RATE", APDValue = Aapd.A_180_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_180_RATE", APDValue = Aapd.B_180_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_270_RATE", APDValue = Aapd.A_270_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_270_RATE", APDValue = Aapd.B_270_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "SCAN_SPEED", APDValue = Aapd.SCAN_SPEED });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_V_DEFECT", APDValue = Aapd.A_V_DEFECT });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_V_DEFECT", APDValue = Aapd.B_V_DEFECT });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_REVIEW_CNT", APDValue = Aapd.A_REVIEW_CNT });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_REVIEW_CNT", APDValue = Aapd.B_REVIEW_CNT });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "AA_SCAN_ILLU", APDValue = Aapd.AA_SCAN_ILLU });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "PAD_SCAN_ILLU", APDValue = Aapd.PAD_SCAN_ILLU });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "TACT_TIME", APDValue = Aapd.TACT_TIME });
-                    func_A.DVS = new List<DVItem>();
-                    foreach (var apd in cimStatus.APDIItems)
-                    {
-                        var dv = new DVItem();
-                        dv.DVNAME = apd.APDName;
-                        dv.DVVAL = apd.APDValue;
-                        func_A.DVS.Add(dv);
-                    }
-
-                    gem.HSMSSend(func_A);
+                        new APDInfo { APDName = "GLS_START_TIME", APDValue = apd.GLS_START_TIME },
+                        new APDInfo { APDName = "GLS_END_TIME",   APDValue = apd.GLS_END_TIME },
+                        new APDInfo { APDName = "A_LOT_ID",       APDValue = apd.A_LOT_ID },
+                        new APDInfo { APDName = "B_LOT_ID",       APDValue = apd.B_LOT_ID },
+                        new APDInfo { APDName = "A_GLASS_ID",     APDValue = apd.A_GLASS_ID },
+                        new APDInfo { APDName = "B_GLASS_ID",     APDValue = apd.B_GLASS_ID },
+                        new APDInfo { APDName = "A_0_ALIGN",      APDValue = apd.A_0_ALIGN },
+                        new APDInfo { APDName = "B_0_ALIGN",      APDValue = apd.B_0_ALIGN },
+                        new APDInfo { APDName = "A_90_ALIGN",     APDValue = apd.A_90_ALIGN },
+                        new APDInfo { APDName = "B_90_ALIGN",     APDValue = apd.B_90_ALIGN },
+                        new APDInfo { APDName = "A_180_ALIGN",    APDValue = apd.A_180_ALIGN },
+                        new APDInfo { APDName = "B_180_ALIGN",    APDValue = apd.B_180_ALIGN },
+                        new APDInfo { APDName = "A_270_ALIGN",    APDValue = apd.A_270_ALIGN },
+                        new APDInfo { APDName = "B_270_ALIGN",    APDValue = apd.B_270_ALIGN },
+                        new APDInfo { APDName = "A_0_RATE",       APDValue = apd.A_0_RATE },
+                        new APDInfo { APDName = "B_0_RATE",       APDValue = apd.B_0_RATE },
+                        new APDInfo { APDName = "A_90_RATE",      APDValue = apd.A_90_RATE },
+                        new APDInfo { APDName = "B_90_RATE",      APDValue = apd.B_90_RATE },
+                        new APDInfo { APDName = "A_180_RATE",     APDValue = apd.A_180_RATE },
+                        new APDInfo { APDName = "B_180_RATE",     APDValue = apd.B_180_RATE },
+                        new APDInfo { APDName = "A_270_RATE",     APDValue = apd.A_270_RATE },
+                        new APDInfo { APDName = "B_270_RATE",     APDValue = apd.B_270_RATE },
+                        new APDInfo { APDName = "SCAN_SPEED",     APDValue = apd.SCAN_SPEED },
+                        new APDInfo { APDName = "A_V_DEFECT",     APDValue = apd.A_V_DEFECT },
+                        new APDInfo { APDName = "B_V_DEFECT",     APDValue = apd.B_V_DEFECT },
+                        new APDInfo { APDName = "A_REVIEW_CNT",   APDValue = apd.A_REVIEW_CNT },
+                        new APDInfo { APDName = "B_REVIEW_CNT",   APDValue = apd.B_REVIEW_CNT },
+                        new APDInfo { APDName = "AA_SCAN_ILLU",   APDValue = apd.AA_SCAN_ILLU },
+                        new APDInfo { APDName = "PAD_SCAN_ILLU",  APDValue = apd.PAD_SCAN_ILLU },
+                        new APDInfo { APDName = "TACT_TIME",      APDValue = apd.TACT_TIME },
+                    };
                 }
 
-                //B Glass 보고----------------------------------------------------------------
-                if (cimStatus.UnloadGlass != null && cimStatus.UnloadGlass.BGlass.GlassInfoExist)
+                CIMS6F73 BuildFunc(GlassInfo gls, List<APDInfo> apdItems)
                 {
+                    var func = new CIMS6F73();
+                    func.LOTID    = gls.LOTID;
+                    func.CSTID    = gls.CSTID;
+                    func.RECIPEID = gls.RECIPEID;
+                    func.PRCID    = gls.PRCID;
+                    func.SLOTID   = gls.SLOTID;
+                    func.UNITID   = cimStatus.UnitID;
 
-                    var func_B = new CIMS6F73();
-                    func_B.LOTID = cimStatus.UnloadGlass.BGlass.LOTID;
-                    func_B.CSTID = cimStatus.UnloadGlass.BGlass.CSTID;
-                    func_B.RECIPEID = cimStatus.UnloadGlass.BGlass.RECIPEID;
-                    func_B.PRCID = cimStatus.UnloadGlass.BGlass.PRCID;
-                    func_B.SLOTID = cimStatus.UnloadGlass.BGlass.SLOTID;
-                    func_B.UNITID = cimStatus.UnitID;
+                    func.GLSPRCS.GLSID    = gls.GLSID;
+                    func.GLSPRCS.GLSJUDGE = gls.GLSJUDGE;
+                    func.GLSPRCS.PNLIF    = gls.PNLIF;
+                    func.GLSPRCS.SUBMDLIF = gls.SUBMDLIF;
+                    func.GLSPRCS.GLSCODE  = gls.GLSCODE;
+                    func.GLSPRCS.KEYID    = gls.KEYID;
 
-                    func_B.GLSPRCS.GLSID = cimStatus.UnloadGlass.BGlass.GLSID;
-                    func_B.GLSPRCS.GLSJUDGE = cimStatus.UnloadGlass.BGlass.GLSJUDGE;
-                    func_B.GLSPRCS.PNLIF = cimStatus.UnloadGlass.BGlass.PNLIF;
-                    func_B.GLSPRCS.SUBMDLIF = cimStatus.UnloadGlass.BGlass.SUBMDLIF;
-                    func_B.GLSPRCS.GLSCODE = cimStatus.UnloadGlass.BGlass.GLSCODE;
-
-                    func_B.GLSPRCS.GSDS = new List<LGHSMSBase.GSD>();
-                    foreach (var g in cimStatus.UnloadGlass.BGlass.GSDS)
+                    func.GLSPRCS.GSDS = new List<LGHSMSBase.GSD>();
+                    foreach (var g in gls.GSDS)
                     {
-                        var gsd = new LGHSMSBase.GSD();
-                        gsd.GSDITEM = g.GSDITEM;
-                        gsd.GSDVALUE = g.GSDVALUE;
-                        func_B.GLSPRCS.GSDS.Add(gsd);
+                        func.GLSPRCS.GSDS.Add(new LGHSMSBase.GSD { GSDITEM = g.GSDITEM, GSDVALUE = g.GSDVALUE });
                     }
 
-                    // Console에서 받아온 APD 구성
-                    cimStatus.APDIItems = new List<APDInfo>();
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "GLS_START_TIME", APDValue = Aapd.GLS_START_TIME });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "GLS_END_TIME", APDValue = Aapd.GLS_END_TIME });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_LOT_ID", APDValue = Aapd.A_LOT_ID });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_LOT_ID", APDValue = Aapd.B_LOT_ID });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_GLASS_ID", APDValue = Aapd.A_GLASS_ID });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_GLASS_ID", APDValue = Aapd.B_GLASS_ID });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_0_ALIGN", APDValue = Aapd.A_0_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_0_ALIGN", APDValue = Aapd.B_0_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_90_ALIGN", APDValue = Aapd.A_90_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_90_ALIGN", APDValue = Aapd.B_90_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_180_ALIGN", APDValue = Aapd.A_180_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_180_ALIGN", APDValue = Aapd.B_180_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_270_ALIGN", APDValue = Aapd.A_270_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_270_ALIGN", APDValue = Aapd.B_270_ALIGN });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_0_RATE", APDValue = Aapd.A_0_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_0_RATE", APDValue = Aapd.B_0_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_90_RATE", APDValue = Aapd.A_90_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_90_RATE", APDValue = Aapd.B_90_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_180_RATE", APDValue = Aapd.A_180_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_180_RATE", APDValue = Aapd.B_180_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_270_RATE", APDValue = Aapd.A_270_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_270_RATE", APDValue = Aapd.B_270_RATE });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "SCAN_SPEED", APDValue = Aapd.SCAN_SPEED });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_V_DEFECT", APDValue = Aapd.A_V_DEFECT });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_V_DEFECT", APDValue = Aapd.B_V_DEFECT });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "A_REVIEW_CNT", APDValue = Aapd.A_REVIEW_CNT });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "B_REVIEW_CNT", APDValue = Aapd.B_REVIEW_CNT });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "AA_SCAN_ILLU", APDValue = Aapd.AA_SCAN_ILLU });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "PAD_SCAN_ILLU", APDValue = Aapd.PAD_SCAN_ILLU });
-                    cimStatus.APDIItems.Add(new APDInfo { APDName = "TACT_TIME", APDValue = Aapd.TACT_TIME });
-                    func_B.DVS = new List<DVItem>();
-                    foreach (var apd in cimStatus.APDIItems)
+                    func.DVS = new List<DVItem>();
+                    foreach (var apd in apdItems)
                     {
-                        var dv = new DVItem();
-                        dv.DVNAME = apd.APDName;
-                        dv.DVVAL = apd.APDValue;
-                        func_B.DVS.Add(dv);
+                        func.DVS.Add(new DVItem { DVNAME = apd.APDName, DVVAL = apd.APDValue });
                     }
-
-                    gem.HSMSSend(func_B);
+                    return func;
                 }
 
-                //Glass Unload Data 초기화 
-                //cimStatus.UnloadGlass = null;
+                // A Glass 보고
+                if (cimStatus.UnloadGlass.AGlass.GlassInfoExist)
+                {
+                    cimStatus.APDIItems = BuildAPDItems(aapd);
+                    gem.HSMSSend(BuildFunc(cimStatus.UnloadGlass.AGlass, cimStatus.APDIItems));
+                }
+
+                // B Glass 보고
+                if (cimStatus.UnloadGlass.BGlass.GlassInfoExist)
+                {
+                    var bapdItems = BuildAPDItems(bapd);
+                    gem.HSMSSend(BuildFunc(cimStatus.UnloadGlass.BGlass, bapdItems));
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.AddLogMessage(LogType.Error, 0, e.ToString());
             }
-            */
         }
 
 

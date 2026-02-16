@@ -26,12 +26,12 @@ namespace MMISoft.HSMS
 ////                MessageBox.Show(size.ToString());
 //                if (sizeof(IntPtr) == 4)
 //                {
-//                    if (size != Engion.EngCommon.lockDllSizeWin32)
+//                    if (size != Elp.EngCommon.lockDllSizeWin32)
 //                        return false;
 //                }
 //                else
 //                {
-//                    if (size != Engion.EngCommon.lockDllSizeX64)
+//                    if (size != Elp.EngCommon.lockDllSizeX64)
 //                        return false;
 //                }
 //                firstCheck = true;

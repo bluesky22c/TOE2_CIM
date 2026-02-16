@@ -316,8 +316,10 @@ namespace TOECIM
                         RecipeSet = RecipeSet.Load(Program.SystemSetup.RecipePath, recipeID)
                     });
 
-                    DirectoryInfo di = new DirectoryInfo(recipePath);
-                    di.Delete(true);
+                    if (Directory.Exists(recipePath))
+                    {
+                        Directory.Delete(recipePath, true);
+                    }
                     break;
 
                 //레시피 이름 변경

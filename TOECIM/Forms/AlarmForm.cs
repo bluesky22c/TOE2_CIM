@@ -41,21 +41,24 @@ namespace TOECIM.Forms
             {
                 MessageBox.Show("전송 실패로 알람을 해지하지 못했습니다.");
             }
-            //if (Alarms.Count == 0)
-            //{
-            //    Close();
-            //    return;
-            //}
 
-            //foreach (var alarm in Alarms)
-            //{
-            //    cim.AlarmDBManager.ReleaseAlarm(alarm);
-            //    alarm.ALCD = ALCD.ReleaseCode(alarm.ALCD);
-            //    cim.SendS5F1(alarm, false);
-            //}
+            if (Alarms == null || Alarms.Count == 0)
+            {
+                Close();
+                return;
+            }
 
-            //Alarms.Clear();
-            //Close();
+            foreach (var alarm in Alarms.ToList())
+            {
+                cim.AlarmDBManager.ReleaseAlarm(alarm);
+                alarm.ALCD = ALCD.ReleaseCode(alarm.ALCD);
+                cim.SendS5F1(alarm, false);
+            }
+
+            Alarms.Clear();
+            cimStatus.AlarmList.Clear();
+            cim.RefreshUI();
+            Close();
         }
 
         public void UpdateCurAlarmView()

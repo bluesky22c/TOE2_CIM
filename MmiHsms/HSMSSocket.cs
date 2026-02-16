@@ -389,7 +389,7 @@ namespace MMISoft.HSMS
             }
             HSMSMessage.Encoding = Encoding.GetEncoding(Config.HSMSEncoding);
             log.WriteLine("///////////////////////////////////////////////");
-            log.WriteLine("// This library is HSMS library for Engion System provided by mmisoft.");
+            log.WriteLine("// This library is HSMS library for Elp System provided by mmisoft.");
             log.WriteLine($"// Current Encoding is {Config.HSMSEncoding}");
             log.WriteLine("///////////////////////////////////////////////");
             log.WriteLine(Log.SendReceive.Etc, 0, "", false, "Started");

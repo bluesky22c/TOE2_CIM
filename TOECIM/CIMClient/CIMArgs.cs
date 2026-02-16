@@ -34,6 +34,11 @@ namespace TOECIM
         public event EventHandler<CassetteArgs> ShowCassetteMAP = delegate { };
 
         public event EventHandler<CIMArgs> OnChangeRecipe = delegate { };
+        
+        public void RefreshUI()
+        {
+            UpdateUI?.Invoke(this, EventArgs.Empty);
+        }
 
     }
 

@@ -1,4 +1,4 @@
-﻿using Engion;
+﻿using Elp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -68,7 +68,7 @@ namespace TOECIM
                     
                     Console.WriteLine("Initializing Log...");
                     ClientCIM.log = new LogEx(Program.LogDir);
-                    Engion.Global.Log = ClientCIM.log;
+                    Elp.Global.Log = ClientCIM.log;
                     var log = ClientCIM.log;
 
                     Console.WriteLine("Enabling Visual Styles...");

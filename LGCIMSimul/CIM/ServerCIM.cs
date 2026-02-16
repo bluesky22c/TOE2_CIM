@@ -19,7 +19,7 @@ namespace LGCIMServer
             HSMSConfig config = new HSMSConfig();
             config.Mode = HSMSConfig.ModeEnum.PASSIVE;
             //socket.Config.IP = "11.92.189.193"; // CIM Addr
-            config.IP = "localhost";   // Test Addr
+            config.IP = "127.0.0.1";   // Test Addr
             config.Port = 8000;
             config.ShowErrorMessageBox = false;
             config.Device = 1;
@@ -32,7 +32,8 @@ namespace LGCIMServer
             config.LogFileName = "HOST";
             config.LogPath = Path.Combine("d:\\ELP\\TOE_CIM");
 
-            gem.ShowConfig(config);
+            gem.Config = config;
+            //gem.ShowConfig(config);
 
             gem.Init();
 
