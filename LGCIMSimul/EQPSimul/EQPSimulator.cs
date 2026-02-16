@@ -586,5 +586,27 @@ namespace LGCIMServer.EQPSimul
 
             return string.IsNullOrEmpty(reason);
         }
+
+        // Recipe Methods
+        public void RecipeCreate(string recipeId)
+        {
+            eqData.Command = EQPtoCIM.RecipeCreate;
+            eqData.RecipeItem = new RecipeSet { RECIPEID = recipeId };
+            SendToCIM(eqData);
+        }
+
+        public void RecipeChange(string recipeId)
+        {
+            eqData.Command = EQPtoCIM.RecipeChange;
+            eqData.RecipeItem = new RecipeSet { RECIPEID = recipeId };
+            SendToCIM(eqData);
+        }
+
+        public void RecipeDelete(string recipeId)
+        {
+            eqData.Command = EQPtoCIM.RecipeDelete;
+            eqData.RecipeItem = new RecipeSet { RECIPEID = recipeId };
+            SendToCIM(eqData);
+        }
     }
 }

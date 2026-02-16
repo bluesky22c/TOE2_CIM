@@ -18,6 +18,7 @@ namespace LGCIMServer
     public partial class ECSSimulForm : Form
     {
         ServerCIM server = new ServerCIM();
+        public ServerCIM Server => server; // Exposed for ScenarioRunner
         ServerStatus serverStatus => server.serverStatus;
         RecipeSearchForm recipeForm;
 

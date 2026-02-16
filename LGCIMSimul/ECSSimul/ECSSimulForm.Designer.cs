@@ -51,6 +51,20 @@ namespace LGCIMServer
             portCountTextBox = new TextBox();
             label1 = new Label();
             tabControl1 = new TabControl();
+            tabPage3 = new TabPage();
+            tabControlScenarios = new TabControl();
+            tabPageScenarioA = new TabPage();
+            txtScenarioLotId = new TextBox();
+            txtScenarioGlassId = new TextBox();
+            txtScenarioRecipeId = new TextBox();
+            btnRunScenarioA = new Button();
+            tabPageScenarioB = new TabPage();
+            btnRunScenarioB = new Button();
+            tabPageScenarioC = new TabPage();
+            btnRunScenarioC = new Button();
+            lblScenarioStatus = new Label();
+            pnlVisualFlow = new Panel();
+            lbScenarioLog = new ListBox();
             tabPage1 = new TabPage();
             clearBGlassInfoButton = new Button();
             clearAGlassInfoButton = new Button();
@@ -68,30 +82,16 @@ namespace LGCIMServer
             functionTextBox = new TextBox();
             streamTextBox = new TextBox();
             hsmsMessageTextBox = new TextBox();
-            tabPage3 = new TabPage();
-            tabControlScenarios = new TabControl();
-            tabPageScenarioA = new TabPage();
-            txtScenarioLotId = new TextBox();
-            txtScenarioGlassId = new TextBox();
-            txtScenarioRecipeId = new TextBox();
-            btnRunScenarioA = new Button();
-            tabPageScenarioB = new TabPage();
-            btnRunScenarioB = new Button();
-            tabPageScenarioC = new TabPage();
-            btnRunScenarioC = new Button();
-            lblScenarioStatus = new Label();
-            pnlVisualFlow = new Panel();
-            lbScenarioLog = new ListBox();
             menuStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
             tabControl1.SuspendLayout();
-            tabPage1.SuspendLayout();
-            tabPage2.SuspendLayout();
             tabPage3.SuspendLayout();
             tabControlScenarios.SuspendLayout();
             tabPageScenarioA.SuspendLayout();
             tabPageScenarioB.SuspendLayout();
             tabPageScenarioC.SuspendLayout();
+            tabPage1.SuspendLayout();
+            tabPage2.SuspendLayout();
             SuspendLayout();
             // 
             // rtbLog
@@ -310,6 +310,143 @@ namespace LGCIMServer
             tabControl1.Size = new Size(475, 889);
             tabControl1.TabIndex = 18;
             // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(tabControlScenarios);
+            tabPage3.Controls.Add(lblScenarioStatus);
+            tabPage3.Controls.Add(pnlVisualFlow);
+            tabPage3.Controls.Add(lbScenarioLog);
+            tabPage3.Location = new Point(4, 24);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Size = new Size(467, 861);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "Scenario";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabControlScenarios
+            // 
+            tabControlScenarios.Controls.Add(tabPageScenarioA);
+            tabControlScenarios.Controls.Add(tabPageScenarioB);
+            tabControlScenarios.Controls.Add(tabPageScenarioC);
+            tabControlScenarios.Location = new Point(10, 10);
+            tabControlScenarios.Name = "tabControlScenarios";
+            tabControlScenarios.SelectedIndex = 0;
+            tabControlScenarios.Size = new Size(441, 125);
+            tabControlScenarios.TabIndex = 0;
+            // 
+            // tabPageScenarioA
+            // 
+            tabPageScenarioA.Controls.Add(txtScenarioLotId);
+            tabPageScenarioA.Controls.Add(txtScenarioGlassId);
+            tabPageScenarioA.Controls.Add(txtScenarioRecipeId);
+            tabPageScenarioA.Controls.Add(btnRunScenarioA);
+            tabPageScenarioA.Location = new Point(4, 24);
+            tabPageScenarioA.Name = "tabPageScenarioA";
+            tabPageScenarioA.Size = new Size(433, 97);
+            tabPageScenarioA.TabIndex = 0;
+            tabPageScenarioA.Text = "Scenario A";
+            tabPageScenarioA.UseVisualStyleBackColor = true;
+            // 
+            // txtScenarioLotId
+            // 
+            txtScenarioLotId.Location = new Point(212, 66);
+            txtScenarioLotId.Name = "txtScenarioLotId";
+            txtScenarioLotId.Size = new Size(143, 23);
+            txtScenarioLotId.TabIndex = 0;
+            txtScenarioLotId.Text = "LOT_01";
+            // 
+            // txtScenarioGlassId
+            // 
+            txtScenarioGlassId.Location = new Point(212, 37);
+            txtScenarioGlassId.Name = "txtScenarioGlassId";
+            txtScenarioGlassId.Size = new Size(143, 23);
+            txtScenarioGlassId.TabIndex = 1;
+            txtScenarioGlassId.Text = "GLASS_01";
+            // 
+            // txtScenarioRecipeId
+            // 
+            txtScenarioRecipeId.Location = new Point(212, 8);
+            txtScenarioRecipeId.Name = "txtScenarioRecipeId";
+            txtScenarioRecipeId.Size = new Size(143, 23);
+            txtScenarioRecipeId.TabIndex = 2;
+            txtScenarioRecipeId.Text = "RECIPE_01";
+            // 
+            // btnRunScenarioA
+            // 
+            btnRunScenarioA.Location = new Point(6, 16);
+            btnRunScenarioA.Name = "btnRunScenarioA";
+            btnRunScenarioA.Size = new Size(180, 67);
+            btnRunScenarioA.TabIndex = 0;
+            btnRunScenarioA.Text = "Run Scenario A (Load)";
+            btnRunScenarioA.Click += btnRunScenarioA_Click;
+            // 
+            // tabPageScenarioB
+            // 
+            tabPageScenarioB.Controls.Add(btnRunScenarioB);
+            tabPageScenarioB.Location = new Point(4, 24);
+            tabPageScenarioB.Name = "tabPageScenarioB";
+            tabPageScenarioB.Size = new Size(433, 97);
+            tabPageScenarioB.TabIndex = 1;
+            tabPageScenarioB.Text = "Scenario B";
+            tabPageScenarioB.UseVisualStyleBackColor = true;
+            // 
+            // btnRunScenarioB
+            // 
+            btnRunScenarioB.Location = new Point(10, 14);
+            btnRunScenarioB.Name = "btnRunScenarioB";
+            btnRunScenarioB.Size = new Size(180, 72);
+            btnRunScenarioB.TabIndex = 1;
+            btnRunScenarioB.Text = "Run Scenario B (Exchange)";
+            btnRunScenarioB.Click += btnRunScenarioB_Click;
+            // 
+            // tabPageScenarioC
+            // 
+            tabPageScenarioC.Controls.Add(btnRunScenarioC);
+            tabPageScenarioC.Location = new Point(4, 24);
+            tabPageScenarioC.Name = "tabPageScenarioC";
+            tabPageScenarioC.Size = new Size(433, 97);
+            tabPageScenarioC.TabIndex = 2;
+            tabPageScenarioC.Text = "Scenario C";
+            tabPageScenarioC.UseVisualStyleBackColor = true;
+            // 
+            // btnRunScenarioC
+            // 
+            btnRunScenarioC.Location = new Point(8, 11);
+            btnRunScenarioC.Name = "btnRunScenarioC";
+            btnRunScenarioC.Size = new Size(180, 73);
+            btnRunScenarioC.TabIndex = 2;
+            btnRunScenarioC.Text = "Run Scenario C (Lot End)";
+            btnRunScenarioC.Click += btnRunScenarioC_Click;
+            // 
+            // lblScenarioStatus
+            // 
+            lblScenarioStatus.AutoSize = true;
+            lblScenarioStatus.Font = new Font("맑은 고딕", 9.75F, FontStyle.Bold);
+            lblScenarioStatus.Location = new Point(20, 149);
+            lblScenarioStatus.Name = "lblScenarioStatus";
+            lblScenarioStatus.Size = new Size(91, 17);
+            lblScenarioStatus.TabIndex = 1;
+            lblScenarioStatus.Text = "Status: Ready";
+            // 
+            // pnlVisualFlow
+            // 
+            pnlVisualFlow.AutoScroll = true;
+            pnlVisualFlow.BackColor = Color.White;
+            pnlVisualFlow.Location = new Point(15, 183);
+            pnlVisualFlow.Name = "pnlVisualFlow";
+            pnlVisualFlow.Size = new Size(436, 561);
+            pnlVisualFlow.TabIndex = 4;
+            // 
+            // lbScenarioLog
+            // 
+            lbScenarioLog.FormattingEnabled = true;
+            lbScenarioLog.ItemHeight = 15;
+            lbScenarioLog.Location = new Point(15, 750);
+            lbScenarioLog.Name = "lbScenarioLog";
+            lbScenarioLog.Size = new Size(436, 94);
+            lbScenarioLog.TabIndex = 3;
+            lbScenarioLog.Visible = false;
+            // 
             // tabPage1
             // 
             tabPage1.Controls.Add(clearBGlassInfoButton);
@@ -511,143 +648,6 @@ namespace LGCIMServer
             hsmsMessageTextBox.TabIndex = 22;
             hsmsMessageTextBox.WordWrap = false;
             // 
-            // tabPage3
-            // 
-            tabPage3.Controls.Add(tabControlScenarios);
-            tabPage3.Controls.Add(lblScenarioStatus);
-            tabPage3.Controls.Add(pnlVisualFlow);
-            tabPage3.Controls.Add(lbScenarioLog);
-            tabPage3.Location = new Point(4, 24);
-            tabPage3.Name = "tabPage3";
-            tabPage3.Size = new Size(467, 861);
-            tabPage3.TabIndex = 2;
-            tabPage3.Text = "Scenario";
-            tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabControlScenarios
-            // 
-            tabControlScenarios.Controls.Add(tabPageScenarioA);
-            tabControlScenarios.Controls.Add(tabPageScenarioB);
-            tabControlScenarios.Controls.Add(tabPageScenarioC);
-            tabControlScenarios.Location = new Point(10, 10);
-            tabControlScenarios.Name = "tabControlScenarios";
-            tabControlScenarios.SelectedIndex = 0;
-            tabControlScenarios.Size = new Size(530, 210);
-            tabControlScenarios.TabIndex = 0;
-            // 
-            // tabPageScenarioA
-            // 
-            tabPageScenarioA.Controls.Add(txtScenarioLotId);
-            tabPageScenarioA.Controls.Add(txtScenarioGlassId);
-            tabPageScenarioA.Controls.Add(txtScenarioRecipeId);
-            tabPageScenarioA.Controls.Add(btnRunScenarioA);
-            tabPageScenarioA.Location = new Point(4, 24);
-            tabPageScenarioA.Name = "tabPageScenarioA";
-            tabPageScenarioA.Size = new Size(522, 182);
-            tabPageScenarioA.TabIndex = 0;
-            tabPageScenarioA.Text = "Scenario A";
-            tabPageScenarioA.UseVisualStyleBackColor = true;
-            // 
-            // txtScenarioLotId
-            // 
-            txtScenarioLotId.Location = new Point(100, 77);
-            txtScenarioLotId.Name = "txtScenarioLotId";
-            txtScenarioLotId.Size = new Size(200, 23);
-            txtScenarioLotId.TabIndex = 0;
-            txtScenarioLotId.Text = "LOT_01";
-            // 
-            // txtScenarioGlassId
-            // 
-            txtScenarioGlassId.Location = new Point(100, 47);
-            txtScenarioGlassId.Name = "txtScenarioGlassId";
-            txtScenarioGlassId.Size = new Size(200, 23);
-            txtScenarioGlassId.TabIndex = 1;
-            txtScenarioGlassId.Text = "GLASS_01";
-            // 
-            // txtScenarioRecipeId
-            // 
-            txtScenarioRecipeId.Location = new Point(100, 17);
-            txtScenarioRecipeId.Name = "txtScenarioRecipeId";
-            txtScenarioRecipeId.Size = new Size(200, 23);
-            txtScenarioRecipeId.TabIndex = 2;
-            txtScenarioRecipeId.Text = "RECIPE_01";
-            // 
-            // btnRunScenarioA
-            // 
-            btnRunScenarioA.Location = new Point(10, 110);
-            btnRunScenarioA.Name = "btnRunScenarioA";
-            btnRunScenarioA.Size = new Size(180, 40);
-            btnRunScenarioA.TabIndex = 0;
-            btnRunScenarioA.Text = "Run Scenario A (Load)";
-            btnRunScenarioA.Click += btnRunScenarioA_Click;
-            // 
-            // tabPageScenarioB
-            // 
-            tabPageScenarioB.Controls.Add(btnRunScenarioB);
-            tabPageScenarioB.Location = new Point(4, 24);
-            tabPageScenarioB.Name = "tabPageScenarioB";
-            tabPageScenarioB.Size = new Size(522, 182);
-            tabPageScenarioB.TabIndex = 1;
-            tabPageScenarioB.Text = "Scenario B";
-            tabPageScenarioB.UseVisualStyleBackColor = true;
-            // 
-            // btnRunScenarioB
-            // 
-            btnRunScenarioB.Location = new Point(10, 50);
-            btnRunScenarioB.Name = "btnRunScenarioB";
-            btnRunScenarioB.Size = new Size(180, 40);
-            btnRunScenarioB.TabIndex = 1;
-            btnRunScenarioB.Text = "Run Scenario B (Exchange)";
-            btnRunScenarioB.Click += btnRunScenarioB_Click;
-            // 
-            // tabPageScenarioC
-            // 
-            tabPageScenarioC.Controls.Add(btnRunScenarioC);
-            tabPageScenarioC.Location = new Point(4, 24);
-            tabPageScenarioC.Name = "tabPageScenarioC";
-            tabPageScenarioC.Size = new Size(522, 182);
-            tabPageScenarioC.TabIndex = 2;
-            tabPageScenarioC.Text = "Scenario C";
-            tabPageScenarioC.UseVisualStyleBackColor = true;
-            // 
-            // btnRunScenarioC
-            // 
-            btnRunScenarioC.Location = new Point(10, 50);
-            btnRunScenarioC.Name = "btnRunScenarioC";
-            btnRunScenarioC.Size = new Size(180, 40);
-            btnRunScenarioC.TabIndex = 2;
-            btnRunScenarioC.Text = "Run Scenario C (Lot End)";
-            btnRunScenarioC.Click += btnRunScenarioC_Click;
-            // 
-            // lblScenarioStatus
-            // 
-            lblScenarioStatus.AutoSize = true;
-            lblScenarioStatus.Font = new Font("맑은 고딕", 9.75F, FontStyle.Bold);
-            lblScenarioStatus.Location = new Point(20, 230);
-            lblScenarioStatus.Name = "lblScenarioStatus";
-            lblScenarioStatus.Size = new Size(91, 17);
-            lblScenarioStatus.TabIndex = 1;
-            lblScenarioStatus.Text = "Status: Ready";
-            // 
-            // pnlVisualFlow
-            // 
-            pnlVisualFlow.AutoScroll = true;
-            pnlVisualFlow.BackColor = Color.White;
-            pnlVisualFlow.Location = new Point(15, 275);
-            pnlVisualFlow.Name = "pnlVisualFlow";
-            pnlVisualFlow.Size = new Size(520, 565);
-            pnlVisualFlow.TabIndex = 4;
-            // 
-            // lbScenarioLog
-            // 
-            lbScenarioLog.FormattingEnabled = true;
-            lbScenarioLog.ItemHeight = 15;
-            lbScenarioLog.Location = new Point(20, 750);
-            lbScenarioLog.Name = "lbScenarioLog";
-            lbScenarioLog.Size = new Size(420, 94);
-            lbScenarioLog.TabIndex = 3;
-            lbScenarioLog.Visible = false;
-            // 
             // ECSSimulForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -665,10 +665,6 @@ namespace LGCIMServer
             menuStrip1.PerformLayout();
             groupBox1.ResumeLayout(false);
             tabControl1.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            tabPage1.PerformLayout();
-            tabPage2.ResumeLayout(false);
-            tabPage2.PerformLayout();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
             tabControlScenarios.ResumeLayout(false);
@@ -676,6 +672,10 @@ namespace LGCIMServer
             tabPageScenarioA.PerformLayout();
             tabPageScenarioB.ResumeLayout(false);
             tabPageScenarioC.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
+            tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
 

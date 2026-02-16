@@ -493,7 +493,7 @@ namespace TOECIM
             autoRunLabel.Name = "autoRunLabel";
             autoRunLabel.Size = new Size(79, 56);
             autoRunLabel.TabIndex = 10;
-            autoRunLabel.Text = "AutoRun OFF";
+            autoRunLabel.Text = "AutoRun";
             autoRunLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // glassInlabel
@@ -1503,49 +1503,49 @@ namespace TOECIM
             // loopBackToolStripMenuItem
             // 
             loopBackToolStripMenuItem.Name = "loopBackToolStripMenuItem";
-            loopBackToolStripMenuItem.Size = new Size(175, 22);
+            loopBackToolStripMenuItem.Size = new Size(180, 22);
             loopBackToolStripMenuItem.Text = "LoopBack";
             loopBackToolStripMenuItem.Click += loopBackToolStripMenuItem_Click;
             // 
             // timeCheckToolStripMenuItem
             // 
             timeCheckToolStripMenuItem.Name = "timeCheckToolStripMenuItem";
-            timeCheckToolStripMenuItem.Size = new Size(175, 22);
+            timeCheckToolStripMenuItem.Size = new Size(180, 22);
             timeCheckToolStripMenuItem.Text = "Time Check";
             timeCheckToolStripMenuItem.Click += timeCheckToolStripMenuItem_Click;
             // 
             // gLSMVStatusToolStripMenuItem
             // 
             gLSMVStatusToolStripMenuItem.Name = "gLSMVStatusToolStripMenuItem";
-            gLSMVStatusToolStripMenuItem.Size = new Size(175, 22);
-            gLSMVStatusToolStripMenuItem.Text = "GLSMVStatus";
+            gLSMVStatusToolStripMenuItem.Size = new Size(180, 22);
+            gLSMVStatusToolStripMenuItem.Text = "GLSMV　Status";
             gLSMVStatusToolStripMenuItem.Click += gLSMVStatusToolStripMenuItem_Click;
             // 
             // eQPStatusToolStripMenuItem
             // 
             eQPStatusToolStripMenuItem.Name = "eQPStatusToolStripMenuItem";
-            eQPStatusToolStripMenuItem.Size = new Size(175, 22);
-            eQPStatusToolStripMenuItem.Text = "EQPStatus";
+            eQPStatusToolStripMenuItem.Size = new Size(180, 22);
+            eQPStatusToolStripMenuItem.Text = "EQP　Status";
             eQPStatusToolStripMenuItem.Click += eQPStatusToolStripMenuItem_Click;
             // 
             // eQPSimulatorToolStripMenuItem
             // 
             eQPSimulatorToolStripMenuItem.Name = "eQPSimulatorToolStripMenuItem";
-            eQPSimulatorToolStripMenuItem.Size = new Size(175, 22);
+            eQPSimulatorToolStripMenuItem.Size = new Size(180, 22);
             eQPSimulatorToolStripMenuItem.Text = "EQP Simulator";
             eQPSimulatorToolStripMenuItem.Click += eQPSimulatorToolStripMenuItem_Click;
             // 
             // alarmToolStripMenuItem
             // 
             alarmToolStripMenuItem.Name = "alarmToolStripMenuItem";
-            alarmToolStripMenuItem.Size = new Size(175, 22);
+            alarmToolStripMenuItem.Size = new Size(180, 22);
             alarmToolStripMenuItem.Text = "Alarm";
             alarmToolStripMenuItem.Click += alarmToolStripMenuItem_Click;
             // 
             // glassData초기화ToolStripMenuItem
             // 
             glassData초기화ToolStripMenuItem.Name = "glassData초기화ToolStripMenuItem";
-            glassData초기화ToolStripMenuItem.Size = new Size(175, 22);
+            glassData초기화ToolStripMenuItem.Size = new Size(180, 22);
             glassData초기화ToolStripMenuItem.Text = "Glass Data 초기화";
             glassData초기화ToolStripMenuItem.Click += glassData초기화ToolStripMenuItem_Click;
             // 
@@ -1607,6 +1607,7 @@ namespace TOECIM
             // logViewer1
             // 
             logViewer1.BackColor = Color.FromArgb(25, 38, 52);
+            logViewer1.BorderStyle = BorderStyle.None;
             logViewer1.Dock = DockStyle.Fill;
             logViewer1.ForeColor = Color.Gainsboro;
             logViewer1.Format = "[{0:MM-dd HH:mm:ss.fff}] {3}";

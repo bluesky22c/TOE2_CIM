@@ -18,6 +18,7 @@ namespace LGCIMServer
         ECSSimulForm ecsSimulForm;
         EQPSimulForm eqpSimulForm;
         RecipeSimulForm recipeSimulForm;
+        ScenarioRunner _runner;
 
         public LGCIMSimulForm()
         {
@@ -33,6 +34,13 @@ namespace LGCIMServer
         private void InitializeComponents()
         {
             mainLayoutPanel.BackColor = Color.White;
+            
+            // MenuStrip 추가 (Scenario Trigger)
+            MenuStrip menu = new MenuStrip();
+            ToolStripMenuItem scenarioMenu = new ToolStripMenuItem("Scenarios");
+            menu.Items.Add(scenarioMenu);
+            this.Controls.Add(menu);
+            this.MainMenuStrip = menu;
 
             // Title Styling
             var titleFont = new Font("맑은 고딕", 10F, FontStyle.Bold);
@@ -94,6 +102,22 @@ namespace LGCIMServer
             recipeSimulForm.Visible = true;
             recipeTabPage.Controls.Add(recipeSimulForm);
             eqpTabControl.TabPages.Add(recipeTabPage);
+
+            // Init Scenario Runner
+            _runner = new ScenarioRunner(eqpSimulForm.Simulator, ecsSimulForm.Server);
+            
+            ScenarioProgressForm progressForm = new ScenarioProgressForm(_runner);
+
+            // Add Menu Items (Show Progress Form and load scenario)
+            void ShowScenarioForm()
+            {
+                if (progressForm.IsDisposed) progressForm = new ScenarioProgressForm(_runner);
+                progressForm.Show();
+                progressForm.BringToFront();
+            }
+
+            scenarioMenu.DropDownItems.Add("Scenario Auto Test", null, (s, e) => ShowScenarioForm());
+
 
             FormClosing += SimulatorForm_FormClosing;
         }

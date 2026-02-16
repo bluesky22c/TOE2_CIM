@@ -45,6 +45,60 @@ namespace LGCIMServer
             gem.HSMSSend(func);
         }
 
+        // [보완] S6F63: Unload Glass Data Report
+        public void SendS6F63()
+        {
+            var func = new CIMS6F63();
+            func.UNITID = serverStatus.UnitID;
+            func.STAGEID = 1;
+
+            // Log 분석 결과: UnLoadGlass 리스트에 데이터가 포함되어야 함
+            
+            // Dummy glass data 생성 (GemInfo.cs의 UnLoadGlass 및 GSD 타입 사용)
+            var glassInfo = new UnLoadGlass();
+            glassInfo.LOTID = "CETL5A001200";
+            glassInfo.CSTID = "PXCCST100041";
+            glassInfo.SLOTID = "24";
+            glassInfo.GLSID = "6TL5900057A00";
+            glassInfo.PNLIF = new string('G', 2000); // 2000자 더미 데이터
+            glassInfo.SUBMDLIF = new string(' ', 2000);
+            glassInfo.PRCID = "77490";
+            glassInfo.DICODE = 0;
+            glassInfo.PORTID = 2;
+            glassInfo.RECIPEID = "123QDLS3";
+            glassInfo.GLSJUDGE = "G";
+            glassInfo.PARTNUM = "62084-0129A";
+            glassInfo.PRODTYPE = "PRODUCTION";
+            glassInfo.ATTRIBUTE = "CELL_GAP_G";
+            glassInfo.GLSTYPE = "N";
+            glassInfo.GLSPROC = "0";
+            glassInfo.GLSCODE = 16152;
+            glassInfo.DEST = 0;
+            glassInfo.KEYID = "CETL5A001200_20251106152106";
+            
+            // sub-item list 보고 (GSD 타입)
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "CUT_TYPE", GSDVALUE = "A" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "DEPO_UNIT", GSDVALUE = "PXCSPT020305" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "DUMMY_COUNT", GSDVALUE = "0" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "GATE_ALIGN_EQP", GSDVALUE = "TPHT0650" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "LAYER_ALIGN_EQP", GSDVALUE = "TPHT2700" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "MATCH_SLOT", GSDVALUE = "00" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "ORT_FLAG", GSDVALUE = "0" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "PI_FLAG", GSDVALUE = "0" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "PPBOX_ID", GSDVALUE = "OX2EF8B420" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "PPBOX_SN", GSDVALUE = "W225199210" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "TFT_GATE_PHT_EQP", GSDVALUE = "TPHT2700" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "TFT_GLS_MAKER", GSDVALUE = "O" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "PAIRINFO", GSDVALUE = "Y" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "PAIR_GLASS_CODE", GSDVALUE = "16182" });
+            glassInfo.GSDS.Add(new GSD { GSDITEM = "ROUTE_CHAMBER", GSDVALUE = "" });
+
+            // 메인 리스트에 추가 (CIMS6F63의 리스트 이름은 UnLoadGlass 임)
+            func.UnLoadGlass.Add(glassInfo);
+            
+            gem.HSMSSend(func);
+        }
+
         // LOT END
         public void SendS6F65()
         {

@@ -528,7 +528,6 @@ namespace TOECIM
                 // AutoRun 상태 업데이트
                 autoRunLabel.BackColor = Color.Transparent;
                 autoRunLabel.ForeColor = cimStatus.IsAutoRun ? Color.Lime : Color.OrangeRed; // Tomato보다 조금 더 선명한 OrangeRed 사용
-                autoRunLabel.Text = cimStatus.IsAutoRun ? "AutoRun ON" : "AutoRun OFF";
 
                 // GlassIn 상태 업데이트 (데이터 연동 정합성 체크 추가)
                 glassInlabel.BackColor = Color.Transparent;
@@ -970,6 +969,8 @@ namespace TOECIM
 
         private void alarmToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Internal Alarm Simulation is deprecated.\nPlease use LGCIMSimul for alarm testing.", "Deprecated Feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            /*
             ShowAlarm();
 
             AlarmSimulForm form = new AlarmSimulForm();
@@ -983,6 +984,7 @@ namespace TOECIM
                 ShowAlarm();
                 UpdateAlarmView();
             }
+            */
         }
 
         private void curAlarmButton_Click(object sender, EventArgs e)
