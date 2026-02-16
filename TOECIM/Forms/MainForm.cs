@@ -323,8 +323,11 @@ namespace TOECIM
                 case EQPtoCIM.UnloadReadyDone:
                     {
                         ChangeEQPStatusEvent(status);
-                        cimStatus.UnloadGlass.AGlass.PNLIF = data.GlassPanelJudgeA;
-                        cimStatus.UnloadGlass.BGlass.PNLIF = data.GlassPanelJudgeB;
+                        if (cimStatus.UnloadGlass != null)
+                        {
+                            cimStatus.UnloadGlass.AGlass.PNLIF = data.GlassPanelJudgeA;
+                            cimStatus.UnloadGlass.BGlass.PNLIF = data.GlassPanelJudgeB;
+                        }
                         cim.SendS6F63();
                         cim.SendS6F61();
                     }
