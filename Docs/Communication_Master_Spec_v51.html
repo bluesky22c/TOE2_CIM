@@ -1,0 +1,986 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOECIM 명세서 v51</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap">
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --sidebar-bg: #161b22;
+            --card-bg: #21262d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-color: #58a6ff;
+            --border-color: #30363d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            font-size: 18px;
+        }
+
+        nav {
+            width: 320px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .nav-header {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 2.5rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover {
+            background-color: #21262d;
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background-color: var(--accent-color);
+            color: #000;
+            font-weight: 800;
+        }
+
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4rem;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            display: none;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            border-bottom: 4px solid var(--accent-color);
+            padding-bottom: 0.8rem;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            margin-top: 2rem;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 15px;
+        }
+
+        .mermaid {
+            background-color: #ffffff !important;
+            padding: 3rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            overflow: visible;
+            min-height: 200px;
+        }
+
+        svg .messageLine0,
+        svg .messageLine1 {
+            stroke: #1e293b !important;
+            stroke-width: 2.5px !important;
+            opacity: 1 !important;
+        }
+
+        svg .messageLine1 {
+            stroke-dasharray: 6, 4 !important;
+        }
+
+        svg circle.sequenceNumber {
+            fill: #1e293b !important;
+            stroke: #1e293b !important;
+            fill-opacity: 1 !important;
+            r: 15px !important;
+        }
+
+        svg text.sequenceNumber {
+            fill: #ffffff !important;
+            fill-opacity: 1 !important;
+            stroke: none !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 900 !important;
+            font-size: 17px !important;
+            dominant-baseline: central !important;
+            text-anchor: middle !important;
+            alignment-baseline: central !important;
+        }
+
+        svg .node rect {
+            stroke-width: 2px !important;
+        }
+
+        svg .edgePath path {
+            stroke: #1e293b !important;
+            stroke-width: 2.5px !important;
+            fill: none !important;
+            opacity: 1 !important;
+        }
+
+        svg .edgeLabel {
+            color: #1e293b !important;
+            font-weight: 700 !important;
+        }
+
+        svg .node .label {
+            color: #1e293b !important;
+            font-weight: 800 !important;
+        }
+
+        rect.actor {
+            fill: #eef2ff !important;
+            stroke: #c7d2fe !important;
+            stroke-width: 2px !important;
+        }
+
+        rect.note {
+            fill: #fef3c7 !important;
+            stroke: #fde68a !important;
+        }
+
+        .noteText {
+            fill: #92400e !important;
+            font-weight: 800 !important;
+            font-size: 18px !important;
+        }
+
+        .actor {
+            font-weight: 900 !important;
+            font-size: 20px !important;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: #30363d;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        .tag-s {
+            background: #238636;
+            color: white;
+        }
+
+        .tag-p {
+            background: #d73a49;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <marker id="global-arrowhead-compact" markerWidth="6" markerHeight="6" refX="5.5" refY="3" orient="auto">
+                <path d="M 0 0 L 6 3 L 0 6 z" fill="#1e293b" />
+            </marker>
+            <marker id="global-arrowhead-graph" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e293b" />
+            </marker>
+        </defs>
+    </svg>
+
+    <nav>
+        <div class="nav-header">TOECIM MASTER v51</div>
+        <div class="nav-item active" onclick="activeTab(this, 'sc-arch')">1. 아키텍쳐 및 시스템 흐름</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-init')">2. 시스템 연결</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-cimcon')">3. TOECIM <-> Console 통신</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-tsp')">4. Console <-> TSP 통신</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-prod')">5. Load</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-inspect')">6. InspectDone</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-exchange')">7. ExchangeDone (Unload)</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-lotend')">8. LOT 종료</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-recipe')">9. 레시피 관리</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-alarm')">10. 알람 및 오류 관리</div>
+        <div class="nav-item" onclick="activeTab(this, 'sc-verify')">11. 사양 검증 결과</div>
+    </nav>
+
+    <main>
+        <!-- 1. 아키텍쳐 및 시스템 흐름 -->
+        <section id="sc-arch" class="active">
+            <h1>1. 아키텍쳐 및 시스템 흐름</h1>
+            <p>TOE2_CIM 시스템의 통합 아키텍쳐와 계층별 통신 흐름, 프로토콜 정의를 상세히 다룹니다.</p>
+
+            <h2>1. Technical Architecture Hierarchy</h2>
+            <div class="mermaid">
+                flowchart TD
+                subgraph Layer_Upper ["Upper Management Layer"]
+                ECS["ECS Simulator\n(Simulation Host)"]
+                end
+
+                subgraph Layer_CIM ["Service & Interface Layer"]
+                CIM["TOE2_CIM\n(Protocol Converter & Logic)"]
+                Console["Console App\n(HMI & Data Aggregator)"]
+                end
+
+                subgraph Layer_Equipment ["Lower Execution Layer"]
+                Control["PLC / Control\n(Hardware Logic)"]
+                TSP["TSP Engine\n(Defect Algorithm)"]
+                end
+
+                ECS -- "HSMS / SECS-II\n(S-Series Messages)" --- CIM
+                CIM -- "JSON / TCP\n(StateSync & Command)" --- Console
+                CIM -- "MELSEC\n(Handshake & Bits)" --- Control
+                Console -- "TCP Packet (STX/ETX)" --- TSP
+                Console -- "gRPC / ProtoBuf\n(Large Data/Images)" --- TSP
+                Control -- "Pulse Trigger" --- TSP
+
+                style ECS fill:#eef2ff,stroke:#58a6ff,stroke-width:2px
+                style CIM fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+                style Console fill:#f3e5f5,stroke:#ab47bc,stroke-width:2px
+                style Control fill:#e8f5e9,stroke:#66bb6a,stroke-width:2px
+                style TSP fill:#ffebee,stroke:#ef5350,stroke-width:2px
+            </div>
+
+            <h2>2. Core Component Responsibilities</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Core Responsibility</th>
+                        <th>Key Logic</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ECS Simulator</strong></td>
+                        <td>Host Simulation</td>
+                        <td>Scenario-based glass injection, PR/Lot data management, result ACK processing.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TOE2_CIM</strong></td>
+                        <td>Connectivity Bridge</td>
+                        <td>HSMS/SECS-II state machine management, JSON command routing, PLC handshake abstraction.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Console App</strong></td>
+                        <td>Operator Hub</td>
+                        <td>Real-time visualization, defect accumulation, gRPC server for engine stream, history DB
+                            management.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TSP Engine</strong></td>
+                        <td>Image Intelligence</td>
+                        <td>Sub-pixel accuracy defect detection, high-speed image processing, result raw data (.ini)
+                            generation.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>3. Multi-Layer Protocol Matrix</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Protocol</th>
+                        <th>Primary Message</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="4"><strong>Upper Report<br>(SECS-II)</strong></td>
+                        <td><span class="tag tag-s">S2F87</span></td>
+                        <td>Job Setup</td>
+                        <td>Recipe name, Glass/Lot parameters, Panel count.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-s">S1F67/68</span></td>
+                        <td>Position Sync</td>
+                        <td>Report all glass locations + Host ACK.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-s">S6F73/74</span></td>
+                        <td>Inspect Report</td>
+                        <td>Final analysis result (Pass/Fail) + Host ACK.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-s">S6F63/64</span></td>
+                        <td>Unload Report</td>
+                        <td>Yield data, summarization of the lot.</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><strong>Internal Control<br>(JSON/IPC)</strong></td>
+                        <td><span class="tag tag-p">JSON</span></td>
+                        <td>Command Set</td>
+                        <td>LoadDone, InspectDone, AlarmTrigger, RecipeSync.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-p">StateSync</span></td>
+                        <td>Real-time Sync</td>
+                        <td>CIM SECS Status, Connection Health, Alarm State.</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><strong>Engine Interface<br>(TCP/gRPC)</strong></td>
+                        <td><span class="tag tag-p">Packet</span></td>
+                        <td>STX/ETX Cmd</td>
+                        <td>ModelChange, TestStart, Ping (Binary Packet).</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-p">gRPC</span></td>
+                        <td>Stream Data</td>
+                        <td>Defect contour points, Image thumbnails, Progress %.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>4. Integrated Production Lifecycle (Sequence)</h2>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator"
+                participant C as "TOECIM"
+                participant CON as "Console"
+                participant T as "TSP Engine"
+
+                rect rgb(240, 245, 255)
+                Note over H, T: "Stage 1: Load & Preparation"
+                H->>C: "S2F87: Job Setup (Recipe/Lot)"
+                C->>CON: "JobData Sync (JSON)"
+                CON->>T: "JobInit() (gRPC)"
+                T-->>CON: "Ready Signal"
+                end
+
+                rect rgb(255, 245, 240)
+                Note over H, T: "Stage 2: Processing & Inspection"
+                Note right of CON: "Hardware Trigger (PLC -> TSP)"
+                T->>CON: "Defect Live Stream (gRPC)"
+                CON->>CON: "Visual Rendering & DB Logging"
+                T->>CON: "JobFinalize() (TCP)"
+                end
+
+                rect rgb(245, 255, 245)
+                Note over H, T: "Stage 3: Decision & Reporting"
+                CON->>C: "InspectDone Request (JSON)"
+                C->>H: "S6F73: Results Reporting (SECS)"
+                H-->>C: "S6F74: Result Ack"
+                C->>H: "S6F63: Unload Data (SECS)"
+                H-->>C: "S6F64: Unload Ack"
+                end
+            </div>
+        </section>
+
+        <!-- 2. 시스템 연결 -->
+        <section id="sc-init">
+            <h1>2. 시스템 연결</h1>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator (Passive)"
+                participant C as "TOECIM (Active)"
+                C->>H: "TCP Connect"
+                H-->>C: "TCP Accept"
+                C->>H: "Select.req"
+                H-->>C: "Select.rsp (Success)"
+                H->>C: "S1F13 (Establish Communications Request)"
+                C-->>H: "S1F14 (Establish Communications Acknowledge)"
+                C-->>H: "S1F2 (I am Online)"
+                H->>C: "S2F17 (Time Sync Req)"
+                C-->>H: "S2F18 (Time Data)"
+                H->>C: "S1F61 (Status Request)"
+                C-->>H: "S1F62 (Status Data)"
+            </div>
+        </section>
+
+        <!-- 3. TOECIM <-> Console 통신 -->
+        <section id="sc-cimcon">
+            <h1>3. TOECIM <-> Console 통신</h1>
+            <p>TOECIM(CIM)과 Console 간의 JSON 기반 TCP 직접 통신 프로토콜입니다.</p>
+
+            <h2>1. Communication Method</h2>
+            <ul>
+                <li><strong>Protocol:</strong> TCP Socket (Engion.Net Library)</li>
+                <li><strong>Data Format:</strong> JSON (Newtonsoft.Json)</li>
+                <li><strong>Network:</strong> CIM Server (Port 7000) <-> Console Client</li>
+            </ul>
+
+            <h2>2. JSON Data Format (Example)</h2>
+            <div class="code-block">
+                <pre>{
+  "WaitResponse": true,
+  "ToCIM": {
+    "Command": "LoadReadyDone",
+    "eqpStatus": "RUN",
+    "GlassPanelJudgeA": "G",
+    "GlassPanelJudgeB": "G",
+    "RecipeItem": { "RecipeName": "Lucid34" }
+  },
+  "ToConsole": {
+    "Command": "None",
+    "ResultOK": true
+  }
+}</pre>
+            </div>
+
+            <h2>3. Main Command List (JSON Commands)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Direction</th>
+                        <th>Command</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="4">Console → CIM</td>
+                        <td>LoadReadyDone</td>
+                        <td>설비 로드 준비 완료 보고 (S6F61 유발)</td>
+                    </tr>
+                    <tr>
+                        <td>InspectDone</td>
+                        <td>검사 완료 보고 (S6F73, S6F63 유발)</td>
+                    </tr>
+                    <tr>
+                        <td>Alarm</td>
+                        <td>알람 및 오류 발생 보고</td>
+                    </tr>
+                    <tr>
+                        <td>SendData</td>
+                        <td>실시간 설비 상태 업데이트</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">CIM → Console</td>
+                        <td>LoadRecipe</td>
+                        <td>레시피 변경 요청 (ECS Simulator S7F61로부터)</td>
+                    </tr>
+                    <tr>
+                        <td>Pause</td>
+                        <td>공정 일시정지 요청 (ECS Simulator S2F99 RCMD:PAUSE로부터)</td>
+                    </tr>
+                    <tr>
+                        <td>EQStatusDataReq</td>
+                        <td>동기화를 위한 현재 설비 상태 요청</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>4. Communication Sequence</h2>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant CON as "Console (Client)"
+                participant CIM as "TOECIM (Server)"
+                participant H as "ECS Simulator (GEM)"
+
+                Note over CON, CIM: "1. Status Reporting"
+                CON->>CIM: "Json(CimCommData: LoadReadyDone)"
+                CIM->>H: "SECS-II: S6F61 (Load Ready Report)"
+                H-->>CIM: "ACK"
+                CIM-->>CON: "JSON: Result ACK"
+
+                Note over H, CIM: "2. Upper Level Control"
+                H->>CIM: "SECS-II: S7F61 (Recipe ID Confirm Request)"
+                CIM->>CON: "Json(CIMtoConsole: LoadRecipe)"
+                CON->>CON: "Change UI & Internal Recipe"
+                CON-->>CIM: "JSON: ACK"
+                CIM-->>H: "ACK"
+            </div>
+        </section>
+
+        <!-- 4. Console <-> TSP 통신 -->
+        <section id="sc-tsp">
+            <h1>4. Console <-> TSP 통신</h1>
+            <p>Console과 TSP 검사 엔진 간의 직접 TCP/IP 통신 프로토콜입니다.</p>
+
+            <h2>1. Packet Structure (STX/ETX Format)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Offset</th>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>STX</td>
+                        <td>Byte</td>
+                        <td>텍스트 시작 (0x02)</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Header.Cmd</td>
+                        <td>Short</td>
+                        <td>명령어 ID (예: 0x31: ModelChange)</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Header.Len</td>
+                        <td>Short</td>
+                        <td>본문 데이터 길이</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Body Data</td>
+                        <td>Binary</td>
+                        <td>명령어별 상세 파라미터</td>
+                    </tr>
+                    <tr>
+                        <td>N</td>
+                        <td>ETX</td>
+                        <td>Byte</td>
+                        <td>텍스트 종료 (0x03)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>2. Main Command List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Command Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0x31</td>
+                        <td>ModelChangeReq</td>
+                        <td>모델명 및 보드 사용 여부 동기화 (1,0)</td>
+                    </tr>
+                    <tr>
+                        <td>0x32</td>
+                        <td>TestStartReq</td>
+                        <td>GlassID 및 PanelID를 포함한 검사 트리거</td>
+                    </tr>
+                    <tr>
+                        <td>0x53</td>
+                        <td>TestStartEndRes</td>
+                        <td>검사 완료 보고 알림</td>
+                    </tr>
+                    <tr>
+                        <td>0x70</td>
+                        <td>PingConnection</td>
+                        <td>통신 상태 점검 (하트비트)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>3. Communication Sequence</h2>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant CON as "Console"
+                participant T as "TSP Engine"
+                participant FS as "File System (E:\TSP_Result)"
+
+                Note over CON, T: "1. Model Synchronization"
+                CON->>T: "ModelChangeReq(ModelID, BoardEnable)"
+                T-->>CON: "ModelChangeRes(Success/Error)"
+
+                Note over CON, T: "2. Inspection Cycle"
+                CON->>T: "TestStartReq(GlassID, PanelID)"
+                T-->>CON: "TestStartRes(ACK)"
+                Note right of T: "Executing Inspection Alg"
+                T->>FS: "Write Result Data (.ini)"
+                T->>CON: "TestStartEndRes(Complete)"
+
+                Note over CON, FS: "3. Data Binding"
+                CON->>FS: "Read .ini File"
+                CON->>CON: "GUI Update & Database Log"
+            </div>
+        </section>
+
+        <!-- 5. Load -->
+        <section id="sc-prod">
+            <h1>5. Load</h1>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator"
+                participant C as "TOECIM (Main)"
+                participant S as "EQP Simulator"
+                H->>C: "S2F87 (Load Glass Data)"
+                C-->>H: "S2F88 (Ack)"
+                C->>S: "Glass Move Req (LR)"
+                C->>H: "S6F67 (Glass Move Start Report)"
+                H-->>C: "S6F68 (Ack)"
+                Note over H, C: "Unexpected Error (Optional)"
+                C->>H: "S5F1 (Alarm Report - If Error)"
+                H-->>C: "S5F2 (Ack)"
+                S->>C: "CMD: LoadDone"
+                C->>H: "S1F67 (Glass Position Report)"
+                H-->>C: "S1F68 (Ack)"
+                C->>H: "S6F91 (Status Change: RUN)"
+                H-->>C: "S6F92 (Ack)"
+            </div>
+        </section>
+
+        <!-- 6. InspectDone -->
+        <section id="sc-inspect">
+            <h1>6. InspectDone</h1>
+            <p>TSP 검사 엔진이 분석을 완료하고 결과 파일을 생성한 후, Console이 CIM에게 검사 완료를 보고하는 단계입니다.</p>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator"
+                participant C as "TOECIM (Main)"
+                participant CON as "Console"
+                participant T as "TSP Engine"
+
+                Note over T, CON: "1. Inspection End"
+                T->>CON: "TestStartEndRes (Complete Signal)"
+                CON->>CON: "Read Result (.ini) & Summarize"
+
+                Note over CON, C: "2. CIM Reporting"
+                CON->>C: "JSON: CMD: InspectDone"
+                C->>H: "S6F73 (Glass Actual Processing Data Report)"
+                H-->>C: "S6F74 (Ack)"
+                C-->>CON: "JSON: Result OK"
+            </div>
+        </section>
+
+        <!-- 7. ExchangeDone (Unload) -->
+        <section id="sc-exchange">
+            <h1>7. ExchangeDone (Unload)</h1>
+            <p>검사 완료된 Glass가 반출(Unload) 준비가 되었을 때의 흐름입니다.</p>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator"
+                participant C as "TOECIM (Main)"
+                participant S as "EQP Simulator"
+
+                S->>C: "CMD: ExchangeReadyDone"
+                C->>H: "S1F67 (Glass Position Report)"
+                H-->>C: "S1F68 (Ack)"
+                C->>H: "S6F63 (Unload Glass Data Send)"
+                H-->>C: "S6F64 (Ack)"
+            </div>
+        </section>
+
+        <!-- 8. LOT 종료 -->
+        <section id="sc-lotend">
+            <h1>8. LOT 종료</h1>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator"
+                participant C as "TOECIM (Main)"
+                participant S as "EQP Simulator"
+                Note over H, C: "1. LOT End Data Command"
+                H->>C: "S6F65 (LOT End Data Send)"
+                C-->>H: "S6F66 (Ack)"
+                Note over C, S: "2. Internal Data Cleanup"
+                C->>C: "Calculate Yield"
+                C->>C: "Generate LSDS"
+                Note over H, C: "3. Final Result Report"
+                C->>H: "S6F83 (LOT Actual Processing Data Report)"
+                H-->>C: "S6F84 (Ack)"
+            </div>
+        </section>
+
+        <!-- 9. 레시피 관리 -->
+        <section id="sc-recipe">
+            <h1>9. 레시피 관리</h1>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator"
+                participant C as "TOECIM (Main)"
+                participant S as "EQP PLC / File"
+                H->>C: "S7F19 (Current EPPD Request)"
+                C-->>H: "S7F20 (Recipe List Data)"
+                H->>C: "S7F61 (Recipe ID Confirm Req)"
+                C-->>H: "S7F62 (Ack)"
+                Note right of C: "S7F61 Verified with DB"
+                C->>S: "Get Recipe File"
+                H->>C: "S7F77 (Recipe Body Request)"
+                C-->>H: "S7F78 (Actual Body Data Send)"
+            </div>
+        </section>
+
+        <!-- 10. 알람 및 오류 관리 -->
+        <section id="sc-alarm">
+            <h1>10. 알람 및 오류 관리</h1>
+            <p>Detailed scenarios for S5F1 Alarm reporting and S9F Device Error handling.</p>
+            <h2>1. Alarm Reporting (S5F1)</h2>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator"
+                participant C as "CIM"
+                participant S as "EQP / Hardware"
+                Note over S, C: "Hardware or Process Error Detected"
+                S->>C: "Error Signal (DI/IPC)"
+                C->>H: "S5F1 (Alarm Report Send)"
+                H-->>C: "S5F2 (Ack)"
+                Note over H, C: "Error Cleared"
+                C->>H: "S5F1 (Alarm Clear Report)"
+            </div>
+            <h2>2. Device & Communication Error (S9F)</h2>
+            <div class="mermaid">
+                sequenceDiagram
+                autonumber
+                participant H as "ECS Simulator"
+                participant C as "CIM"
+                Note over H, C: "Invalid Data or Format Detected"
+                H->>C: "S1F1 (Example Message)"
+                C->>H: "S9F7 (Data Fraction Error)"
+                Note over H, C: "Communication Timeout"
+                H->>C: "S2F17 (Time Req)"
+                Note right of C: "Timeout occurred"
+                C->>H: "S9F9 (Transaction Timer Timeout)"
+                Note over H, C: "Conversation Timeout"
+                C->>H: "S9F13 (Conversation Timeout)"
+            </div>
+        </section>
+
+        <!-- 11. 사양 검증 결과 -->
+        <section id="sc-verify">
+            <h1>11. 사양 검증 결과 (참고 문서 대조)</h1>
+            <p>제공된 참고 문서(HSMS Ver 1.6, MELSEC Ver 1.1)와 현재 시스템 설계를 대조한 검증 결과입니다.</p>
+
+            <div class="info-panel">
+                <strong>검증 대상 문서:</strong>
+                <ul>
+                    <li>ECS-Equipment Communication Specification_HSMS_Ver1.6 forToE_v0.1.pdf</li>
+                    <li>ECS-Equipment Communication Specification_MELSEC_Ver 1.1 for AP4ToE (Korean)_v0.1.pdf</li>
+                </ul>
+            </div>
+
+            <h2>1. 주요 검증 결과 및 차이점</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>참고 문서 사양 (Official)</th>
+                        <th>현재 시스템 설계</th>
+                        <th>검토 의견</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>HSMS 연결 모드</strong></td>
+                        <td>EQP: <strong>ACTIVE</strong> / ECS: <strong>PASSIVE</strong></td>
+                        <td>TOECIM: <strong>Active</strong> / ECS Simulator: Passive</td>
+                        <td><span style="color: #10b981;">일치함</span>. LGD 표준 및 현재 설계 모두 장비(TOECIM)가 Active로 접속 시도.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>T3 Timeout</strong></td>
+                        <td>90 Seconds</td>
+                        <td>미정 (기본값)</td>
+                        <td>LGD 표준에 따라 90초로 설정 권장.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CT (Conv. Timeout)</strong></td>
+                        <td>180 Seconds</td>
+                        <td>60 Seconds (예상)</td>
+                        <td>복합 메시지 처리를 위해 180초로 확장 필요.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Glass Order</strong></td>
+                        <td>0:First, 1:Middle, 2:Last, 3:Single</td>
+                        <td>동일 (GLSODR 사용)</td>
+                        <td>표준 사양 준수 확인됨.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PLC 통신 방식</strong></td>
+                        <td>MELSECNET/G (1Gbps, Token Ring)</td>
+                        <td>TCP/IP (Socket)</td>
+                        <td>현재는 Simulator/Console 기반 TCP 통신 사용 중.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>2. 상세 분석 내용</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>HSMS (SECS-II) 분석</h3>
+                    <ul>
+                        <li><strong>Device ID:</strong> 0 사용 (표준값)</li>
+                        <li><strong>S6F73/S6F63:</strong> Unload 및 공정 완료 보고 시 PNLIF(A[2000]) 판정 데이터 포함 필수.</li>
+                        <li><strong>S2F17:</strong> 장비(TOECIM)가 주기적으로 Time Sync 요청 권장.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>MELSEC (PLC) 분석</h3>
+                    <ul>
+                        <li><strong>Address 체계:</strong> B(Bit), W(Word) 기반 상대 주소 사용.</li>
+                        <li><strong>Handshake:</strong> LoadReq -> LoadEnable -> LoadStart -> LoadDone의 4-Step 시퀀스
+                            기반.</li>
+                        <li><strong>Heartbeat:</strong> Link Test Bit를 통한 상호 생존 확인(Liveliness) 필수.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mermaid">
+                graph TD
+                PDF["참고 문서 (LGD Standard)"] --> V["검증 분석"]
+                V -- "일치" --> A["Active 연결 모드 준수 확인"]
+                V -- "일치" --> B["메시지 시퀀스 (S/F) 및 데이터 아이템"]
+                V -- "확장 필요" --> C["타임아웃 값 조정 (T3, CT)"]
+            </div>
+        </section>
+    </main>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: 'loose',
+            theme: 'base',
+            themeVariables: {
+                fontSize: '24px',
+                fontFamily: 'Inter',
+                actorBkg: '#eef2ff',
+                actorBorder: '#c7d2fe',
+                lineColor: '#1e293b'
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".mermaid").forEach(el => {
+                el.setAttribute("data-mermaid-src", el.textContent.trim());
+            });
+            const activeSec = document.querySelector("section.active");
+            if (activeSec) {
+                renderSection(activeSec);
+            }
+        });
+
+        const repairStyles = () => {
+            const svgs = document.querySelectorAll('svg');
+            svgs.forEach(svg => {
+                if (svg.getAttribute('style') && svg.getAttribute('style').includes('position:absolute')) return;
+                svg.style.opacity = '1';
+                svg.style.display = 'block';
+                const seqLines = svg.querySelectorAll('.messageLine0, .messageLine1');
+                seqLines.forEach(l => {
+                    l.setAttribute('marker-end', 'url(#global-arrowhead-compact)');
+                    l.style.markerEnd = 'url(#global-arrowhead-compact)';
+                    l.style.stroke = '#1e293b';
+                    l.style.strokeWidth = '2.5px';
+                });
+                const edgePaths = svg.querySelectorAll('.edgePaths path, .edgePath path');
+                edgePaths.forEach(p => {
+                    p.setAttribute('marker-end', 'url(#global-arrowhead-graph)');
+                    p.style.stroke = '#1e293b';
+                    p.style.strokeWidth = '2px';
+                    p.style.opacity = '1';
+                });
+                const allLabels = svg.querySelectorAll('.label, .edgeLabel, .node .label, .actor, .actor tspan');
+                allLabels.forEach(lb => {
+                    lb.style.color = '#1e293b'; lb.style.fill = '#1e293b';
+                    lb.querySelectorAll('text, span, div').forEach(t => { t.style.color = '#1e293b'; t.style.fill = '#1e293b'; });
+                });
+                svg.querySelectorAll('text.sequenceNumber').forEach(n => {
+                    n.setAttribute('dy', '0.35em'); n.style.fill = '#ffffff';
+                    const parent = n.parentNode; if (parent && parent.lastChild !== n) parent.appendChild(n);
+                });
+                svg.querySelectorAll('circle.sequenceNumber').forEach(c => {
+                    c.style.fill = '#1e293b'; c.style.fillOpacity = '1'; c.setAttribute('r', '15');
+                });
+            });
+        }
+
+        async function renderSection(section) {
+            const divs = section.querySelectorAll(".mermaid");
+            for (const div of divs) {
+                const src = div.getAttribute("data-mermaid-src");
+                if (src) {
+                    div.innerHTML = src;
+                    div.removeAttribute("data-processed");
+                    div.removeAttribute("id");
+                }
+            }
+            try {
+                await mermaid.run({ nodes: Array.from(divs), suppressErrors: false });
+                repairStyles();
+            } catch (e) {
+                console.error("Mermaid Render Fail:", e);
+            }
+        }
+
+        async function activeTab(el, id) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            const targetSec = document.getElementById(id);
+            targetSec.classList.add('active');
+            window.scrollTo(0, 0);
+            await renderSection(targetSec);
+        }
+    </script>
+</body>
+
+</html>

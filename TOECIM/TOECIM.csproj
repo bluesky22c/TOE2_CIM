@@ -26,6 +26,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TOECIMLib\TOECIMLib.csproj" />
-    <ProjectReference Include="..\DBMulti\DBMulti.csproj" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,4 @@
-﻿using DBMulti;
-// using System.Windows.Forms.DataVisualization.Charting;
+﻿// using System.Windows.Forms.DataVisualization.Charting;
 using Engion;
 using Engion.Net;
 using LGHSMSBase;
@@ -132,6 +131,7 @@ namespace TOECIM
             ListenFromConsole();
 
             InitialUpdate();
+            cim.InitGem();
 
             // PropertyGrid 다크 스타일 적용
             ApplyPropertyGridDarkStyle(aLoadPropertyGrid);
@@ -167,7 +167,7 @@ namespace TOECIM
                     log.Information($"S{s}F{f} {args.gemMessage.Title} Sent");
             };
 
-            cim.CimAlarmSet += (_, __) => ShowAlarm();
+            // cim.CimAlarmSet += (_, __) => ShowAlarm();
             //DB 초기화 (Alarm)
             cim.AlarmDBManager.InitDB();
             UpdateAlarmView();
@@ -285,7 +285,9 @@ namespace TOECIM
 
                 case EQPtoCIM.InspectDone:
                     {
-                        // 상태를 RUN으로 강제하여 S6F91 보고 유도
+                        // v50 시퀀스: InspectDone → S6F73 (Glass APD Report) → S6F74
+                        cim.SendS6F73();
+                        // 검사 완료 후 상태를 RUN으로 보고
                         ChangeEQPStatusEvent(EQPSTATUS.EQPSTATUSEnum.RUN);
                     }
                     break;
@@ -337,7 +339,7 @@ namespace TOECIM
                         var alarmList = data.AlarmList;
 
                         cim.AlarmOccur(alarmList);
-                        ShowAlarm();
+                        // ShowAlarm();
                         UpdateAlarmView();
                     }
                     break;
@@ -358,7 +360,7 @@ namespace TOECIM
 
                         //cim.SendS1F61();
                         //cim.SendS1F67();
-                        ShowAlarm();
+                        // ShowAlarm();
                         UpdateAlarmView();
 
                     }
@@ -404,8 +406,8 @@ namespace TOECIM
                     break;
 
                 case EQPtoCIM.CancelReq:
-                    // 알람 보고하거나 장비 DOWN 보고할 때 필요에 따라 자동으로 CR 보고함.
-                    //cim.SendS6F67(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
+                    // Console 요청에 의한 Cancel Request → S6F67(CR) 보고
+                    cim.ReportGLSMVStatus(GLSMVSTATUS.GLSMVSTATUSEnum.CR);
                     break;
 
                 case EQPtoCIM.GLSMV_LR:
@@ -472,6 +474,7 @@ namespace TOECIM
         private void Cim_UpdateUI(object sender, EventArgs e)
         {
             UpdateJobDataUI();
+            UpdateStatusUI();
         }
 
         private void Cim_OnGLSMVChanged(object sender, CIMArgs e)
@@ -545,7 +548,7 @@ namespace TOECIM
                         break;
 
                     case EQPSTATUS.EQPSTATUSEnum.DOWN:
-                        EQStatusLabel.ForeColor = Color.Tomato;
+                        EQStatusLabel.ForeColor = Color.Red;
                         EQStatusLabel.Text = "DOWN";
                         break;
 
@@ -564,16 +567,14 @@ namespace TOECIM
                 else
                 {
                     consoleStatusLabel.Text = "CONSOLE";
-                    consoleStatusLabel.ForeColor = Color.Lime;
+                    consoleStatusLabel.ForeColor = Color.Green;
                 }
 
-                // Alarm 발생 여부 업데이트 (Outlined 스타일)
-                alarmStatusButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-                alarmStatusButton.HighEmphasis = false;
+                // Alarm 발생 여부 업데이트
                 if (cimStatus.CurAlarm != null)
                 {
                     alarmStatusButton.Text = "ALARM!";
-                    alarmStatusButton.ForeColor = Color.Tomato;
+                    alarmStatusButton.ForeColor = Color.Red;
                 }
                 else
                 {
@@ -848,7 +849,7 @@ namespace TOECIM
         {
             cim.AlarmDBManager.SetAlarm(e.Alarm);
             cim.SendS5F1(cimStatus.CurAlarm, true);
-            ShowAlarm();
+            // ShowAlarm();
             UpdateAlarmView();
         }
 
