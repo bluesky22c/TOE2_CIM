@@ -28,7 +28,7 @@ namespace LGCIMServer
             // 시작 위치 설정 (-1920, 0)
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(-1920, 0);
-            // this.WindowState = FormWindowState.Maximized;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void InitializeComponents()

@@ -23,6 +23,9 @@ namespace TOECIM
             gem.OnS6F74Event += Gem_OnS6F74Event;
             gem.OnS6F84Event += Gem_OnS6F84Event;
             gem.OnS6F92Event += Gem_OnS6F92Event;
+            
+            // [추가] S6F63 수신 핸들러 등록 (S9F9 에러 해결)
+            gem.OnS6F63Event += Gem_OnS6F63Event;
         }
 
 
@@ -61,6 +64,19 @@ namespace TOECIM
             }
         }
 
+        // [추가] S6F63 수신 핸들러 (ECS -> TOECIM)
+        // S6F63(Unload Glass Data Report)을 받으면 S6F64(Ack)를 보내야 함
+        private void Gem_OnS6F63Event(object sender, MMISoft.HSMS.GemEventArgs e)
+        {
+            CIMS6F63 cim = (CIMS6F63)e.cimClass;
+
+            var func = new CIMS6F64();
+            func.UNITID = cimStatus.UnitID;
+            func.ACKC6 = (byte)ACKC6.ACKC6Enum.Accept;
+
+            gem.HSMSSend(func);
+        }
+
         //Unload
         public void SendS6F63()
         {
@@ -73,8 +89,11 @@ namespace TOECIM
 
                 if (cimStatus.UnloadGlass == null)
                 {
-                    gem.HSMSSend(func);
-                    return;
+                    // [수정] 데이터가 없더라도 <L,2> 구조를 맞춰서 보내야 함 (사양 준수)
+                    // 임시 데이터 생성
+                    cimStatus.UnloadGlass = new ECSData();
+                    cimStatus.UnloadGlass.AGlass = new GlassInfo(); // 기본값
+                    cimStatus.UnloadGlass.BGlass = new GlassInfo(); // 기본값
                 }
 
                 func.UnLoadGlass = new List<UnLoadGlass>();

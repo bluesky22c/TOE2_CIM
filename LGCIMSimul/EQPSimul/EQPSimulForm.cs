@@ -391,8 +391,9 @@ namespace LGCIMServer.EQPSimul
             if (msg.Contains("[SEND]")) logColor = Color.Blue;
             else if (msg.Contains("[RECV]")) logColor = Color.Green;
 
-            string log = $"{DateTime.Now:HH:mm:ss.fff} > {msg}\r\n";
-            
+            string nowStr = DateTime.Now.ToString("HH:mm:ss.fff");
+            string log = $"{nowStr} > {msg}\r\n";
+
             rtbLog.SelectionStart = rtbLog.TextLength;
             rtbLog.SelectionLength = 0;
             rtbLog.SelectionColor = logColor;
@@ -406,6 +407,24 @@ namespace LGCIMServer.EQPSimul
                 rtbLog.ReadOnly = false;
                 rtbLog.Text = string.Join("\r\n", rtbLog.Lines.Skip(rtbLog.Lines.Length - 500));
                 rtbLog.ReadOnly = true;
+            }
+
+            // [추가] 로그 파일 저장
+            try
+            {
+                string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log");
+                if (!Directory.Exists(logPath))
+                    Directory.CreateDirectory(logPath);
+
+                string fileName = Path.Combine(logPath, $"EQPSimul_{DateTime.Now:yyyyMMdd}.log");
+                
+                // 간단한 파일 쓰기 (개행 포함)
+                File.AppendAllText(fileName, $"{nowStr}\t{msg}\r\n");
+            }
+            catch (Exception ex)
+            {
+                // 로깅 실패 시 무시 (UI 로깅은 유지)
+                Console.WriteLine($"Log Save Failed: {ex.Message}");
             }
         }
     }

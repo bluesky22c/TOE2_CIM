@@ -391,7 +391,8 @@ namespace LGCIMServer.EQPSimul
             // 로그 분석 결과: UnloadReadyDone 시 설비 상태가 Idle/Wait(S6F11)로 변경되는 경우가 많음
             eqData.EqpReadyStatus = EQPReadyStatus.UnloadReady;
             eqData.Command = EQPtoCIM.UnloadReadyDone;
-            eqData.eqpStatus = EQPStatus.IDLE;
+            // Unload/Exchange 중에도 AutoRun 상태(RUN)를 유지해야 CIM이 S2F87을 수락함
+            eqData.eqpStatus = EQPStatus.RUN; 
             eqData.GlassIn = true;
 
             SendToCIM(eqData);
@@ -402,6 +403,8 @@ namespace LGCIMServer.EQPSimul
         {
             eqData.EqpReadyStatus = EQPReadyStatus.ExchangeReady;
             eqData.Command = EQPtoCIM.ExchangeReadyDone;
+            // 명시적으로 RUN 상태 유지
+            eqData.eqpStatus = EQPStatus.RUN;
             eqData.GlassIn = false;
 
             // 판정 데이터 보완 (ToECIM의 S6F63 전송 시 필수 데이터)
@@ -496,6 +499,14 @@ namespace LGCIMServer.EQPSimul
                 ChangeStatus(EQPStatus.RUN);
                 Thread.Sleep(500); // 딜레이
             }
+            // 매크로 실행 시 AutoRun 강제 활성화 (CIM이 'SystemNotReady' 알람을 띄우지 않도록)
+            eqData.AutoRun = true;
+            
+            // [중요] 기존 알람이 남아있으면 AutoRun(IsAutoRun)이 true가 되지 않으므로 강제 클리어
+            eqData.AlarmList.Clear();
+
+            // CIM이 S2F87(Load Data Send)을 줄 때, Ready 상태가 아니면 거부하므로 강제로 Ready 설정
+            eqData.EqpReadyStatus = EQPReadyStatus.LoadyReady;
             
             if (!CheckInterlock(EQPtoCIM.GLSMV_LR, out string reason))
             {

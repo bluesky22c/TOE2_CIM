@@ -30,7 +30,10 @@
       "Bash(python3:*)",
       "Bash(find:*)",
       "Bash(node:*)",
-      "mcp__notebooklm__list_notebooks"
+      "mcp__notebooklm__list_notebooks",
+      "Bash(head -30 grep -n \"TabPage\\\\|tabPage\\\\|tabControl\\\\|\\\\.Text = \" LGCIMSimul/LGCIMSimulForm.cs)",
+      "Bash(taskkill:*)",
+      "Bash(dotnet run:*)"
     ]
   }
 }

@@ -270,6 +270,7 @@ namespace TOECIM
                 //Console이 필요할 경우 CIM의 요청 없이 eq data를 보냄
                 //ex) AutoRun이 false가 될 경우
                 case EQPtoCIM.SendData:
+                    ChangeEQPStatusEvent(status);
                     break;
 
                 case EQPtoCIM.LoadReadyDone:

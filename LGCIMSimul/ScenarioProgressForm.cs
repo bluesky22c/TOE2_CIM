@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace LGCIMServer
 {
+    [SupportedOSPlatform("windows")]
     public class ScenarioProgressForm : Form
     {
         // 플로우 다이어그램 한 행을 표현하는 내부 클래스
@@ -46,10 +48,11 @@ namespace LGCIMServer
         private void InitializeComponent()
         {
             this.Text = "Scenario Progress";
-            this.Size = new Size(530, 700);
+            this.Size = new Size(600, 700);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.White;
-            this.MinimumSize = new Size(530, 400);
+            this.MinimumSize = new Size(600, 400);
+            this.TopMost = true;
 
             var mainLayout = new TableLayoutPanel
             {

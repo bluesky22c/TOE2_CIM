@@ -117,9 +117,28 @@ namespace MMISoft
                             }
                             break;
                         }
-                        using (StreamWriter sw = new StreamWriter(filename, true, encoding))
+                        try
                         {
-                            sw.WriteLine(item.Data);
+                            using (StreamWriter sw = new StreamWriter(filename, true, encoding))
+                            {
+                                sw.WriteLine(item.Data);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            try
+                            {
+                                string dir = Path.GetDirectoryName(filename);
+                                if (!Directory.Exists(dir))
+                                {
+                                    Directory.CreateDirectory(dir);
+                                }
+                                using (StreamWriter sw = new StreamWriter(filename, true, encoding))
+                                {
+                                    sw.WriteLine(item.Data);
+                                }
+                            }
+                            catch { }
                         }
                     }
                 }

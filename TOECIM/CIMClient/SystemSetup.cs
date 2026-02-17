@@ -121,7 +121,8 @@ namespace TOECIM
                 Config.T5 = 10;
                 Config.T6 = 5;
                 Config.LinkTestTime = 45;
-                Config.LogPath = "d:\\elp\\toe\\cim\\log";
+                Config.LogFileName = "TOECIM";
+                Config.LogPath = @"D:\TOECIM";
             }
         }
 
