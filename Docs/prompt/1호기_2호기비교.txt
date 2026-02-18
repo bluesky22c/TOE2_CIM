@@ -1,0 +1,17 @@
+지금 폴더의 프로젝트는 1호기 SECS-II 통신 프로그램인 TOECIM 소스를
+2호기용 소스로 정리한 소스입니다
+2호기용 소스를 테스트해보기 위해 시물레이션 프로그램도 만들었음
+
+아래 내용을 확인해서 docx 문서로 만들어줘
+
+1호기 소스에 구현되어 있는데 2호기에는 없는내용  
+1호기 소스대비 잘못된 부분이 있는지 
+사양서와 다르게 수정된 부분이 있는지
+통신 데이터 포맷이 잘못된 부분이 있는지
+통신 시나리오가 잘돗되 부분이 있는지
+
+[참고자료]
+CIM 통신 사양서:D:\Sources\LGD\TOE2\TOE2_CIM\Docs\LGD_CIM사양서\ECS-Equipment Communication Specification_HSMS_Ver1.6 forToE_v0.1.docx
+1호기 소스경로 : D:\Sources\LGD\TOE\TOE_250422
+1호기 로그파일 : D:\Sources\LGD\TOE2\TOE2_CIM\Docs\CIM_LOG
+2호기 로그파일 : D:\ELP\TOE\CIM

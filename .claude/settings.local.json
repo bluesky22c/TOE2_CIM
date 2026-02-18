@@ -33,7 +33,10 @@
       "mcp__notebooklm__list_notebooks",
       "Bash(head -30 grep -n \"TabPage\\\\|tabPage\\\\|tabControl\\\\|\\\\.Text = \" LGCIMSimul/LGCIMSimulForm.cs)",
       "Bash(taskkill:*)",
-      "Bash(dotnet run:*)"
+      "Bash(dotnet run:*)",
+      "Bash(wc:*)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)"
     ]
   }
 }
