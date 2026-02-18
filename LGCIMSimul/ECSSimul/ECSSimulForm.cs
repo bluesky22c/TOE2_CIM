@@ -56,6 +56,10 @@ namespace LGCIMServer
 
             serverStatus.AGlass.InitGlassInfo();
             serverStatus.BGlass.InitGlassInfo();
+            // B Glass 고유 식별값 오버라이드 (A Glass와 구분)
+            serverStatus.BGlass.GLSID   = "6TL590005KB00";
+            serverStatus.BGlass.GLSCODE = 16183;
+            serverStatus.BGlass.SLOTID  = "54";
 
             // Port Status Display
             lblPortStatus.Text = $"Port {server.gem.Config.Port} : Listening";

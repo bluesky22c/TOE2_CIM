@@ -144,8 +144,9 @@ namespace TOECIM
 
                 gem.HSMSSend(func);
 
-                // Unload 보고 후 Load → Unload 상태 이동
-                MoveLoadtoUnload();
+                // LoadGlass가 있을 때만 Unload 상태 이동 (이미 이동된 경우 UnloadGlass 훼손 방지)
+                if (cimStatus.LoadGlass != null)
+                    MoveLoadtoUnload();
 
                 UpdateUI(this, null);
 

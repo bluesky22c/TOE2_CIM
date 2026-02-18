@@ -78,30 +78,36 @@ namespace TOECIMLib
         public void InitGlassInfo()
         {
             ReportType = ReportType.Load;
-            LOTID = "CEDJ17084600";
-            CSTID = "PXCCST100161";
-            SLOTID = "36";
-            RECIPEID = "606WF2S3";
-            PRCID = "79000";
+            LOTID = "CETL5A001200";
+            CSTID = "PXCCST100041";
+            SLOTID = "25";
+            RECIPEID = "123QDLS3";
+            PRCID = "77490";
             GLSODR = "1";
-            GLSID = "A4DJ1600AB18B00";
+            GLSID = "6TL5900063A00";
             GLSJUDGE = "G";
-            PNLIF = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGQGGGGGGGGGGGGGGGGGVGGGGKGGGG";
+            PNLIF = "CGGGGGGGGGGGGGGGGG";
             SUBMDLIF = "";
-            PORTID = 1;
-            GLSCODE = 13604;
+            PORTID = 2;
+            GLSCODE = 16153;
             REINPUT = 0;
             GLSTHICK = "50";
-            PARTNUM = "62084-0053A";
+            PARTNUM = "62084-0129A";
             PRODTYPE = "PRODUCTION";
             ATTRIBUTE = "CELL_GAP_G";
             GLSTYPE = "N";
-            KEYID = "CEDJ17084600_20210730172420";
+            KEYID = "CETL5A001200_20251106152106";
             DICODE = 0;
             GLSPROC = "0";
             DEST = 0;
 
-            LSDS = new List<LSD>();
+            LSDS = new List<LSD>
+            {
+                new LSD { LSDITEM = "FROM_CST_QTY", LSDVALUE = "54" },
+                new LSD { LSDITEM = "LOT_JUDGE",    LSDVALUE = "G"  },
+                new LSD { LSDITEM = "LOT_TYPE",     LSDVALUE = "G"  },
+                new LSD { LSDITEM = "MODEL_ATTR",   LSDVALUE = "OLED" }
+            };
             GSDS = new List<GSD>();
         }
         public ReportType ReportType { get; set; }
