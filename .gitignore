@@ -1,4 +1,5 @@
 ## [ Build Results ]
+# 빌드 결과물 및 임시 바이너리
 [Bb]in/
 [Oo]bj/
 [Aa]rm/
@@ -8,33 +9,78 @@
 exe/
 dll/
 pdb/
-Build
+Build/
 build*.txt
+TestResults/
+BenchmarkDotNet.Artifacts/
 
-## [ Visual Studio Metadata ]
+## [ Log and Data ]
+# 앱 동작 중 생성되는 로그 및 데이터
+HSMS/
+Log/
+Logs/
+*.log
+
+## [ AI and Agentic Tools ]
+# AI 협업 도구 및 에이전트 데이터
+.antigravity/
+.claude/
+.cursor/
+.ion/
+.gemini/
+.clauderules
+CLAUDE.md
+
+## [ Visual Studio ]
+# 비주얼 스튜디오 메타데이터 및 설정
 .vs/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
+*.dbmdl
+*.opendb
+*.VC.db
+IDB/
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+_Ch_PCH/
+*.ncb
+*.sdf
+*.sublime-project
+*.sublime-workspace
+
+## [ Visual Studio Code ]
+# VS Code 설정 및 캐시
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 ## [ NuGet Packages ]
+# NuGet 패키지 저장소
 *.nupkg
-# NuGet 패키지 복원 시 생성되는 폴더
 packages/
 !**/packages/build/
 
 ## [ User-specific files ]
+# 개별 사용자 설정 파일
 *.rsuser
-*.suo
-*.user
 *.userprefs
+*.docstates
 
 ## [ Common Generated Files ]
+# 자동 생성된 코드 및 로그
 Generated\ Files/
 _ReSharper*/
 *.[Rr][Ee][Ss][Xx].log
 
 ## [ OS specific files ]
+# 운영체제 생성 파일
 .DS_Store
 Thumbs.db
+desktop.ini
+$RECYCLE.BIN/

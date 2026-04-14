@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows8.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>LGCIM</RootNamespace>
+    <AssemblyName>LGCIM</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>cim.ico</ApplicationIcon>
+    <SupportedOSPlatform>windows</SupportedOSPlatform>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialSkin.2" Version="2.3.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="ServiceStack.Common" Version="5.11.0" />
+    <PackageReference Include="ServiceStack.Interfaces" Version="5.11.0" />
+    <PackageReference Include="ServiceStack.OrmLite" Version="5.11.0" />
+    <PackageReference Include="ServiceStack.OrmLite.MySql" Version="5.11.0" />
+    <PackageReference Include="ServiceStack.Text" Version="5.11.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LGCIM.Lib\LGCIM.Lib.csproj" />
+  </ItemGroup>
+</Project>
